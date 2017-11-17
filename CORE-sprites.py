@@ -53,6 +53,8 @@ pygame.init()
 
 #init the sound libs of pygame.
 pygame.mixer.init()
+pygame.mixer.music.load("res/music/main_menu.ogg")
+pygame.mixer.music.play(-1)
 
 #set height and width of the game
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
