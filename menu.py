@@ -9,6 +9,7 @@ menuAtivo = True;
 clock = pygame.time.Clock()
 
 
+
 background = pygame.image.load('astrodoge/img/backgrounds/background_2.png').convert()
 background_rect = background.get_rect()
 pygame.mixer.init()
@@ -19,8 +20,19 @@ screen.fill(BLACK)
 screen.blit(background, background_rect)
 
 def startGame():
-    screen.fill(GREEN);
+    background_1 = pygame.image.load('images/background.png').convert()
+    background_rect = background.get_rect()
+    screen.blit(background_1, background_rect)
     pygame.display.flip();
+
+def get_buttons():
+    start_button = pygame.draw.rect(screen,(0,0,240),(150,90,100,50));
+    quit_button = pygame.draw.rect(screen,(244,0,0),(150,230,100,50));
+
+def texts(score):
+    font=pygame.font.Font(None,30)
+    scoretext=font.render(str(score), 1,(255,255,255))
+    screen.blit(scoretext, (500, 457))
 
 while menuAtivo:
     clock.tick(FPS)
@@ -35,10 +47,8 @@ while menuAtivo:
             if pygame.mouse.get_pos()[0] >= 150 and pygame.mouse.get_pos()[1] >= 90:
                 if pygame.mouse.get_pos()[0] <= 250 and pygame.mouse.get_pos()[1] <= 140:
                         startGame();
-
-    start_button = pygame.draw.rect(screen,(0,0,240),(150,90,100,50));
-    
-    quit_button = pygame.draw.rect(screen,(244,0,0),(150,230,100,50));
+                        texts("You've pressed start!")
+    get_buttons()
 
     pygame.display.flip();
 
