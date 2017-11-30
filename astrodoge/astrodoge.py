@@ -10,7 +10,8 @@ HEIGHT  = 900
 FPS     = 30
 X       = 500
 Y       = 100
-MOB_AMOUNT = 10
+MOB_AMOUNT = 15
+SPEED   = 10
 
 #define colors
 BLACK = (0, 0, 0)
@@ -33,7 +34,6 @@ class player(pygame.sprite.Sprite):
         self.image.set_colorkey(BLACK)
         self.rect   = self.image.get_rect()
         self.radius = 23
-        pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
         self.rect.centerx = WIDTH / 2
         self.rect.bottom = HEIGHT - 10
         self.speedx = 0
@@ -44,7 +44,7 @@ class player(pygame.sprite.Sprite):
         if keystate[pygame.K_LEFT]:
             self.speedx = -10
         if keystate[pygame.K_RIGHT]:
-            self.speedx = 10
+            self.speedx = SPEED
         self.rect.x += self.speedx
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
@@ -65,10 +65,9 @@ class Mob(pygame.sprite.Sprite):
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.radius = int(self.rect.width * .8 / 2)
-        pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
         self.rect.x = random.randrange(WIDTH - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
-        self.speedy = random.randrange(1, 8)
+        self.speedy = random.randrange(1, 15)
 
     def update(self):
         self.rect.y += self.speedy
@@ -134,8 +133,7 @@ for i in range(MOB_AMOUNT):
     m = Mob()
     all_sprites.add(m)
     mobs.add(m)
-
-
+    
 #game loop
 running = True
 while running:
