@@ -12,7 +12,7 @@ background = pygame.image.load('resource/images/main_menu/main_menu.png').conver
 background_rect = background.get_rect()
 pygame.mixer.init()
 pygame.mixer.music.load("astrodoge/music/main_menu.ogg")
-# pygame.mixer.music.play(-1)
+pygame.mixer.music.play(-1)
 
 screen.fill(BLACK)
 screen.blit(background, background_rect)
