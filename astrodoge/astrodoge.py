@@ -10,8 +10,7 @@ HEIGHT  = 900
 FPS     = 30
 X       = 500
 Y       = 100
-MOB_AMOUNT = 15
-SPEED   = 10
+MOB_AMOUNT = 100
 
 #define colors
 BLACK = (0, 0, 0)
@@ -26,11 +25,12 @@ bg = [255, 255, 255]
 game_folder = os.path.dirname(__file__)
 img_folder  = os.path.join(game_folder, "img")
 
+#setting up a player class
 class player(pygame.sprite.Sprite):
-    #sprite for the player
+    #sprite and other properties for the player
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image  = player_img
+        self.image  = pygame.image.load('img/player/spaceship.png').convert()
         self.image.set_colorkey(BLACK)
         self.rect   = self.image.get_rect()
         self.radius = 23
@@ -38,19 +38,21 @@ class player(pygame.sprite.Sprite):
         self.rect.bottom = HEIGHT - 10
         self.speedx = 0
 
+    #This function is given to update the player itself into the game
     def update(self):
         self.speedx = 0
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_LEFT]:
             self.speedx = -10
         if keystate[pygame.K_RIGHT]:
-            self.speedx = SPEED
+            self.speedx = 10
         self.rect.x += self.speedx
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
         if self.rect.left < 0:
             self.rect.left = 0
     
+    #this is a function to add a bullet from the player itself. 
     def shoot(self):
         bullet = Bullet(self.rect.centerx, self.rect.top)
         all_sprites.add(bullet)
@@ -58,34 +60,39 @@ class player(pygame.sprite.Sprite):
 
 
 
+#Setting up a mob ( in this case a astroid )
 class Mob(pygame.sprite.Sprite):
+    #defining itself with properties
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = mob_img
+        self.image = pygame.image.load('img/mobs/Projectile_426.png').convert()
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.radius = int(self.rect.width * .8 / 2)
         self.rect.x = random.randrange(WIDTH - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
-        self.speedy = random.randrange(1, 15)
+        self.speedy = random.randrange(1, 8)
 
+    #given instructions what to do on a update
     def update(self):
         self.rect.y += self.speedy
         if self.rect.top > HEIGHT + 10 or self.rect.left < -25 or self.rect.right > WIDTH + 20:
             self.rect.x = random.randrange(WIDTH - self.rect.width)
             self.rect.y = random.randrange(-100, -40)
 
-
+#Setting up a bullet
 class Bullet(pygame.sprite.Sprite):
+    #give properties to the bullet itself
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = bullet_img
+        self.image = pygame.image.load('img/projectiles/Projectile_710.png').convert()
+        # self.image = pygame.transform.scale(self.image, (150, 150))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.bottom = y
         self.rect.centerx = x
         self.speedy = -10
-
+    #function to define the functions inside a update
     def update(self):
         self.rect.y += self.speedy
         #kill if off top screen
@@ -115,13 +122,10 @@ clock = pygame.time.Clock()
 
 
 
-#Load images
+#Preload images for the background
 background = pygame.image.load('img/backgrounds/background_2.png').convert()
 background_rect = background.get_rect()
 
-player_img = pygame.image.load('img/player/spaceship.png').convert()
-mob_img = pygame.image.load('img/mobs/Projectile_426.png').convert()
-bullet_img = pygame.image.load('img/projectiles/Projectile_710.png').convert()
 
 all_sprites = pygame.sprite.Group()
 mobs = pygame.sprite.Group()
@@ -164,6 +168,7 @@ while running:
     hits = pygame.sprite.spritecollide(player, mobs, False, pygame.sprite.collide_circle)
     if hits:
         running = False
+        
     #draw / render
     screen.fill(BLACK)
     screen.blit(background, background_rect)
