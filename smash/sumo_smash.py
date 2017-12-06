@@ -24,9 +24,9 @@ gameExit = False
 #objects  player =
 sumo_x = WIDTH/2    # lead_x
 sumo_y = 500
+sumo_x_change = 0
+sumo_y_change = 0
 
-#blocks
-block_size = 30
 
 # FPS Clock
 clock= pygame.time.Clock()
@@ -39,17 +39,29 @@ while not gameExit:
             gameExit = True
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                sumo_x -= 100
+                sumo_x_change = -10
             if event.key == pygame.K_RIGHT:   
-                sumo_x += 100   
+                sumo_x_change += 10  
+            if event.key == pygame.K_UP:
+                sumo_y_change = -10
+            if event.key == pygame.K_DOWN:   
+                sumo_y_change = 10  
+        
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                sumo_x_change = 0          
+        
 
         # dit moet gebeuren met Y want als je ervan af valt is het game over
         if sumo_x > 900 or sumo_x < 0:
             gameExit = True
+        if sumo_y > 900 or sumo_y < 0:
+            gameExit = True    
         
         
         
-        
+    sumo_x += sumo_x_change  
+    sumo_y += sumo_y_change  
     pygameScreen.fill(WHITE)    
     pygame.draw.rect(pygameScreen, PURPLE,[sumo_x, sumo_y, 30, 30])
     pygame.draw.rect(pygameScreen, GREEN,[WIDTH/2, 300, 30, 30])
