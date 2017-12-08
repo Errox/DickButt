@@ -28,6 +28,8 @@ clock= pygame.time.Clock()
 # adding text
 font = pygame.font.SysFont(None, 30)
 
+
+
 def massage_to_screen(msg,color):
     screen_text = font.render(msg, True, color)
     pygameScreen.blit(screen_text, [200, HIGHT/2])
@@ -36,12 +38,16 @@ def gameLoop():
     gameExit = False
     gameOver = False
 
-    #objects  player =
+    #objects  player 
     sumo_x = WIDTH/2   
     sumo_y = 500
 
     sumo_x_change = 0
     sumo_y_change = 0  
+
+    """enemy player
+    enemy_playerx = random.randrange
+    enemy_playery """
 
     while not gameExit:
         
@@ -83,7 +89,8 @@ def gameLoop():
 
             # dit moet gebeuren met Y want als je ervan af valt is het game over
             if sumo_x >= WIDTH or sumo_x <= 0 or sumo_y >= HIGHT or sumo_y <= 0:
-                gameOver = True
+                gameOver = True 
+                
             
             
             
