@@ -2,7 +2,9 @@ import pygame
 import sys
 import os
 #defining variable's
-FPS = 15
+FPS = 30
+X       = 500
+Y       = 100
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
 define_location = "main_menu"
@@ -14,6 +16,7 @@ pygame.init()
 screen = pygame.display.set_mode((900,900))
 pygame.display.set_caption("Menu")
 clock = pygame.time.Clock()
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)
 
 #initializing pygame's mixer
 pygame.mixer.init()
