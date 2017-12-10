@@ -15,7 +15,7 @@ gameDisplay = pygame.display.set_mode((display_width, display_height)) #The Scre
 pygame.display.set_caption('SpaceBound') #Caption
 clock = pygame.time.Clock() #It's a clock!
 
-SBcharImg = pygame.image.load('SpaceBound/SBimages/temp_character.png') #Load character model
+SBcharImg = pygame.image.load('SBimages/temp_character.png') #Load character model
 
 def SBchar(xChar,yChar): #Create a character, might change later to draw it
     gameDisplay.blit(SBcharImg,(xChar,yChar))
