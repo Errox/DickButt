@@ -22,6 +22,26 @@ def SBchar(xChar,yChar): #Create a character, might change later to draw it
 def SBenemy(xEnemy,yEnemy,wEnemy,hEnemy,colour): #Draw an enemy
     pygame.draw.rect(gameDisplay, colour, [xEnemy,yEnemy,wEnemy,hEnemy])
         #I could draw a circle as detection circle thingy
+
+def SBtext_objects(text, font): #helps with the text thing
+    SBTextSurf = font.render(text, True, white)
+    return SBTextSurf, SBTextSurf.get_rect()
+
+def SBmessage_display(text): #does the text thing
+    SBEncounterText = pygame.font.Font('../resource/fonts/ka1.ttf', 65)
+    SBTextSurf, SBTextRect = SBtext_objects(text, SBEncounterText)
+    SBTextRect.center = ((display_width * 0.5), (display_height * 0.5))
+    gameDisplay.blit(SBTextSurf, SBTextRect)
+
+    pygame.display.update()
+
+def SBEncounter(): #The actual encounter
+    SBmessage_display('Encounter!')
+    time.sleep(2)
+    SBgame_loop() #For now, restarts the game
+
+
+
 def SBgame_loop():
     SBxChar = ((display_width - 50) * 0.5)
     SByChar = ((display_height - 75) * 0.5)
@@ -71,8 +91,7 @@ def SBgame_loop():
         if SBxChar > SBxEnemystart and SBxChar < SBxEnemystart + SBwEnemy or SBxChar + 50 > SBxEnemystart and SBxChar + 50 < SBxEnemystart + SBwEnemy:
                 #Checks the y coords
             if SByChar > SByEnemystart and SByChar < SByEnemystart + SBhEnemy or SByChar + 75 > SByEnemystart and SByChar + 75 < SByEnemystart + SBhEnemy:
-                SBxChar = ((display_width - 50) * 0.5) #Go to back to spawn. Temporary, will change to encounter
-                SByChar = ((display_height - 75) * 0.5)
+                SBEncounter()#runs the encounter, for now that's just text
         pygame.display.update()#Updates the screen to what's happening
         clock.tick(FPS)#Actually use the FPS
 
