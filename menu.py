@@ -44,7 +44,7 @@ class animated_select_planet(pygame.sprite.Sprite):
 
         self.index = 0
         self.image = self.images[self.index]
-        self.rect = pygame.Rect(5, 5, 250, 80)
+        self.rect = pygame.Rect(275, 520, 250, 80)
 
     def update(self):
         self.index += 1
@@ -71,6 +71,8 @@ def start_select_planet():
     screen.blit(background, background_rect)
     pygame.display.set_caption("Select Planet")
     #get buttons
+    my_group.update()
+    my_group.draw(screen)
     buttons_select_planet()
 
 def buttons_select_planet():
@@ -147,8 +149,6 @@ while main_loop:
                         define_location = "planet_5"         
                         main_loop = False
 
-    my_group.update()
-    my_group.draw(screen)
 
     pygame.display.flip()
 
