@@ -1,6 +1,8 @@
 import pygame
 import sys
 import os
+from time import sleep
+
 #defining variable's
 FPS = 30
 X       = 500
@@ -40,20 +42,17 @@ class animated_select_planet(pygame.sprite.Sprite):
         self.images.append(load_image('resource/images/select_planet/select_planet_animation/selectplanet_glow_7.png'))
         self.images.append(load_image('resource/images/select_planet/select_planet_animation/selectplanet_glow_8.png'))
         self.images.append(load_image('resource/images/select_planet/select_planet_animation/selectplanet_glow_9.png'))
-        # assuming both images are 64x64 pixels
-
         self.index = 0
         self.image = self.images[self.index]
         self.rect = pygame.Rect(275, 520, 250, 80)
 
     def update(self):
         self.index += 1
+        sleep(0.1)
         if self.index >= len(self.images):
             self.index = 0
             count = 0
         self.image = self.images[self.index]
-
-
 
 # 1 #
 #start the main menu board.
@@ -79,9 +78,6 @@ def buttons_select_planet():
     quit_button         = pygame.image.load('resource/images/select_planet/button_quit_small.png').convert()
     quit_rect           = quit_button.get_rect()
     screen.blit(quit_button, (5,5))
-
-    
-
 
 #Function to place text on screen. 
 def text(text, x, y):
@@ -148,7 +144,6 @@ while main_loop:
                     if pygame.mouse.get_pos()[0] <= 86 and pygame.mouse.get_pos()[1] <= 627:
                         define_location = "planet_5"         
                         main_loop = False
-
 
     pygame.display.flip()
 
