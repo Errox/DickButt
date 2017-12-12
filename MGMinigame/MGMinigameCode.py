@@ -80,7 +80,7 @@ class MG_Player(pygame.sprite.Sprite):
         if self.change_y == 0:
             self.change_y = 10
         else:
-            self.change_y += .40
+            self.change_y += .50
 
         # check if ground bellow player
         if self.rect.y >= SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
@@ -99,10 +99,10 @@ class MG_Player(pygame.sprite.Sprite):
 
     # player movement speed
     def go_left(self):
-        self.change_x = -7
+        self.change_x = -14
 
     def go_right(self):
-        self.change_x = 7
+        self.change_x = 14
 
     def stop(self):
         self.change_x = 0
@@ -173,10 +173,22 @@ class Level_01(Level):
         self.level_limit = -1000
 
         # width, height, x, and y of platform
-        level = [[210, 70, 500, 700],
+        level = [[210, 70, 700, 700],
                  [600, 70, 000, 500],
-                 [210, 70, 600, 300],
-                 [900, 70, 000, 830]
+                 [210, 70, 800, 300],
+                 [9000, 70, 000, 830],   # Floor
+                 [700, 900, -700, 000],  # Front wall
+                 [100, 570, 1000, 300],
+                 [100, 570, 1500, 300],
+                 [600, 70, 1500, 300],
+                 [100, 730, 2300, 000],
+                 [500, 70, 1900, 660],
+                 [70, 200, 1900, 460],
+                 [300, 70, 1500, 550],
+                 [20, 20, 1880, 710],
+                 [20, 20, 2280, 500],
+                 [700, 900, 9000, 000],  # Back Wall
+                 [100, 800, 2700, 100]
                  ]
 
         # go through the array above and add platforms
@@ -255,14 +267,14 @@ def main():
             current_level.shift_world(-diff)
 
         # if the player goes near the left side move world right
-        if mg_player.rect.x <= 200:
-            diff = 200 - mg_player.rect.x
-            mg_player.rect.x = 200
+        if mg_player.rect.x <= 450:
+            diff = 450 - mg_player.rect.x
+            mg_player.rect.x = 450
             current_level.shift_world(diff)
 
         current_position = mg_player.rect.x + current_level.world_shift
         if current_position < current_level.level_limit:
-            mg_player.rect.x = 200
+            mg_player.rect.x = 450
             if current_level_no < len(level_list)-1:
                 current_level_no += 1
                 current_level = level_list[current_level_no]
