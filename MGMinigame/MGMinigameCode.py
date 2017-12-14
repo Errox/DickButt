@@ -89,9 +89,9 @@ class MG_Player(pygame.sprite.Sprite):
 
     def jump(self):
         # check if there is ground bellow so that the MG_Player can jump
-        self.rect.y += 2
+        self.rect.y += 5
         platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
-        self.rect.y -= 2
+        self.rect.y -= 5
 
         # if jump is possible change y speed
         if len(platform_hit_list) > 0 or self.rect.bottom >= SCREEN_HEIGHT:
@@ -120,6 +120,61 @@ class Platform(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
 
+
+class MovingPlatform(Platform):
+    # Creating a moving platform
+    change_x = 0
+    change_y = 0
+
+    boundary_top = 0
+    boundary_bottom = 0
+    boundary_left = 0
+    boundary_right = 0
+
+    player = None
+
+    level = None
+
+    def update(self):
+        # Move the platform
+        self.image.fill(BLUE)
+
+        # Move left/right
+        self.rect.x += self.change_x
+
+        # check if it hits the player
+        hit = pygame.sprite.collide_rect(self, self.player)
+        if hit:
+            # if the player is hit, move the player
+
+            # if moving right, set right side to the left side of the object it's moving towards
+            if self.change_x < 0:
+                self.player.rect.right = self.rect.left
+            else:
+                # do the opposite of what to comment above states
+                self.player.rect.left = self.rect.right
+
+        # Move up/down
+        self.rect.y += self.change_y
+
+        # check if the mg_player stands on the platform
+        hit = pygame.sprite.collide_rect(self, self.player)
+        if hit:
+            # MG_player is hit, move the player.
+
+            # reset position based on the top and/or bottom of the object
+            if self.change_y < 0:
+                self.player.rect.bottom = self.rect.top
+            else:
+                self.player.rect.top = self.rect.bottom
+
+        # check if the platform must change directions
+        if self.rect.bottom > self.boundary_bottom or self.rect.top < self.boundary_top:
+            self.change_y *= -1
+
+        cur_pos = self.rect.x - self.level.world_shift
+        if cur_pos < self.boundary_left or cur_pos > self.boundary_right:
+            self.change_x *= -1
 
 class Level(object):
     # list of used sprites
@@ -188,7 +243,35 @@ class Level_01(Level):
                  [20, 20, 1880, 710],
                  [20, 20, 2280, 500],
                  [700, 900, 9000, 000],  # Back Wall
-                 [100, 800, 2700, 100]
+                 [100, 800, 2700, 100],
+                 [100, 30, 2600, 650],
+                 [100, 30, 2600, 430],
+                 [100, 30, 2600, 210],
+                 [100, 650, 3200, 250],
+                 [100, 500, 3700, 400],
+                 [1000, 350, 4200, 550],
+                 [80, 200, 4400, 350],
+                 [200, 300, 5000, 250],
+                 [80, 30, 4740, 200],
+                 [1000, 100, 5000, 250],
+                 [20, 10, 6180, 450],
+                 [100, 700, 6200, 000],
+                 [900, 50, 5300, 650],
+                 [500, 50, 6500, 780],
+                 [500, 50, 6700, 580],
+                 [500, 50, 6900, 380],
+                 [500, 50, 7100, 180],
+                 [600, 50, 7150, 630],
+                 [600, 50, 7350, 430],
+                 [600, 50, 7550, 230],
+                 [500, 50, 7700, 580],
+                 [500, 50, 7900, 380],
+                 [500, 50, 8100, 180],
+                 [50, 520, 8350, 380],
+                 [50, 300, 8550, -100],
+                 [400, 20, 8600, 380],
+                 [20, 320, 8600, 380],
+                 [400, 20, 8600, 810]
                  ]
 
         # go through the array above and add platforms
@@ -199,6 +282,38 @@ class Level_01(Level):
             block.MG_player = self.MG_player
             self.platform_list.add(block)
 
+        # Add a custom moving platform
+        block = MovingPlatform(400, 20)
+        block.rect.x = 1100
+        block.rect.y = 300
+        block.boundary_top = 300
+        block.boundary_bottom = 830
+        block.change_y = 4
+        block.player = self.MG_player
+        block.level = self
+        self.platform_list.add(block)
+
+        # Add another custom moving platform
+        block = MovingPlatform(700, 10)
+        block.rect.x = 5300
+        block.rect.y = 650
+        block.boundary_left = 5200
+        block.boundary_right = 5500
+        block.change_x = 10
+        block.player = self.MG_player
+        block.level = self
+        self.platform_list.add(block)
+
+        # another one
+        block = MovingPlatform(200, 20)
+        block.rect.x = 8400
+        block.rect.y = 600
+        block.boundary_top = 370
+        block.boundary_bottom = 830
+        block.change_y = 4
+        block.player = self.MG_player
+        block.level = self
+        self.platform_list.add(block)
 
 def main():
     # main program
