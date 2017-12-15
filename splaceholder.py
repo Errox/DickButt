@@ -15,6 +15,7 @@ def start_splaceholder():
     X       = 500
     Y       = 100
     sound = pygame.mixer.init()
+    MOB_AMOUNT = 40
 
     #define colors
     BLACK = (0, 0, 0)
@@ -75,6 +76,38 @@ def start_splaceholder():
             all_sprites.add(bullet)
             bullets.add(bullet)
 
+    #setting up a enemy class
+    class enemy(pygame.sprite.Sprite):
+        #sprite and other properties for the enemy
+        def __init__(self):
+            pygame.sprite.Sprite.__init__(self)
+            self.image  = pygame.image.load('resource/images/splaceholder/enemy/enemy.png').convert()
+            self.image = pygame.transform.scale(self.image, (90, 70))
+            self.image.set_colorkey(BLACK)
+            self.rect   = self.image.get_rect()
+            self.radius = 23
+            self.rect.x = 0
+            self.rect.y = 0
+            self.speedx = 0
+            self.speedy = 0
+
+        #This function is given to update the player in the game
+        def update(self): 
+            self.speedx = random.randrange(1, 10)
+            self.speedy = random.randrange(1, 10)
+            self.rect.x += self.speedx
+            self.rect.y += self.speedy
+        #kill if off screen
+            if self.rect.bottom < 0:
+                self.kill()
+
+        #This is a function to shoot a bullet from enemy at random
+        def shoot(self):
+            bullet = Bullet(self.rect.centerx, self.rect.top)
+            all_sprites.add(bullet)
+            bullets.add(bullet)
+
+
 
     #Setting up a bullet
     class Bullet(pygame.sprite.Sprite):
@@ -94,6 +127,7 @@ def start_splaceholder():
             #kill if off top screen
             if self.rect.bottom < 0:
                 self.kill()
+
 
 
 
@@ -128,7 +162,14 @@ def start_splaceholder():
     bullets = pygame.sprite.Group()
     player = player()
     all_sprites.add(player)
+    enemys = pygame.sprite.Group()
 
+
+    for i in range(MOB_AMOUNT):
+        m = enemy()
+        all_sprites.add(m)
+        enemys.add(m)
+        
 
     bullet_sound = pygame.mixer.Sound('resource/music/splaceholder/sounds/sfx_wpn_laser10.wav')
     #de main game loops
@@ -158,7 +199,20 @@ def start_splaceholder():
             
         
         
-        
+       #collision for bullet against enemy
+        hits = pygame.sprite.groupcollide(enemys, bullets, True, True)
+        for hit in hits:
+            m = enemy()
+            all_sprites.add(m)
+            enemys.add(m)
+ 
+        #collision if player hit enemy
+        hits = pygame.sprite.spritecollide(player, enemys, False, pygame.sprite.collide_circle)
+        if hits:
+            menu.start_menu()
+            running = False
+                
+    
         #updaten van alle sprites
         all_sprites.update()
 
