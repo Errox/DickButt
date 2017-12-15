@@ -100,7 +100,7 @@ pygame.init()
 
 
 #Defineeer de groote en breedte van de gme
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((900, 900))
 
 
 #Verrander titel
@@ -111,7 +111,12 @@ pygame.display.set_caption("SPLACEHOLDER")
 clock = pygame.time.Clock()
 
 
-#render de images voor de background
+# images for the background
+surface = pygame.image.load('images/background/background_splaceholder.png').convert()
+surface_rect = surface.get_rect()
+
+print (surface)
+print (surface_rect)
 
 all_sprites = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
@@ -125,12 +130,17 @@ while running:
     # Laat de clock ticken op de fps
     clock.tick(FPS)
 
+    #render background
+    screen.fill(BLACK)
+    screen.blit(surface, surface_rect)
+
     #kijk of er een event is 
     for event in pygame.event.get():
+        print (event)
         #Check of de exit knop is ingedrukt
         if event.type == pygame.QUIT:
             running = False
-        #als spatsie word ingedrukt moet er een kogel afgeschoten worden
+        #als spatie word ingedrukt moet er een kogel afgeschoten worden
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 
@@ -138,10 +148,10 @@ while running:
                 player.shoot()
 
                 # pygame.mixer.Sound.play()
+    
     #updaten van alle sprites
     all_sprites.update()
-    screen.fill(WHITE)
-    # screen.blit(background, background_rect)
+
 
     all_sprites.draw(screen)
     pygame.display.flip()
