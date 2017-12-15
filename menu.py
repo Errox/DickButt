@@ -3,6 +3,7 @@ def start_menu():
     import pygame
     import os
     import astrodoge 
+    import splaceholder
     from time import sleep
     
     FPS     = 30
@@ -87,6 +88,7 @@ def start_menu():
     my_sprite = animated_select_planet()
     my_group = pygame.sprite.Group(my_sprite)
     while main_loop:
+        print(define_location)
         screen.fill(BLACK)
         clock.tick(FPS)
         #here we check which functions come to make the storyboard functional
@@ -96,10 +98,12 @@ def start_menu():
             start_select_planet()
         elif define_location == "planet_astrodoge":
             pygame.mixer.music.stop()
+            # splaceholder.start_splaceholder()
             astrodoge.start_astrodoge()
-            pygame.QUIT()
+            print('penis')
         elif define_location == "planet_splaceholder":
-            print('planet_splaceholder')
+            pygame.mixer.music.stop()
+            splaceholder.start_splaceholder()
         else:
             print('under construction')
  
@@ -109,7 +113,7 @@ def start_menu():
                 pygame.quit()
                 quit()
             #printing every event that's happening within the python script.
-            print(evento);
+            print(evento)
             #Catch mouse position and if it's pressed on the button
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 #here we check where the story line of the game is and define some button presses to make it more functional.
@@ -119,7 +123,8 @@ def start_menu():
                             define_location = "select_planet"
                     if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 600:
                         if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 665:
-                            main_loop = False
+                            # main_loop = False
+                            print('2')
                 #buttons and other story line scripts can be placed here
                 elif define_location == "select_planet":
                     if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
@@ -130,19 +135,18 @@ def start_menu():
                             define_location = "planet_astrodoge"
                     if pygame.mouse.get_pos()[0] >= 630 and pygame.mouse.get_pos()[1] >= 637:
                         if pygame.mouse.get_pos()[0] <= 720 and pygame.mouse.get_pos()[1] <= 722:
-                            define_location = "planet_splaceholder"
+                            define_location = "planet_3"
                     if pygame.mouse.get_pos()[0] >= 186 and pygame.mouse.get_pos()[1] >= 412:
                         if pygame.mouse.get_pos()[0] <= 263 and pygame.mouse.get_pos()[1] <= 494:
-                            define_location = "planet_3"
-                            main_loop = False
+                            define_location = "planet_splaceholder"
+                            # main_loop = False
                     if pygame.mouse.get_pos()[0] >= 596 and pygame.mouse.get_pos()[1] >= 5:
                         if pygame.mouse.get_pos()[0] <= 693 and pygame.mouse.get_pos()[1] <= 71:
                             define_location = "planet_4"
-                            main_loop = False
+                            # main_loop = False
                     if pygame.mouse.get_pos()[0] >= 21 and pygame.mouse.get_pos()[1] >= 557:
                         if pygame.mouse.get_pos()[0] <= 86 and pygame.mouse.get_pos()[1] <= 627:
                             define_location = "planet_5"         
-                            main_loop = False
+                            # main_loop = False
  
         pygame.display.flip()
-    pygame.QUIT()
