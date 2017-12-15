@@ -7,7 +7,7 @@ def start_astrodoge():
     import random
     import os
     import menu
-    import post_highscore
+    import highscore
  
     #define pygame core
     WIDTH   = 900
