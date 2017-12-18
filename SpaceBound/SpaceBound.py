@@ -1,5 +1,7 @@
 import pygame
 import time
+from  pygame.locals import *
+
 pygame.init()
 FPS = 30
 display_width = 900 
@@ -13,93 +15,150 @@ white = (255,255,255)
 red = (255, 0, 0)
 green = (0,255,0)
 grey = (100,100,100)
-    #Load images
-SBcharImg = pygame.image.load('SBimages/temp_character.png')
-SBFightBoxImg = pygame.image.load('SBimages/Buttontestthing.png')
 
-def SBchar(xChar,yChar): #Create a character, might change later to draw it
-    gameDisplay.blit(SBcharImg,(xChar,yChar))
-def SBenemy(xEnemy,yEnemy,wEnemy,hEnemy,colour): #Draw an enemy
-    pygame.draw.rect(gameDisplay, colour, [xEnemy,yEnemy,wEnemy,hEnemy])
-#I could draw a circle as detection circle thingy
-def SBEncounterBox(xBox, yBox, wBox, hBox, colour, text): #Draw a box
-    pygame.draw.rect(gameDisplay, colour, [xBox, yBox, wBox, hBox])
-    SB_EncounterBox_message_display(xBox, yBox, hBox, wBox, text)
+#Classes!
+class SBMainCharacter(object): #It's you!
+    def __init__(self,health,attack,x,y,w,h):
+        self.health = health
+        self.attack = attack
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+    def draw_char(self):
+        pygame.draw.rect(gameDisplay, green, [self.x,self.y,self.w,self.h])
 
-def SBtext_objects(text, font): #helps with the text thing
-    SBTextSurf = font.render(text, True, white)
-    return SBTextSurf, SBTextSurf.get_rect()
+class SBenemy(object): #It's an enemy!
+    def __init__(self, health, attack, x, y, w, h): #Add speed & movement
+        self.health = health
+        self.attack = attack
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
 
-def SB_EncounterBox_message_display(xBox, yBox, hBox, wBox, text): #does the text thing for smol texts
-    SBtextText = pygame.font.Font('../resource/fonts/Arcadepix.ttf', 20)
-    SBText_Surf, SBText_Rect = SBtext_objects(text, SBtextText)
-    SBText_Rect.center = ((xBox + wBox * 0.5), (yBox + hBox * 0.5))
-    gameDisplay.blit(SBText_Surf, SBText_Rect)
+    def draw_enemy(self): #draw that enemy
+        pygame.draw.rect(gameDisplay, red, [self.x,self.y,self.w,self.h]) #add sprite
+    
+    def attacked(self):
+        self.health =- SBMainChar.attack
 
-def SBbigmessage_display(text): #does the text thing for big textstss
-    SBEncounterText = pygame.font.Font('../resource/fonts/ka1.ttf', 65)
-    SBTextSurf, SBTextRect = SBtext_objects(text, SBEncounterText)
-    SBTextRect.center = ((display_width * 0.5), (display_height * 0.5))
-    gameDisplay.blit(SBTextSurf, SBTextRect)
+class SBEncounterTextBox(object):#All the text
+    def __init__(self, x, y, w, h, text):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.text = text
+
+    def EncounterText(self):
+        font = pygame.font.Font('../resource/fonts/Arcadepix.ttf', 20)
+        TextSurf = font.render(self.text,True,white)
+        text_rect = TextSurf.get_rect()
+        text_rect.center = ((self.x + self.w * 0.5), (self.y + self.h * 0.5))
+        gameDisplay.blit(TextSurf, text_rect)
+        return text_rect
+
+    def addbox(self):
+        pygame.draw.rect(gameDisplay, grey, [self.x, self.y, self.w, self.h])
+    
+    def bigmessage_display(self):
+        font = pygame.font.Font('../resource/fonts/ka1.ttf', 65)
+        TextSurf = font.render(self.text, True, white)
+        text_rect = TextSurf.get_rect()
+        text_rect.center = ((display_width * 0.5), (display_height * 0.5))
+        gameDisplay.blit(TextSurf, text_rect)
+
+#Things from the classes
+SBMainChar = SBMainCharacter(500, 50, ((display_width - 50) * 0.5), ((display_height - 75) * 0.5), 50, 75)
+SBenemy1 = SBenemy(100, 10, 90, 90, 50, 75)
+SBEncountertext = SBEncounterTextBox(0,0,700,100,"Encounter!")
+SBFight = SBEncounterTextBox(675,600,110,30,"Fight")
+SBMoves = SBEncounterTextBox(675,650,110,30,"Special Moves")
+SBItems = SBEncounterTextBox(675,700,110,30,"Items")
+SBRun = SBEncounterTextBox(675,750,110,30,"Run")
+CharacterHealth = SBEncounterTextBox(425,700,50,30, "Health: %s"%(SBMainChar.health))
+EnemyHealth = SBEncounterTextBox(425,10,50,30,"Health: %s"%(SBenemy1.health)) #Has to work on all enemies, not just enemy1
+
 
 def SBEncounter(): #The actual encounter
-    SBbigmessage_display('Encounter!')
-
-    SBEncounterBox(display_width*0.75, display_height*0.60, 110, 30, grey, 'Fight')
-    SBEncounterBox(display_width*0.75, display_height*0.65, 110, 30, grey, 'Special moves')
-    SBEncounterBox(display_width*0.75, display_height*0.70, 110, 30, grey, 'Items')
-    SBEncounterBox(display_width*0.75, display_height*0.75, 110, 30, grey, 'Run')
-
+    SBEncountertext.bigmessage_display() #Add encounter! Text. Has to disappear 
+        #Add boxes around the text
+    SBFight.addbox()
+    SBMoves.addbox()
+    SBItems.addbox()
+    SBRun.addbox()
+        #Add text
+    SBFight.EncounterText()
+    SBMoves.EncounterText()
+    SBItems.EncounterText()
+    SBRun.EncounterText()
+    CharacterHealth.EncounterText()
+    EnemyHealth.EncounterText()
+    if SBenemy1.health <= 0:
+        SBEncountering = False
+    if SBMainChar.health <= 0:
+        SpaceBound_Exit = True
 
 
 def SBgame_loop():
-    SBxChar = ((display_width - 50) * 0.5)
-    SByChar = ((display_height - 75) * 0.5)
-
-    SBxEnemystart = (display_width * 0.1) 
-    SByEnemystart = (display_height * 0.1)
-    SBEnemyspeed = 7 #not in use atm
-    SBwEnemy = 50
-    SBhEnemy = 75
-    SBEncountering = False
-
+    SBEncountering = False #Not in an encounter
     SpaceBound_Exit = False #The game is aliiiiive
 
     while not SpaceBound_Exit:
         pygame.event.pump()#Get them events
         if pygame.event.peek(pygame.QUIT): #Window is clicked away
                 SpaceBound_Exit = True #Game is dead. You killed it.
-            #MOVEMENT 
+        #While in an encounter        
+        if SBEncountering:
+                #Click the buttons
+            if SBFight.EncounterText().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                print("clicked FIGHT")
+                SBenemy1.attacked()
+                time.sleep(1)
+            if SBMoves.EncounterText().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                print("clicked MOVES")
+                time.sleep(1)
+            if SBItems.EncounterText().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                print("clicked ITEMS")
+                time.sleep(1)
+            if SBRun.EncounterText().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                print("clicked RUN")
+                time.sleep(1)
+
+        #while in the overworld
         if not SBEncountering:
             if pygame.key.get_pressed()[pygame.K_a]:
                 SBleft = -10 #To the left
-                if SBxChar < 0:
+                if SBMainChar.x < 0:
                     SBleft = 0 #Don't move off the screen
-                SBxChar += SBleft #Actually move
+                SBMainChar.x += SBleft #Actually move
             if pygame.key.get_pressed()[pygame.K_d]:
                 SBright = 10 #To the right
-                if SBxChar > display_width - 50: #The 50 stands for the width
+                if SBMainChar.x > display_width - SBMainChar.w:
                     SBright = 0
-                SBxChar += SBright
+                SBMainChar.x += SBright
             if pygame.key.get_pressed()[pygame.K_w]:
                 SBup = -10 #Going up
-                if SByChar < 0:
+                if SBMainChar.y < 0:
                     SBup = 0
-                SByChar += SBup
+                SBMainChar.y += SBup
             if pygame.key.get_pressed()[pygame.K_s]:
                 SBdown = 10 #Going down
-                if SByChar > display_height - 75: #The 75 stands for the height
+                if SBMainChar.y > display_height - SBMainChar.h:
                     SBdown = 0
-                SByChar += SBdown
+                SBMainChar.y += SBdown
+
+           
             
         gameDisplay.fill(black) #gives the background a colour        
-        SBenemy(SBxEnemystart,SByEnemystart,SBwEnemy,SBhEnemy,red)#Spawns an enemy, will add movement later
-        SBchar(SBxChar,SByChar) #spawns the character
-                #Collision! Could probably use some work
-                    #Checks  the X coords
-        if SBxChar > SBxEnemystart and SBxChar < SBxEnemystart + SBwEnemy or SBxChar + 50 > SBxEnemystart and SBxChar + 50 < SBxEnemystart + SBwEnemy:
+        SBMainChar.draw_char()        
+        SBenemy1.draw_enemy()
+                #Collision! Could probably use some work --> Needs to work on any enemy, not just enemy1
+                    #Checks  the X coords for enemy1
+        if SBMainChar.x > SBenemy1.x and SBMainChar.x < SBenemy1.x + SBenemy1.w or SBMainChar.x + SBMainChar.w > SBenemy1.x and SBMainChar.x + SBMainChar.w < SBenemy1.x + SBenemy1.w:
                     #Checks the y coords
-            if SByChar > SByEnemystart and SByChar < SByEnemystart + SBhEnemy or SByChar + 75 > SByEnemystart and SByChar + 75 < SByEnemystart + SBhEnemy:
+            if SBMainChar.y > SBenemy1.y and SBMainChar.y < SBenemy1.y + SBenemy1.h or SBMainChar.y + SBMainChar.h > SBenemy1.y and SBMainChar.y + SBMainChar.h < SBenemy1.y + SBenemy1.h:
                 SBEncountering = True
                 SBEncounter()    #runs the encounter
 
