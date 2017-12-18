@@ -102,10 +102,10 @@ def start_splaceholder():
                 self.kill()
 
         #This is a function to shoot a bullet from enemy at random
-        def shoot(self):
-            bullet = Bullet(self.rect.centerx, self.rect.top)
-            all_sprites.add(bullet)
-            bullets.add(bullet)
+        def shoot_AI(self):
+            AI_Bullet = AI_Bullet(self.rect.centerx, self.rect.top)
+            all_sprites.add(AI_Bullet)
+            AI_Bullets.add(AI_Bullet)
 
 
 
@@ -128,6 +128,24 @@ def start_splaceholder():
             if self.rect.bottom < 0:
                 self.kill()
 
+   #Setting up a AI_bullet
+    class AI_Bullet(pygame.sprite.Sprite):
+        #give properties to the bullet itself
+        def __init__(self, x, y):
+            pygame.sprite.Sprite.__init__(self)
+            self.image = pygame.image.load('resource/images/splaceholder/projectiles/bullet.png').convert()
+            self.image.set_colorkey(BLACK)
+            self.rect = self.image.get_rect()
+            self.rect.bottom = y
+            self.rect.centerx = x
+            self.speedy = 10
+        #function to define the functions inside an update
+        def update(self):
+            self.rect.y += self.speedy
+
+            #kill if off top screen
+            if self.rect.bottom < 0:
+                self.kill()
 
 
 
@@ -163,6 +181,7 @@ def start_splaceholder():
     player = player()
     all_sprites.add(player)
     enemys = pygame.sprite.Group()
+    AI_bullets = pygame.sprite.Group()
 
 
     for i in range(MOB_AMOUNT):
@@ -188,6 +207,11 @@ def start_splaceholder():
             #Check of de exit knop is ingedrukt
             if event.type == pygame.QUIT:
                 running = False
+
+            #chance_shooting = random.randrange(1,10)
+            #if chance_shooting == 7:
+                #enemys.shoot()
+
             #als spatie word ingedrukt moet er een kogel afgeschoten worden
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
