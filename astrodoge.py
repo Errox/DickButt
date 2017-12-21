@@ -131,13 +131,14 @@ def start_astrodoge():
     background = pygame.image.load('resource/images/astrodoge/backgrounds/background_2.png').convert()
     background_rect = background.get_rect()
  
- 
+    #loading all sprites 
     all_sprites = pygame.sprite.Group()
     mobs = pygame.sprite.Group()
     bullets = pygame.sprite.Group()
     player = player()
     all_sprites.add(player)
- 
+    
+    #loading all mobs in
     for i in range(MOB_AMOUNT):
         m = Mob()
         all_sprites.add(m)

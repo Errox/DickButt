@@ -176,6 +176,7 @@ def start_spacestrike():
     print (surface)
     print (surface_rect)
 
+    #loading all sprites
     all_sprites = pygame.sprite.Group()
     bullets = pygame.sprite.Group()
     player = player()

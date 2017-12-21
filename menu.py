@@ -1,4 +1,5 @@
 def start_menu():
+    #import all library's 
     import sys
     import pygame
     import os
@@ -6,12 +7,14 @@ def start_menu():
     import spacestrike
     from time import sleep
     
+    #All global variables are set here
     FPS     = 30
     X       = 500
     Y       = 100
     GREEN   = (0, 255, 0)
     BLACK   = (0, 0, 0)
- 
+    
+    #Here we set all window properties
     screen = pygame.display.set_mode((900,900))
     pygame.display.set_caption("Menu")
     clock = pygame.time.Clock()
@@ -22,11 +25,13 @@ def start_menu():
     pygame.mixer.init()
     pygame.mixer.music.load("resource/music/main_menu/main_menu.ogg")
     pygame.mixer.music.play(-1)
- 
+    
+    #here we define a class to load a image in a multiple way to make it look a little better. We use this def to manupilate the image if needed
     def load_image(name):
         image = pygame.image.load(name)
         return image
- 
+
+    #set the class of a animated text that is used in the scene select_planet
     class animated_select_planet(pygame.sprite.Sprite):
         def __init__(self):
             super(animated_select_planet, self).__init__()
@@ -43,7 +48,8 @@ def start_menu():
             self.index = 0
             self.image = self.images[self.index]
             self.rect = pygame.Rect(275, 520, 250, 80)
- 
+        
+        #here we update the sprite used for the animated text. 
         def update(self):
             self.index += 1
             sleep(0.1)
@@ -60,7 +66,8 @@ def start_menu():
         background_rect = background.get_rect()
         screen.blit(background, background_rect)
         pygame.display.set_caption("Main_menu")
- 
+    
+    #start the select_planet scene and blit everything to screen
     def start_select_planet():
         #setting up background and title. Then call select_plannet_buttons to load them in after a new scene has been created
         background = pygame.image.load('resource/images/select_planet/select_planet_background.png')
@@ -71,7 +78,7 @@ def start_menu():
         my_group.update()
         my_group.draw(screen)
         buttons_select_planet()
- 
+    #here we define the button used in the select_planet scene
     def buttons_select_planet():
         quit_button         = pygame.image.load('resource/images/select_planet/button_quit_small.png').convert()
         quit_rect           = quit_button.get_rect()
@@ -84,11 +91,15 @@ def start_menu():
         text = font.render(str(text), 1,(255,255,255))
         screen.blit(text, (x, y))
  
+    #Defining some information before we start pygame. 
     main_loop = True
     my_sprite = animated_select_planet()
     my_group = pygame.sprite.Group(my_sprite)
+
+    #start of the main_loop
     while main_loop:
         print(define_location)
+        #reset the screen. and set fps rate
         screen.fill(BLACK)
         clock.tick(FPS)
         #here we check which functions come to make the storyboard functional
@@ -106,7 +117,8 @@ def start_menu():
             spacestrike.start_spacestrike()
         else:
             print('under construction')
- 
+
+        #every event is logged here with all actions 
         for evento in pygame.event.get():
             #define event's of quiting the game.
             if evento.type == pygame.QUIT:
