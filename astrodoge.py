@@ -16,6 +16,9 @@ def start_astrodoge():
     X       = 500
     Y       = 100
     MOB_AMOUNT = 100
+    heart_amount = 3
+    start_init = True
+    score   = 0
  
     #define colors
     BLACK = (0, 0, 0)
@@ -29,13 +32,16 @@ def start_astrodoge():
     # set up assets
     game_folder = os.path.dirname(__file__)
     img_folder  = os.path.join(game_folder, "img")
- 
+
+
+
     #setting up a player class
     class player(pygame.sprite.Sprite):
         #sprite and other properties for the player
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
             self.image  = pygame.image.load('resource/images/astrodoge/player/spaceship.png').convert()
+            self.image = pygame.transform.scale(self.image, (90, 70))
             self.image.set_colorkey(BLACK)
             self.rect   = self.image.get_rect()
             self.radius = 23
@@ -104,7 +110,6 @@ def start_astrodoge():
             if self.rect.bottom < 0:
                 self.kill()
             
- 
     #set x and y of the window on screen. (EXPIRIMENTAL)
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)
  
@@ -130,7 +135,9 @@ def start_astrodoge():
     #Preload images for the background
     background = pygame.image.load('resource/images/astrodoge/backgrounds/background_2.png').convert()
     background_rect = background.get_rect()
- 
+    
+    #loading in font
+    font = pygame.font.SysFont('Arcadepix.ttf', 30)
  
     all_sprites = pygame.sprite.Group()
     mobs = pygame.sprite.Group()
@@ -146,6 +153,7 @@ def start_astrodoge():
     #game loop
     running = True
     while running:
+            
         # keep loop running at the right fps
         clock.tick(FPS)
  
@@ -161,24 +169,47 @@ def start_astrodoge():
  
         #update 
         all_sprites.update()
+        
          
         #collision for bullet against mobs
         hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
+        if hits:
+            score += 100
         for hit in hits:
             m = Mob()
             all_sprites.add(m)
             mobs.add(m)
  
         #collision if player hit mobs
-        hits = pygame.sprite.spritecollide(player, mobs, False, pygame.sprite.collide_circle)
+        hits = pygame.sprite.spritecollide(player, mobs, True, pygame.sprite.collide_circle)
         if hits:
-            menu.start_menu()
-            running = False
-            
+            # menu.start_menu()
+            # running = False
+            heart_amount -= 1
+
         #draw / render
-        screen.fill(BLACK)
+        if start_init == True:
+            screen.fill(BLACK)
+            start_init = False
         screen.blit(background, background_rect)
- 
+        
+        if heart_amount == 3:
+            hearts = pygame.image.load('resource/UI/astrodoge/3_heart.png')
+            screen.blit(hearts, [250, 0])
+        if heart_amount == 2:
+            hearts = pygame.image.load('resource/UI/astrodoge/2_heart.png')
+            screen.blit(hearts, [250, 0])
+        if heart_amount == 1:
+            hearts = pygame.image.load('resource/UI/astrodoge/1_heart.png')
+            screen.blit(hearts, [250, 0])
+        if heart_amount == 0:
+            print('game over')
+            pygame.quit()
+            quit()
+
+        scoretext = font.render("Score {0}".format(score), 1, WHITE)
+        screen.blit(scoretext, (5, 10))
+
         all_sprites.draw(screen)
         #After drawing everything, flip the display.
         pygame.display.flip()

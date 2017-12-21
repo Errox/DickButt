@@ -3,8 +3,9 @@ import sys
 import os
 import menu
 import astrodoge
-import splaceholder
+from time import sleep
+import spacestrike
  
-menu.start_menu()
 
- 
+menu.start_menu()
+# astrodoge.start_astrodoge()
