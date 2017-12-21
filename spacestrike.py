@@ -1,7 +1,7 @@
 #This script is for playing and moving around a sprite
 #import all lib's + intergratie
 
-def start_splaceholder():
+def start_spacestrike():
     import pygame
     import random
     import os
@@ -157,11 +157,11 @@ def start_splaceholder():
     pygame.init() 
 
 
-    #Defineeer de groote en breedte van de gme
+    #Defineeer de groote en breedte van de game
     screen = pygame.display.set_mode((900, 900))
 
 
-    #Verrander titel
+    #Verander titel
     pygame.display.set_caption("SPLACEHOLDER")
 
 
