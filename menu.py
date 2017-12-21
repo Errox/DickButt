@@ -3,7 +3,7 @@ def start_menu():
     import pygame
     import os
     import astrodoge 
-    import splaceholder
+    import spacestrike
     from time import sleep
     
     FPS     = 30
@@ -101,9 +101,9 @@ def start_menu():
             # splaceholder.start_splaceholder()
             astrodoge.start_astrodoge()
             print('penis')
-        elif define_location == "planet_splaceholder":
+        elif define_location == "planet_spacestrike":
             pygame.mixer.music.stop()
-            splaceholder.start_splaceholder()
+            spacestrike.start_spacestrike()
         else:
             print('under construction')
  
@@ -138,7 +138,7 @@ def start_menu():
                             define_location = "planet_3"
                     if pygame.mouse.get_pos()[0] >= 186 and pygame.mouse.get_pos()[1] >= 412:
                         if pygame.mouse.get_pos()[0] <= 263 and pygame.mouse.get_pos()[1] <= 494:
-                            define_location = "planet_splaceholder"
+                            define_location = "planet_spacestrike"
                             # main_loop = False
                     if pygame.mouse.get_pos()[0] >= 596 and pygame.mouse.get_pos()[1] >= 5:
                         if pygame.mouse.get_pos()[0] <= 693 and pygame.mouse.get_pos()[1] <= 71:

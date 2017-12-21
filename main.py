@@ -3,7 +3,7 @@ import sys
 import os
 import menu
 import astrodoge
-import splaceholder
+import spacestrike
  
 menu.start_menu()
 
