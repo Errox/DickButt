@@ -1,151 +1,173 @@
 import pygame
-import time
 import random
 
-pygame.init()
-
-#Color coding 
-BLACK = (0, 0, 0)
-WHITE = (225, 225, 225)
-RED = (225, 0, 0)
-BLUE = (0, 0, 255 )
-GREEN = (0, 128, 0)
-PURPLE = (128, 0, 128)
-
-#difine game core
 WIDTH = 900
-HIGHT = 900
-
-pygameScreen = pygame.display.set_mode((WIDTH, HIGHT))
-pygame.display.set_caption('SUMO SMASH')
-
-#differnt blocks
-block_size = 10
-block_player = 30
-
-# FPS Clock
-clock= pygame.time.Clock()
+HEIGHT = 900
 FPS = 30
 
-# adding text
-font = pygame.font.SysFont(None, 30)
+# define colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+YELLOW = (255, 255, 0)
 
-#img
-playerimg = pygame.image.load('player2.png')
-sumo_ring = pygame.image.load('img/sumo_ring.png')
+# initialize pygame and create window
+pygame.init()
+pygame.mixer.init()
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("ALIEN INVATION")
+clock = pygame.time.Clock()
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((40, 40))
+        self.image.fill(GREEN)
+        self.rect = self.image.get_rect()
+        self.rect.centerx = WIDTH / 2
+        self.rect.centery = HEIGHT / 2
+        self.speedx = 0
+        self.speedy = 0
+
+    def update(self):
+        keystate = pygame.key.get_pressed()
+        if keystate[pygame.K_LEFT]:
+                self.speedx = -10
+                self.speedy = 0
+        if keystate[pygame.K_RIGHT]:
+                self.speedx = 10
+                self.speedy = 0
+        if keystate[pygame.K_UP]:
+                self.speedy = -10
+                self.speedx = 0
+        if keystate[pygame.K_DOWN]:
+                self.speedy = 10  
+                self.speedx = 0     
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+        if self.rect.right > 850:
+           self.rect.right = 850 
+        if self.rect.left < 50:
+           self.rect.left = 50
+        if self.rect.top < 50:
+           self.rect.top = 50
+        if self.rect.bottom > 850:
+           self.rect.bottom = 850   
 
 
-def things(thingx, thingy, thingw, thingh, color):
-    pygame.draw.rect(pygameScreen, color, [thingx, thingy, thingw, thingh])
+class Mob1(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((60, 60))
+        self.image.fill(YELLOW)
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randrange(-500, -400)
+        self.rect.y = random.randrange(HEIGHT - self.rect.height)
+        self.speedx = random.randrange(10, 15)
 
-def massage_to_screen(msg,color):
-    screen_text = font.render(msg, True, color)
-    pygameScreen.blit(screen_text, [200, HIGHT/2])
+    def update(self):
+        self.rect.x += self.speedx
+        if self.rect.right > 950:
+            self.rect.x = random.randrange(-100, -40)
+            self.rect.y = random.randrange(HEIGHT - self.rect.height)
+            self.speedx = random.randrange(10, 15)
 
-def player2(sumo_x, sumo_y):
-    pygameScreen.blit(playerimg, (sumo_x, sumo_y))
-    pygame.display.update()
+class Mob2(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((60, 60))
+        self.image.fill(RED)
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randrange(WIDTH - self.rect.width)
+        self.rect.y = random.randrange(-500, -400)
+        self.speedy = random.randrange(10, 15)
 
-def sumo_ring(backroundx, backroundy):
-    pygameScreen.blit(playerimg, (900, 900))
-    pygame.display.update()
+    def update(self):
+        self.rect.y += self.speedy
+        if self.rect.top > HEIGHT + 50:
+            self.rect.x = random.randrange(WIDTH - self.rect.width)
+            self.rect.y = random.randrange(-100, -40)
+            self.speedy = random.randrange(10, 15)
+
+class Mob3(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((60, 60))
+        self.image.fill(BLUE)
+        self.rect = self.image.get_rect()
+        self.rect.x = 950
+        self.rect.y = 300
+        self.speedy = 15
+
+    def update(self):
+        self.rect.x -= self.speedy
+        if self.rect.left < -50:
+            self.rect.x = 950
+            self.rect.y = 300
+            self.speedx = 15
+
+class Mob4(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((60, 60))
+        self.image.fill(BLACK)
+        self.rect = self.image.get_rect()
+        self.rect.x = 300
+        self.rect.y = 800
+        self.speedy = 5
+
+    def update(self):
+        self.rect.y -= self.speedy
+        if self.rect.top > 50:
+            self.rect.x = random.randrange(WIDTH - self.rect.width)
+            self.rect.y = random.randrange(-100, -40)
+            self.speedy = random.randrange(10, 15)
+
+all_sprites = pygame.sprite.Group()
+mobs = pygame.sprite.Group()
+player = Player()
+walls = pygame.sprite.Group()
+all_sprites.add(player)
+for i in range(1):
+    m1 = Mob1()
+    m2 = Mob2()
+    m3 = Mob3()
+    m4 = Mob4()
+    all_sprites.add(m1, m2, m3, m4)
+    mobs.add(m1, m2, m3, m4)
 
 
-
-def gameLoop():
-    gameExit = False
-    gameOver = False
-
-    #objects  player 
-    sumo_x = WIDTH/2   
-    sumo_y = 500
-
-    sumo_x_change = 0
-    sumo_y_change = 0  
-
-    #enemy player
-    #enemy_x = round(random.randrange(0, WIDTH-block_size)/10.0)*10.0 
-    #enemy_y = round(random.randrange(0, HIGHT-block_size)/10.0)*10.0 
-
-    thing_startx = random.randrange(0, WIDTH)
-    thing_starty = -600
-    thing_speed = 15
-    thing_width = 30
-    thing_height = 30
-
-    while not gameExit:
+# Game loop
+running = True
+while running:
+    # keep loop running at the right speed
+    clock.tick(FPS)
+    # Process input (events)
+    for event in pygame.event.get():
+        # check for closing window
+        if event.type == pygame.QUIT:
+            running = False
         
-        while gameOver == True:
-            pygameScreen.fill(WHITE)
-            massage_to_screen("GAME OVER, C = replay  Q = quit", BLUE)
-            pygame.display.update()
 
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN: 
-                    if event.key == pygame.K_q:
-                        gameExit = True
-                        gameOver = False
-                    if event.key == pygame.K_c:
-                        gameLoop()
-                
+    # Update
+    all_sprites.update()
+
+    hits = pygame.sprite.spritecollide(player, mobs, False)
+    if hits:
+        running = False
 
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                gameExit = True
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    sumo_x_change = -block_size
-                    sumo_y_change = 0
-                if event.key == pygame.K_RIGHT:   
-                    sumo_x_change = block_size  
-                    sumo_y_change = 0
-                if event.key == pygame.K_UP:
-                    sumo_y_change = -block_size
-                    sumo_x_change = 0
-                if event.key == pygame.K_DOWN:   
-                    sumo_y_change = block_size  
-                    sumo_x_change = 0
 
-           
-            #if sumo_x == enemy_x or sumo_y == enemy_y:
-                    #gameOver = True  
+    # Draw / render
+    screen.fill(WHITE)
+    pygame.draw.rect(screen, RED, [-450, 0, 500, 900]) # left
+    pygame.draw.rect(screen, RED, [850, 0, 500, 900]) # Richt
+    pygame.draw.rect(screen, RED, [0, 850, 900, 500]) # bottom
+    pygame.draw.rect(screen, RED, [0, -450, 900, 500]) # top
+    all_sprites.draw(screen)
+    # *after* drawing everything, flip the display
+    pygame.display.flip()
 
-            #if event.type == pygame.KEYUP:
-                #if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                    #sumo_x_change = 0          
-            
-
-            # dit moet gebeuren met Y want als je ervan af valt is het game over
-            if sumo_x >= 900 or sumo_x <= 0 or sumo_y >= 900 or sumo_y <= 0:
-                gameOver = True 
-                
-            
-            
-            
-        sumo_x += sumo_x_change  
-        sumo_y += sumo_y_change  
-        pygameScreen.fill(WHITE)
-        #pygame.draw.rect(pygameScreen, GREEN,[enemy_x, enemy_y, 30, 30])
-        
-        
-        things(thing_startx, thing_starty, thing_width, thing_height, GREEN)
-        thing_starty += thing_speed
-        player2(sumo_x, sumo_y)
-
-
-        if thing_starty > HIGHT:
-            thing_starty = 0 - thing_height
-            thing_startx = random.randrange(0,WIDTH)
-
-
-        pygame.display.update()
-
-        clock.tick(FPS)
-
-
-    
-    pygame.quit()
-    quit()
-
-gameLoop()
+pygame.quit()
