@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 def start_menu():
     #import all library's 
     import sys
@@ -14,6 +13,7 @@ def start_menu():
     Y       = 100
     GREEN   = (0, 255, 0)
     BLACK   = (0, 0, 0)
+    REFRESH = True
     
     #Here we set all window properties
     screen = pygame.display.set_mode((900,900))
@@ -33,37 +33,7 @@ def start_menu():
         return image
 
     #set the class of a animated text that is used in the scene select_planet
-=======
 
-def start_menu():
-    import pygame
-    import sys
-    import os
-    import astrodoge 
-    from time import sleep
-    
-    FPS     = 30
-    X       = 500
-    Y       = 100
-    GREEN   = (0, 255, 0)
-    BLACK   = (0, 0, 0)
-
-    screen = pygame.display.set_mode((900,900))
-    pygame.display.set_caption("Menu")
-    clock = pygame.time.Clock()
-    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)
-    define_location = "main_menu"
-        
-    #initializing pygame's mixer
-    pygame.mixer.init()
-    pygame.mixer.music.load("resource/music/main_menu/main_menu.ogg")
-    pygame.mixer.music.play(-1)
-
-    def load_image(name):
-        image = pygame.image.load(name)
-        return image
-
->>>>>>> Stashed changes
     class animated_select_planet(pygame.sprite.Sprite):
         def __init__(self):
             super(animated_select_planet, self).__init__()
@@ -80,12 +50,8 @@ def start_menu():
             self.index = 0
             self.image = self.images[self.index]
             self.rect = pygame.Rect(275, 520, 250, 80)
-<<<<<<< Updated upstream
-        
+      
         #here we update the sprite used for the animated text. 
-=======
-
->>>>>>> Stashed changes
         def update(self):
             self.index += 1
             sleep(0.1)
@@ -93,11 +59,7 @@ def start_menu():
                 self.index = 0
                 count = 0
             self.image = self.images[self.index]
-<<<<<<< Updated upstream
- 
-=======
 
->>>>>>> Stashed changes
     # 1 #
     #start the main menu board.
     def start_main_menu():
@@ -106,12 +68,8 @@ def start_menu():
         background_rect = background.get_rect()
         screen.blit(background, background_rect)
         pygame.display.set_caption("Main_menu")
-<<<<<<< Updated upstream
-    
-    #start the select_planet scene and blit everything to screen
-=======
 
->>>>>>> Stashed changes
+    #start the select_planet scene and blit everything to screen
     def start_select_planet():
         #setting up background and title. Then call select_plannet_buttons to load them in after a new scene has been created
         background = pygame.image.load('resource/images/select_planet/select_planet_background.png')
@@ -122,28 +80,19 @@ def start_menu():
         my_group.update()
         my_group.draw(screen)
         buttons_select_planet()
-<<<<<<< Updated upstream
     #here we define the button used in the select_planet scene
-=======
-
->>>>>>> Stashed changes
     def buttons_select_planet():
         quit_button         = pygame.image.load('resource/images/select_planet/button_quit_small.png').convert()
         quit_rect           = quit_button.get_rect()
         screen.blit(quit_button, (5,5))
-<<<<<<< Updated upstream
-        
-=======
 
->>>>>>> Stashed changes
     #Function to place text on screen. 
     def text(text, x, y):
         #make a text and render it to the given x, y cordinates
         font = pygame.font.Font("resource/fonts/Arcadepix.ttf",30)
         text = font.render(str(text), 1,(255,255,255))
         screen.blit(text, (x, y))
-<<<<<<< Updated upstream
- 
+
     #Defining some information before we start pygame. 
     main_loop = True
     my_sprite = animated_select_planet()
@@ -151,7 +100,6 @@ def start_menu():
 
     #start of the main_loop
     while main_loop:
-        print(define_location)
         #reset the screen. and set fps rate
         screen.fill(BLACK)
         clock.tick(FPS)
@@ -162,9 +110,7 @@ def start_menu():
             start_select_planet()
         elif define_location == "planet_astrodoge":
             pygame.mixer.music.stop()
-            # splaceholder.start_splaceholder()
             astrodoge.start_astrodoge()
-            print('penis')
         elif define_location == "planet_splaceholder":
             pygame.mixer.music.stop()
             splaceholder.start_splaceholder()
@@ -181,6 +127,7 @@ def start_menu():
             print(evento)
             #Catch mouse position and if it's pressed on the button
             if evento.type == pygame.MOUSEBUTTONDOWN:
+                #scene handler
                 #here we check where the story line of the game is and define some button presses to make it more functional.
                 if define_location == "main_menu":
                     if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 380:
@@ -188,8 +135,7 @@ def start_menu():
                             define_location = "select_planet"
                     if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 600:
                         if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 665:
-                            # main_loop = False
-                            print('2')
+                            main_loop = False
                 #buttons and other story line scripts can be placed here
                 elif define_location == "select_planet":
                     if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
@@ -198,85 +144,27 @@ def start_menu():
                     if pygame.mouse.get_pos()[0] >= 708 and pygame.mouse.get_pos()[1] >= 335:
                         if pygame.mouse.get_pos()[0] <= 855 and pygame.mouse.get_pos()[1] <= 473:
                             define_location = "planet_astrodoge"
-                    if pygame.mouse.get_pos()[0] >= 630 and pygame.mouse.get_pos()[1] >= 637:
-                        if pygame.mouse.get_pos()[0] <= 720 and pygame.mouse.get_pos()[1] <= 722:
-                            define_location = "planet_3"
                     if pygame.mouse.get_pos()[0] >= 186 and pygame.mouse.get_pos()[1] >= 412:
                         if pygame.mouse.get_pos()[0] <= 263 and pygame.mouse.get_pos()[1] <= 494:
                             define_location = "planet_splaceholder"
-                            # main_loop = False
+                    if pygame.mouse.get_pos()[0] >= 630 and pygame.mouse.get_pos()[1] >= 637:
+                        if pygame.mouse.get_pos()[0] <= 720 and pygame.mouse.get_pos()[1] <= 722:
+                            define_location = "planet_3"
+                            #planet Eva
+                            #rechts onder
+                            print('planet_3')
                     if pygame.mouse.get_pos()[0] >= 596 and pygame.mouse.get_pos()[1] >= 5:
                         if pygame.mouse.get_pos()[0] <= 693 and pygame.mouse.get_pos()[1] <= 71:
                             define_location = "planet_4"
-                            # main_loop = False
+                            #planet Kimberly
+                            #Boven aan het scherm
+                            print('planet_4')
                     if pygame.mouse.get_pos()[0] >= 21 and pygame.mouse.get_pos()[1] >= 557:
                         if pygame.mouse.get_pos()[0] <= 86 and pygame.mouse.get_pos()[1] <= 627:
-                            define_location = "planet_5"         
-                            # main_loop = False
+                            define_location = "planet_5" 
+                            #planet Davin
+                            # links onder 
+                            print('planet_5')       
  
         pygame.display.flip()
-=======
-
-    main_loop = True
-    my_sprite = animated_select_planet()
-    my_group = pygame.sprite.Group(my_sprite)
-    while main_loop:
-        screen.fill(BLACK)
-        clock.tick(FPS)
-        #here we check which functions come to make the storyboard functional
-        if define_location == "main_menu":
-            start_main_menu()
-        elif define_location == "select_planet":
-            start_select_planet()
-        elif define_location == "planet_astrodoge":
-            pygame.mixer.music.stop()
-            astrodoge.start_astrodoge()
-        elif define_location == "planet_splaceholder":
-            print('planet_splaceholder')
-        else:
-            print('under construction')
-
-        for evento in pygame.event.get():
-            #define event's of quiting the game.
-            if evento.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            #printing every event that's happening within the python script.
-            print(evento);
-            #Catch mouse position and if it's pressed on the button
-            if evento.type == pygame.MOUSEBUTTONDOWN:
-                #here we check where the story line of the game is and define some button presses to make it more functional.
-                if define_location == "main_menu":
-                    if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 380:
-                        if pygame.mouse.get_pos()[0] <= 598 and pygame.mouse.get_pos()[1] <= 445:
-                            define_location = "select_planet"
-                    if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 600:
-                        if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 665:
-                            main_loop = False
-                #buttons and other story line scripts can be placed here
-                elif define_location == "select_planet":
-                    if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
-                        if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
-                            define_location = "main_menu"         
-                    if pygame.mouse.get_pos()[0] >= 708 and pygame.mouse.get_pos()[1] >= 335:
-                        if pygame.mouse.get_pos()[0] <= 855 and pygame.mouse.get_pos()[1] <= 473:
-                            define_location = "planet_astrodoge"
-                    if pygame.mouse.get_pos()[0] >= 630 and pygame.mouse.get_pos()[1] >= 637:
-                        if pygame.mouse.get_pos()[0] <= 720 and pygame.mouse.get_pos()[1] <= 722:
-                            define_location = "planet_splaceholder"
-                    if pygame.mouse.get_pos()[0] >= 186 and pygame.mouse.get_pos()[1] >= 412:
-                        if pygame.mouse.get_pos()[0] <= 263 and pygame.mouse.get_pos()[1] <= 494:
-                            define_location = "planet_3"
-                            main_loop = False
-                    if pygame.mouse.get_pos()[0] >= 596 and pygame.mouse.get_pos()[1] >= 5:
-                        if pygame.mouse.get_pos()[0] <= 693 and pygame.mouse.get_pos()[1] <= 71:
-                            define_location = "planet_4"
-                            main_loop = False
-                    if pygame.mouse.get_pos()[0] >= 21 and pygame.mouse.get_pos()[1] >= 557:
-                        if pygame.mouse.get_pos()[0] <= 86 and pygame.mouse.get_pos()[1] <= 627:
-                            define_location = "planet_5"         
-                            main_loop = False
-
-        pygame.display.flip()
     pygame.QUIT()
->>>>>>> Stashed changes
