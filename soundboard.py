@@ -31,6 +31,7 @@ def game_over(score):
             pygame.mixer.music.load('resource/soundboard/music/game_over/game_over.ogg')
     pygame.mixer.music.play(1)
 
+#define pause
 def pause():
     pygame.mixer.music.pause()
 
