@@ -70,8 +70,7 @@ def start_astrodoge():
             bullet = Bullet(self.rect.centerx, self.rect.top)
             all_sprites.add(bullet)
             bullets.add(bullet)
- 
- 
+            soundboard.bullet_shoot_friendly()
  
     #Setting up a mob ( in this case a astroid )
     class Mob(pygame.sprite.Sprite):
@@ -177,6 +176,7 @@ def start_astrodoge():
         hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
         if hits:
             score += 100
+            soundboard.bullet_on_hit_enemy()
         for hit in hits:
             m = Mob()
             all_sprites.add(m)
@@ -185,6 +185,7 @@ def start_astrodoge():
         #collision if player hit mobs
         hits = pygame.sprite.spritecollide(player, mobs, True, pygame.sprite.collide_circle)
         if hits:
+            soundboard.bullet_on_hit_friendly()
             # menu.start_menu()
             # running = False
             heart_amount -= 1
