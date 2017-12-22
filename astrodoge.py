@@ -8,6 +8,8 @@ def start_astrodoge():
     import os
     import menu
     import highscore
+    import game_over
+    import soundboard
  
     #define pygame core
     WIDTH   = 900
@@ -117,7 +119,7 @@ def start_astrodoge():
     pygame.init() 
  
     #init the sound libs of pygame.
-    pygame.mixer.init()
+    soundboard.ast_main()
     # pygame.mixer.music.load("music/main_menu.ogg")
     # pygame.mixer.Sound.play(-1)
  
@@ -193,6 +195,7 @@ def start_astrodoge():
             start_init = False
         screen.blit(background, background_rect)
         
+        #check how many lives the player has, else invoke the game_over scene 
         if heart_amount == 3:
             hearts = pygame.image.load('resource/UI/astrodoge/3_heart.png')
             screen.blit(hearts, [250, 0])
@@ -204,8 +207,8 @@ def start_astrodoge():
             screen.blit(hearts, [250, 0])
         if heart_amount == 0:
             print('game over')
-            pygame.quit()
-            quit()
+            game_over.start(score)
+            
 
         scoretext = font.render("Score {0}".format(score), 1, WHITE)
         screen.blit(scoretext, (5, 10))

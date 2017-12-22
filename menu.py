@@ -3,17 +3,17 @@ def start_menu():
     import sys
     import pygame
     import os
+    import game_over
     import astrodoge 
     import spacestrike
+    import soundboard
     from time import sleep
     
     #All global variables are set here
     FPS     = 30
     X       = 500
     Y       = 100
-    GREEN   = (0, 255, 0)
     BLACK   = (0, 0, 0)
-    REFRESH = True
     
     #Here we set all window properties
     screen = pygame.display.set_mode((900,900))
@@ -22,10 +22,8 @@ def start_menu():
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)
     define_location = "main_menu"
         
-    #initializing pygame's mixer
-    pygame.mixer.init()
-    pygame.mixer.music.load("resource/music/main_menu/main_menu.ogg")
-    pygame.mixer.music.play(-1)
+    #create main_menu sound
+    soundboard.main_menu()
     
     #here we define a class to load a image in a multiple way to make it look a little better. We use this def to manupilate the image if needed
     def load_image(name):
@@ -123,6 +121,11 @@ def start_menu():
             if evento.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            if evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_LEFT:
+                    game_over.start(0)    
+                if evento.key == pygame.K_DOWN:
+                    soundboard.pause()   
             #printing every event that's happening within the python script.
             print(evento)
             #Catch mouse position and if it's pressed on the button
@@ -146,14 +149,12 @@ def start_menu():
                             define_location = "planet_astrodoge"
                     if pygame.mouse.get_pos()[0] >= 186 and pygame.mouse.get_pos()[1] >= 412:
                         if pygame.mouse.get_pos()[0] <= 263 and pygame.mouse.get_pos()[1] <= 494:
-                            define_location = "planet_splaceholder"
+                            define_location = "planet_spacestrike"
                     if pygame.mouse.get_pos()[0] >= 630 and pygame.mouse.get_pos()[1] >= 637:
                         if pygame.mouse.get_pos()[0] <= 720 and pygame.mouse.get_pos()[1] <= 722:
                             define_location = "planet_3"
-                    if pygame.mouse.get_pos()[0] >= 186 and pygame.mouse.get_pos()[1] >= 412:
-                        if pygame.mouse.get_pos()[0] <= 263 and pygame.mouse.get_pos()[1] <= 494:
-                            define_location = "planet_spacestrike"
-                            # main_loop = False
+                            # planet Eva
+                            # rechts onderin 
                     if pygame.mouse.get_pos()[0] >= 596 and pygame.mouse.get_pos()[1] >= 5:
                         if pygame.mouse.get_pos()[0] <= 693 and pygame.mouse.get_pos()[1] <= 71:
                             define_location = "planet_4"
@@ -168,4 +169,5 @@ def start_menu():
                             print('planet_5')       
  
         pygame.display.flip()
-    pygame.QUIT()
+    pygame.quit()
+    quit()
