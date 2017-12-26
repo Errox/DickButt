@@ -1,6 +1,6 @@
 
 import pygame
-import random
+
 
 # Global constants
 
@@ -10,6 +10,8 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
+BEIGE = (255,211,155)
+BROWN = (139,125,107)
 
 # Screen size
 SCREEN_WIDTH = 900
@@ -41,6 +43,8 @@ class MG_Player(pygame.sprite.Sprite):
 
         # list of sprites to walk against
         self.level = None
+        # Inventory
+        self.inventory = None
 
     def update(self):
         # move the player
@@ -106,6 +110,22 @@ class MG_Player(pygame.sprite.Sprite):
             # set y speed to 0
             self.change_y = 0
 
+        # Check if MG_Player hits cship
+        cship_hit_list = pygame.sprite.spritecollide(self, self.level.cship_list, False)
+        for block in cship_hit_list:
+            done = False
+            if self.inventory:
+                done = True
+            else:
+                done = False
+
+        # Check if MG_Player hits strandedKey (Skey)
+        skey_hit_list = pygame.sprite.spritecollide(self, self.level.skey_list, False)
+        for block in skey_hit_list:
+            done = False
+            self.inventory = True
+            block.hide()
+
     # calculating gravity
     def calc_grav(self):
 
@@ -145,7 +165,7 @@ class MG_Player(pygame.sprite.Sprite):
 
 
 class Monster(pygame.sprite.Sprite):
-    # monster layer can stand on
+    # monster a sprite that kills
 
     def __init__(self, width, height):
         # monster constructor
@@ -155,6 +175,38 @@ class Monster(pygame.sprite.Sprite):
         self.image.fill(RED)
 
         self.rect = self.image.get_rect()
+
+
+class Cship(pygame.sprite.Sprite):
+    # Cship (crashed ship) the drop of point
+
+    def __init__(self, width, height):
+        # Cship constructor
+        super().__init__()
+
+        self.image = pygame.Surface([width, height])
+        self.image.fill(BEIGE)
+
+        self.rect = self.image.get_rect()
+
+
+class Skey(pygame.sprite.Sprite):
+    # Skey (StrandedKey) the pick up point
+
+    def __init__(self, width, height):
+        # Skey constructor
+        super().__init__()
+
+        self.image = pygame.Surface([width, height])
+        self.image.fill(BROWN)
+
+        self.rect = self.image.get_rect()
+        # SHow by default
+        self.hide_object = False
+
+    def hide(self):
+        # Block has been captured
+        self.hide_object = True
 
 
 class Platform(pygame.sprite.Sprite):
@@ -236,6 +288,8 @@ class Level(object):
         # constructor. pass in a handle to player
         self.platform_list = pygame.sprite.Group()
         self.monster_list = pygame.sprite.Group()
+        self.cship_list = pygame.sprite.Group()
+        self.skey_list = pygame.sprite.Group()
         self.MG_player = mg_player
 
         # Background image
@@ -244,8 +298,13 @@ class Level(object):
     # update everything in level
     def update(self):
         # update everything in level
+        for skey in self.skey_list:
+            if skey.hide_object:
+                self.skey_list.remove(skey)
         self.platform_list.update()
         self.monster_list.update()
+        self.cship_list.update()
+        self.skey_list.update()
 
     def draw(self, screen):
         # draw everything in level
@@ -256,6 +315,8 @@ class Level(object):
         # draw the sprite lists
         self.platform_list.draw(screen)
         self.monster_list.draw(screen)
+        self.cship_list.draw(screen)
+        self.skey_list.draw(screen)
 
     def shift_world(self, shift_x):
         self.world_shift += shift_x
@@ -263,6 +324,10 @@ class Level(object):
             platform.rect.x += shift_x
         for monster in self.monster_list:
             monster.rect.x += shift_x
+        for cship in self.cship_list:
+            cship.rect.x += shift_x
+        for skey in self.skey_list:
+            skey.rect.x += shift_x
 
 
 # create platforms for the level
@@ -332,19 +397,35 @@ class Level_01(Level):
             block.MG_player = self.MG_player
             self.platform_list.add(block)
 
-        monster = Monster (50, 50)
+        # placing a Strandedkey block
+        skey = Skey(100, 100)
+        skey.rect.x = 8750
+        skey.rect.y = 710
+        skey.MG_player = self.MG_player
+        self.skey_list.add(skey)
+
+        # placing a test ship block
+        cship = Cship(400, 150)
+        cship.rect.x = 0
+        cship.rect.y = 350
+        cship.MG_player = self.MG_player
+        self.cship_list.add(cship)
+
+        # placing a test kill block
+        monster = Monster(50, 50)
         monster.rect.x = 200
         monster.rect.y = 200
         monster.MG_player = self.MG_player
         self.monster_list.add(monster)
 
-        monster = Monster (400, 50)
+        # placing the kill blocks beneath the pits
+        monster = Monster(400, 50)
         monster.rect.x = 2800
         monster.rect.y = 830
         monster.MG_player = self.MG_player
         self.monster_list.add(monster)
 
-        monster = Monster (400, 50)
+        monster = Monster(400, 50)
         monster.rect.x = 3300
         monster.rect.y = 830
         monster.MG_player = self.MG_player
