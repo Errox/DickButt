@@ -506,6 +506,8 @@ def main():
 
     # how fast it updates
     clock = pygame.time.Clock()
+    # there are 3600 clocks, 30 a second so 120 second or 2 minutes
+    start = 3600
 
     # main program loop
     while not done:
@@ -559,7 +561,10 @@ def main():
         # level and sprite draw
         current_level.draw(screen)
         active_sprite_list.draw(screen)
-
+        # timer
+        start -= 1
+        if start <= 0:
+            pygame.quit()
         # limit to 30 frames per second
         clock.tick(30)
 
