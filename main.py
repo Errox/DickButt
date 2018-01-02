@@ -8,4 +8,3 @@ import spacestrike
  
 
 menu.start_menu()
-# astrodoge.start_astrodoge()
