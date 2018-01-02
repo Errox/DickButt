@@ -20,6 +20,7 @@ red = (255, 0, 0)
 green = (0,255,0)
 blue = (0,0,255)
 grey = (100,100,100)
+gray = (50,50,50)
 
 #   Classes!
 class SBMainCharacter(pygame.sprite.Sprite):
@@ -60,6 +61,13 @@ class SBEncounterTextBox(object):
         gameDisplay.blit(TextSurf, text_rect)
         return text_rect
 
+    def Battlelogtext(self):
+        font = pygame.font.Font('../resource/fonts/Arcadepix.ttf', 20)
+        TextSurf = font.render(self.text,True,white)
+        text_rect = (self.x, self.y, self.w, self.h)
+        gameDisplay.blit(TextSurf, text_rect)
+        return text_rect
+
     def addbox(self):
         pygame.draw.rect(gameDisplay, grey, [self.x, self.y, self.w, self.h])
 
@@ -73,14 +81,22 @@ class SBEncounterTextBox(object):
         gameDisplay.blit(TextSurf, text_rect)
 
 SBEncountertext = SBEncounterTextBox(0,0,700,100,"Encounter!")
-SBFight = SBEncounterTextBox(675,500,110,30,"    Fight    ")
-SBMoves = SBEncounterTextBox(675,550,110,30,"Special Moves")
-SBItems = SBEncounterTextBox(675,600,110,30,"    Items    ")
-SBRun = SBEncounterTextBox(675,650,110,30,  "     Run     ")
+SBFight = SBEncounterTextBox(670,475,110,30,"    Fight    ")
+SBMoves = SBEncounterTextBox(670,525,110,30,"     Gun     ")
+SBItems = SBEncounterTextBox(670,575,110,30,"    Items    ")
+SBRun = SBEncounterTextBox(670,625,110,30,  "     Run     ")
 SBAttack = SBEncounterTextBox(0,0,700,100,"You attacked!")
 SBAttacked = SBEncounterTextBox(0,0,700,100,"Enemy attacked!")
 SBEscape = SBEncounterTextBox(0,0,700,100,"You escaped!")
 SBEscapefail = SBEncounterTextBox(0,0,700,100,"Couldn't escape!")
+SBBattlelog1 = SBEncounterTextBox(70,485,500,20,"")
+SBBattlelog2 = SBEncounterTextBox(70,505,500,20,"")
+SBBattlelog3 = SBEncounterTextBox(70,525,500,20,"")
+SBBattlelog4 = SBEncounterTextBox(70,545,500,20,"")
+SBBattlelog5 = SBEncounterTextBox(70,565,500,20,"")
+SBBattlelog6 = SBEncounterTextBox(70,585,500,20,"")
+SBBattlelog7 = SBEncounterTextBox(70,605,500,20,"")
+SBBattlelog8 = SBEncounterTextBox(70,625,500,20,"Enemy encountered!")
 
 class SBenemy(pygame.sprite.Sprite):
     def __init__(self, health, attack, x, y, w, h, move, radius):
@@ -109,6 +125,16 @@ class SBenemy(pygame.sprite.Sprite):
             pygame.draw.rect(gameDisplay, red, [self.x,self.y,self.w,self.h])
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
 
+    def battlelogupdate(self,text):
+        SBBattlelog1.text = SBBattlelog2.text
+        SBBattlelog2.text = SBBattlelog3.text
+        SBBattlelog3.text = SBBattlelog4.text
+        SBBattlelog4.text = SBBattlelog5.text
+        SBBattlelog5.text = SBBattlelog6.text
+        SBBattlelog6.text = SBBattlelog7.text
+        SBBattlelog7.text = SBBattlelog8.text
+        SBBattlelog8.text = text
+
     def Encounter(self):
         if self.escaped:
             if self.timer2 <= FPS:
@@ -126,11 +152,25 @@ class SBenemy(pygame.sprite.Sprite):
                         self.SBEncountering = True
                     if self.timer >= FPS:
                         if self.SBEncountering:
-                            (SBEncounterTextBox(425,10,50,30,"Enemy Health: " + str(self.health))).EncounterText()
+            #               Drawing the encounter
+                            pygame.draw.rect(gameDisplay, gray, [25, 100, 850, 600]) # Initial box
+                            pygame.draw.rect(gameDisplay, black, [60,150,775,275]) # Enemy visual box
+                            pygame.draw.rect(gameDisplay, black, [60,475,510,180]) # Battle log box
+                #           Battle log text
+                            SBBattlelog1.Battlelogtext()
+                            SBBattlelog2.Battlelogtext()
+                            SBBattlelog3.Battlelogtext()
+                            SBBattlelog4.Battlelogtext()
+                            SBBattlelog5.Battlelogtext()
+                            SBBattlelog6.Battlelogtext()
+                            SBBattlelog7.Battlelogtext()
+                            SBBattlelog8.Battlelogtext()
+                            (SBEncounterTextBox(425,105,50,30,"Enemy Health: " + str(self.health))).EncounterText()#enemy health
             #                       When does the combat end
                             if self.health <= 0:
                                 self.SBEncountering = False
                                 self.timer = 0
+                                self.battlelogupdate("Enemy encountered!")
                             if SBMainChar.health <= 0:
                                 SpaceBound_Exit = True
         #                   Your turn
@@ -173,6 +213,7 @@ class SBenemy(pygame.sprite.Sprite):
                                         self.attackclicked = False
                                         self.timer2 = 0
                                         time.sleep(1)
+                                        self.battlelogupdate("You attacked for " + str(SBMainChar.attack) + " damage")
                                 if self.runclicked:
                                     if self.timer2 <= FPS:
                                         SBEscape.bigmessage_display()
@@ -184,6 +225,7 @@ class SBenemy(pygame.sprite.Sprite):
                                         self.timer = 0
                                         self.timer2 = 0
                                         time.sleep(1)
+                                        self.battlelogupdate("You escaped! (75%)")
                                 if self.runclickedfailed:
                                     if self.timer2 <= FPS:
                                         SBEscapefail.bigmessage_display()
@@ -193,7 +235,8 @@ class SBenemy(pygame.sprite.Sprite):
                                         self.runclickedfailed = False
                                         self.timer2 = 0
                                         time.sleep(1)
-            #                   Enemy's turn
+                                        self.battlelogupdate("You failed to escape (75%)")
+        #                   Enemy's turn
                             if not self.Your_Turn:
                                 if self.timer2 <= FPS:
                                     SBAttacked.bigmessage_display()
@@ -203,6 +246,7 @@ class SBenemy(pygame.sprite.Sprite):
                                     self.Your_Turn = True
                                     self.timer2 = 0
                                     time.sleep(1)
+                                    self.battlelogupdate("The enemy attacked you for " + str(self.attack) + "damage")
 
     def attacked(self):
         self.health = self.health - SBMainChar.attack
@@ -316,7 +360,8 @@ def SBgame_loop():
 #       Create the world
         CharacterHealth = SBEncounterTextBox(425,700,50,30, "Health: " + str(SBMainChar.health))
         Score = SBEncounterTextBox(800,5,100,30,"Score: " + str(int(SBMainChar.scoring())))
-        Timer = SBEncounterTextBox(700,5,100,30,"Time: "+str(int(counter/30)))
+        Timer = SBEncounterTextBox(0,5,100,30,"Time: "+str(int(counter/30)))
+        Objectivetext = SBEncounterTextBox(350,5,200,30,"Objective: Go to the blue square")
         gameDisplay.fill(black)       
     #       Draw the things           
         SBenemy1.draw_enemy()
@@ -326,6 +371,8 @@ def SBgame_loop():
         CharacterHealth.EncounterText()
         Score.EncounterText()
         Timer.EncounterText()
+        if not Objective1.touched:
+            Objectivetext.EncounterText()
     #       Allow the enemies to fight you
         SBenemy1.Encounter()
         SBenemy2.Encounter()
