@@ -16,7 +16,7 @@ def start_spacestrike():
     FPS     = 30
     X       = 500
     Y       = 100
-    MOB_AMOUNT = 25
+    MOB_AMOUNT = 10
     heart_amount = 3
     start_init = True
     score   = 0
@@ -105,26 +105,38 @@ def start_spacestrike():
             self.image.set_colorkey(BLACK)
             self.rect   = self.image.get_rect()
             self.radius = 23
-            self.rect.x = 0
+            self.rect.x = random.randrange(0,830)
             self.rect.y = 0
-            self.speedx = 0
-            self.speedy = 0
+            self.speedx = random.randrange(1,7)
+            self.speedy = random.randrange(1,7)
+            self.speedrand = random.choice([True, False])
 
         #This function is given to update the player in the game
         def update(self): 
-            self.speedx = random.randrange(1, 10)
-            self.speedy = random.randrange(1, 10)
-            self.rect.x += self.speedx
             self.rect.y += self.speedy
+            if self.speedrand == True:
+                self.rect.x += self.speedx
+            else:
+                self.rect.x += self.speedx * -1
         #kill if off screen
-            if self.rect.bottom < 0:
+            if self.rect.y > 810:
                 self.kill()
+                m = enemy()
+                all_sprites.add(m)
+                enemys.add(m)     
+            if self.rect.x > 830:
+                self.speedx = self.speedx * -1
+            if self.rect.x < 0:
+                self.speedx = self.speedx * -1
+            if random.randrange(1,100) < 3:
+                enemy.shoot_AI(self,self.rect.centerx,self.rect.bottom)
+
 
         #This is a function to shoot a bullet from enemy at random
-        def shoot_AI(self):
-            AI_Bullet = AI_Bullet(self.rect.centerx, self.rect.top)
-            all_sprites.add(AI_Bullet)
-            AI_Bullets.add(AI_Bullet)
+        def shoot_AI(self,x,y):
+            en_bullet = AI_Bullet(x,y)
+            all_sprites.add(en_bullet)
+            en_bullet.add()
 
 
 
@@ -163,7 +175,7 @@ def start_spacestrike():
             self.rect.y += self.speedy
 
             #kill if off top screen
-            if self.rect.bottom < 0:
+            if self.rect.y > 810:
                 self.kill()
 
 
@@ -206,7 +218,7 @@ def start_spacestrike():
     player = player()
     all_sprites.add(player)
     enemys = pygame.sprite.Group()
-    AI_bullets = pygame.sprite.Group()
+    en_bullets = pygame.sprite.Group()
 
 
     for i in range(MOB_AMOUNT):
@@ -224,7 +236,7 @@ def start_spacestrike():
 
         #render background
         #screen.fill(BLACK)
-       # screen.blit(surface, surface_rect)
+        #screen.blit(surface, surface_rect)
 
         #kijk of er een event is 
         for event in pygame.event.get():
@@ -267,6 +279,14 @@ def start_spacestrike():
             #running = False
             heart_amount -= 1
 
+     #collision if enemy bullet hits player
+        hits = pygame.sprite.spritecollide(player, en_bullets, True)
+        if hits:
+            soundboard.bullet_on_hit_friendly()
+            #menu.start_menu()
+            #running = False
+            heart_amount -= 1
+
         #draw / render
         if start_init == True:
             screen.fill(BLACK)
@@ -275,13 +295,13 @@ def start_spacestrike():
         
         #check lives, else load game over screen
         if heart_amount == 3:
-            hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_3.png'), (130,50))
+            hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_3.png'), (130,45))
             screen.blit(hearts, [770, 0])
         if heart_amount == 2:
-            hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_2.png'), (130,50))
+            hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_2.png'), (130,45))
             screen.blit(hearts, [770, 0])
         if heart_amount == 1:
-            hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_1.png'), (130,50))
+            hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_1.png'), (130,45))
             screen.blit(hearts, [770, 0])
         if heart_amount == 0:
             print('game over')
