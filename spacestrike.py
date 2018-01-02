@@ -52,16 +52,31 @@ def start_spacestrike():
 
         #This function is given to update the player in the game
         def update(self):
+            self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue.png').convert()
+            self.image = pygame.transform.scale(self.image, (100, 70))
+            self.image.set_colorkey(BLACK)
             self.speedx = 0
             self.speedy = 0
             keystate = pygame.key.get_pressed()
             if keystate[pygame.K_LEFT]:
+                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue_booster.png').convert()
+                self.image = pygame.transform.scale(self.image, (100, 70))
+                self.image.set_colorkey(BLACK)
                 self.speedx = -10
             if keystate[pygame.K_RIGHT]:
+                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue_booster.png').convert()
+                self.image = pygame.transform.scale(self.image, (100, 70))
+                self.image.set_colorkey(BLACK)
                 self.speedx = 10
             if keystate[pygame.K_UP]:
+                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue_booster.png').convert()
+                self.image = pygame.transform.scale(self.image, (100, 70))
+                self.image.set_colorkey(BLACK)
                 self.speedy = -10
             if keystate[pygame.K_DOWN]:
+                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue_booster.png').convert()
+                self.image = pygame.transform.scale(self.image, (100, 70))
+                self.image.set_colorkey(BLACK)
                 self.speedy = 10
             self.rect.x += self.speedx
             self.rect.y += self.speedy
