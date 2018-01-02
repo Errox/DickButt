@@ -73,6 +73,5 @@ def bullet_on_hit_friendly():
         bullet = pygame.mixer.Sound('resource/soundboard/onhit/friendly/hit_2.wav')
     elif random_1 >= 21 and random_1 <= 40:
         bullet = pygame.mixer.Sound('resource/soundboard/onhit/friendly/hit_3.wav')
-    bullet.set_volume(0.5)
     bullet.play()
 
