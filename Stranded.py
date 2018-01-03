@@ -3,7 +3,6 @@ def start_Stranded():
     import pygame
     import menu
 
-
     # Global constants
 
     # Colors
@@ -577,5 +576,5 @@ def start_Stranded():
         pygame.quit()
 
 
-    if __name__ == "__main__":
-        main()
+
+    main()
