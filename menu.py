@@ -117,6 +117,9 @@ def start_menu():
         elif define_location == "planet_SpaceBound":
             pygame.mixer.music.stop()
             SpaceBound.start_SpaceBound()
+        elif define_location == "planet_Stranded":
+            pygame.mixer.music.stop() 
+            Stranded.start_Stranded()
         else:
             print('under construction')
 
@@ -168,10 +171,10 @@ def start_menu():
                             print('planet_4')
                     if pygame.mouse.get_pos()[0] >= 21 and pygame.mouse.get_pos()[1] >= 557:
                         if pygame.mouse.get_pos()[0] <= 86 and pygame.mouse.get_pos()[1] <= 627:
-                            define_location = "planet_5" 
+                            define_location = "planet_Stranded" 
                             #planet Davin
                             # links onder 
-                            print('planet_5')       
+                                   
  
         pygame.display.flip()
     pygame.quit()
