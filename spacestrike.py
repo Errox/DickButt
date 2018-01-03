@@ -47,7 +47,7 @@ def start_spacestrike():
             self.image = pygame.transform.scale(self.image, (70, 55))
             self.image.set_colorkey(BLACK)
             self.rect   = self.image.get_rect()
-            self.radius = 23
+            self.radius = 15
             self.rect.centerx = WIDTH / 6
             self.rect.bottom = HEIGHT - 60
             self.speedx = 0
