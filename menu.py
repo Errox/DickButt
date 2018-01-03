@@ -6,6 +6,7 @@ def start_menu():
     import game_over
     import astrodoge 
     import spacestrike
+    import SpaceBound
     import soundboard
     from time import sleep
     
@@ -112,6 +113,9 @@ def start_menu():
         elif define_location == "planet_spacestrike":
             pygame.mixer.music.stop()
             spacestrike.start_spacestrike()
+        elif define_location == "planet_SpaceBound":
+            pygame.mixer.music.stop()
+            SpaceBound.start_SpaceBound()
         else:
             print('under construction')
 
@@ -152,7 +156,7 @@ def start_menu():
                             define_location = "planet_spacestrike"
                     if pygame.mouse.get_pos()[0] >= 630 and pygame.mouse.get_pos()[1] >= 637:
                         if pygame.mouse.get_pos()[0] <= 720 and pygame.mouse.get_pos()[1] <= 722:
-                            define_location = "planet_3"
+                            define_location = "planet_SpaceBound"
                             # planet Eva
                             # rechts onderin 
                     if pygame.mouse.get_pos()[0] >= 596 and pygame.mouse.get_pos()[1] >= 5:
