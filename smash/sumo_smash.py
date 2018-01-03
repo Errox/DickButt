@@ -114,16 +114,16 @@ class Mob4(pygame.sprite.Sprite):
         self.image = pygame.Surface((60, 60))
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.x = 300
-        self.rect.y = 800
-        self.speedy = 5
+        self.rect.x = random.randrange(1, 850)
+        self.rect.y = random.randrange(900, 1000)
+        self.speedy = random.randrange(10, 15)
 
     def update(self):
         self.rect.y -= self.speedy
-        if self.rect.top > 50:
-            self.rect.x = random.randrange(WIDTH - self.rect.width)
-            self.rect.y = random.randrange(-100, -40)
-            self.speedy = random.randrange(10, 15)
+    if self.rect.top < 50:
+        self.rect.x = random.randrange(1, 850)
+        self.rect.y = random.randrange(900, 1000)
+        self.speedy = random.randrange(10, 15)
 
 all_sprites = pygame.sprite.Group()
 mobs = pygame.sprite.Group()

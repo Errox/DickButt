@@ -6,7 +6,7 @@ import astrodoge
 from time import sleep
 import spacestrike
 import SpaceBound
- 
+import stranded
+
 
 menu.start_menu()
-# astrodoge.start_astrodoge()
