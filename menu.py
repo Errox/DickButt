@@ -7,6 +7,7 @@ def start_menu():
     import astrodoge 
     import spacestrike
     import SpaceBound
+    import Stranded
     import soundboard
     from time import sleep
     
