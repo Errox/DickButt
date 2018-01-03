@@ -7,4 +7,5 @@ from time import sleep
 import spacestrike
  
 
+
 menu.start_menu()
