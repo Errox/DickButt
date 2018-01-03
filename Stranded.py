@@ -1,5 +1,5 @@
 
-def start_stranded()
+def start_stranded():
     import pygame
     import menu
 
