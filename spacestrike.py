@@ -1,6 +1,8 @@
 #This script is for playing and moving around a sprite
 #import all lib's + intergratie
 
+heart_amount = 3
+
 def start_spacestrike():
     import pygame
     import random
@@ -17,6 +19,7 @@ def start_spacestrike():
     X       = 500
     Y       = 100
     MOB_AMOUNT = 10
+    global heart_amount
     heart_amount = 3
     start_init = True
     score   = 0
@@ -41,7 +44,7 @@ def start_spacestrike():
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
             self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue.png').convert()
-            self.image = pygame.transform.scale(self.image, (90, 70))
+            self.image = pygame.transform.scale(self.image, (70, 55))
             self.image.set_colorkey(BLACK)
             self.rect   = self.image.get_rect()
             self.radius = 23
@@ -101,14 +104,14 @@ def start_spacestrike():
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
             self.image  = pygame.image.load('resource/images/spacestrike/enemy/enemy.png').convert()
-            self.image = pygame.transform.scale(self.image, (90, 70))
+            self.image = pygame.transform.scale(self.image, (70, 50))
             self.image.set_colorkey(BLACK)
             self.rect   = self.image.get_rect()
             self.radius = 23
             self.rect.x = random.randrange(0,830)
             self.rect.y = 0
-            self.speedx = random.randrange(1,7)
-            self.speedy = random.randrange(1,7)
+            self.speedx = random.randrange(3,7)
+            self.speedy = random.randrange(3,7)
             self.speedrand = random.choice([True, False])
 
         #This function is given to update the player in the game
@@ -145,7 +148,7 @@ def start_spacestrike():
         #give properties to the bullet itself
         def __init__(self, x, y):
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.image.load('resource/images/spacestrike/projectiles/bullet.png').convert()
+            self.image = pygame.image.load('resource/images/spacestrike/projectiles/cube.png').convert()
             self.image.set_colorkey(BLACK)
             self.rect = self.image.get_rect()
             self.rect.bottom = y
@@ -164,18 +167,23 @@ def start_spacestrike():
         #give properties to the bullet itself
         def __init__(self, x, y):
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.image.load('resource/images/spacestrike/projectiles/bullet.png').convert()
+            self.image = pygame.image.load('resource/images/spacestrike/projectiles/en_bullet.png').convert()
             self.image.set_colorkey(BLACK)
             self.rect = self.image.get_rect()
             self.rect.bottom = y
             self.rect.centerx = x
             self.speedy = 10
+     
         #function to define the functions inside an update
         def update(self):
             self.rect.y += self.speedy
+            if self.rect.colliderect(player.rect):
+                soundboard.bullet_on_hit_friendly()
+                self.kill()
+                lose_heart()
 
             #kill if off top screen
-            if self.rect.y > 810:
+            if self.rect.y > 900:
                 self.kill()
 
 
@@ -234,20 +242,12 @@ def start_spacestrike():
         # Laat de clock ticken op de fps
         clock.tick(FPS)
 
-        #render background
-        #screen.fill(BLACK)
-        #screen.blit(surface, surface_rect)
-
         #kijk of er een event is 
         for event in pygame.event.get():
             print (event)
             #Check of de exit knop is ingedrukt
             if event.type == pygame.QUIT:
                 running = False
-
-            #chance_shooting = random.randrange(1,10)
-            #if chance_shooting == 7:
-                #enemys.shoot()
 
             #als spatie word ingedrukt moet er een kogel afgeschoten worden
             elif event.type == pygame.KEYDOWN:
@@ -275,16 +275,16 @@ def start_spacestrike():
         hits = pygame.sprite.spritecollide(player, enemys, True, pygame.sprite.collide_circle)
         if hits:
             soundboard.bullet_on_hit_friendly()
-            #menu.start_menu()
-            #running = False
             heart_amount -= 1
 
      #collision if enemy bullet hits player
-        hits = pygame.sprite.spritecollide(player, en_bullets, True)
+        hits = pygame.sprite.spritecollide(player, en_bullets, True, pygame.sprite.collide_circle)
         if hits:
             soundboard.bullet_on_hit_friendly()
-            #menu.start_menu()
-            #running = False
+            heart_amount -= 1
+        
+        def lose_heart():
+            global heart_amount
             heart_amount -= 1
 
         #draw / render
@@ -318,4 +318,4 @@ def start_spacestrike():
 
     pygame.quit()
 
-start_spacestrike()
+#start_spacestrike()
