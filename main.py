@@ -5,7 +5,7 @@ import menu
 import astrodoge
 from time import sleep
 import spacestrike
- 
+import stranded
 
 
 menu.start_menu()
