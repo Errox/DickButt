@@ -528,6 +528,17 @@ def start_Stranded():
             monster.level = self
             self.monster_list.add(monster)
 
+            # Add a custom moving enemy 3
+            monster = MovingMonster(50, 75)
+            monster.rect.x = 5300
+            monster.rect.y = 755
+            monster.boundary_left = 5300
+            monster.boundary_right = 6400
+            monster.change_x = 8
+            monster.player = self.MG_player
+            monster.level = self
+            self.monster_list.add(monster)
+
             # Add a custom moving platform
             block = MovingPlatform(400, 20)
             block.rect.x = 1100
@@ -662,6 +673,8 @@ def start_Stranded():
 
             scoretext = font.render("Score {0}".format(score), 1, GREY)
             screen.blit(scoretext, (5, 10))
+            objectivetext = font.render("Collect and retrieve the object!".format(score), 1, GREY)
+            screen.blit(objectivetext, (595, 10))
             # timer
             if score <= 0:
                 pygame.quit()
