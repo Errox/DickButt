@@ -1,7 +1,12 @@
 
+
 def start_Stranded():
     import pygame
     import menu
+    import game_over
+    import soundboard
+    import highscore
+    import time
 
     # Global constants
 
@@ -13,6 +18,10 @@ def start_Stranded():
     BLUE = (0, 0, 255)
     BEIGE = (255,211,155)
     BROWN = (139,125,107)
+    GREY = (128, 128, 128)
+
+    # score = 1000000
+    global score
 
     # Screen size
     SCREEN_WIDTH = 900
@@ -33,8 +42,12 @@ def start_Stranded():
             # create and color the blocks
             width = 50
             height = 75
-            self.image = pygame.Surface([width, height])
-            self.image.fill(GREEN)
+            self.image = pygame.image.load('resource/images/Stranded/player.png').convert()
+            self.image = pygame.transform.scale(self.image, (50, 75))
+            self.image.set_colorkey(BLACK)
+            self.rect = self.image.get_rect()
+            # self.image = pygame.Surface([width, height])
+            # self.image.fill(GREEN)
 
             self.rect = self.image.get_rect()
 
@@ -221,6 +234,61 @@ def start_Stranded():
             self.image.fill(BLACK)
 
             self.rect = self.image.get_rect()
+
+
+    class MovingMonster(Platform):
+        # Creating a moving platform
+        change_x = 0
+        change_y = 0
+
+        boundary_top = 0
+        boundary_bottom = 0
+        boundary_left = 0
+        boundary_right = 0
+
+        player = None
+
+        level = None
+
+        def update(self):
+            # Move the platform
+            self.image.fill(RED)
+
+            # Move left/right
+            self.rect.x += self.change_x
+
+            # check if it hits the player
+            hit = pygame.sprite.collide_rect(self, self.player)
+            if hit:
+
+                # if moving right, set right side to the left side of the object it's moving towards
+                if self.change_x < 0:
+                    self.player.rect.right = self.rect.left
+                else:
+                    # do the opposite of what to comment above states
+                    self.player.rect.left = self.rect.right
+
+            # Move up/down
+            self.rect.y += self.change_y
+
+            # check if the mg_player stands on the platform
+            hit = pygame.sprite.collide_rect(self, self.player)
+            if hit:
+                # MG_player is hit, move the player.
+
+                # reset position based on the top and/or bottom of the object
+                if self.change_y < 0:
+                    self.player.rect.bottom = self.rect.top
+                else:
+                    self.player.rect.top = self.rect.bottom
+
+            # check if the platform must change directions
+            if self.rect.bottom > self.boundary_bottom or self.rect.top < self.boundary_top:
+                self.change_y *= -1
+
+            cur_pos = self.rect.x - self.level.world_shift
+            if cur_pos < self.boundary_left or cur_pos > self.boundary_right:
+                self.change_x *= -1
 
 
     class MovingPlatform(Platform):
@@ -412,10 +480,10 @@ def start_Stranded():
             cship.MG_player = self.MG_player
             self.cship_list.add(cship)
 
-            # placing a test kill block
-            monster = Monster(50, 50)
-            monster.rect.x = 200
-            monster.rect.y = 200
+            # placing a kill block
+            monster = Monster(200, 70)
+            monster.rect.x = 8400
+            monster.rect.y = 830
             monster.MG_player = self.MG_player
             self.monster_list.add(monster)
 
@@ -436,6 +504,28 @@ def start_Stranded():
             monster.rect.x = 3800
             monster.rect.y = 830
             monster.MG_player = self.MG_player
+            self.monster_list.add(monster)
+
+            # Add a custom moving enemy 1
+            monster = MovingMonster(50, 75)
+            monster.rect.x = 1500
+            monster.rect.y = 225
+            monster.boundary_left = 1500
+            monster.boundary_right = 2050
+            monster.change_x = 10
+            monster.player = self.MG_player
+            monster.level = self
+            self.monster_list.add(monster)
+
+            # Add a custom moving enemy 2
+            monster = MovingMonster(50, 75)
+            monster.rect.x = 1600
+            monster.rect.y = 755
+            monster.boundary_left = 1600
+            monster.boundary_right = 2650
+            monster.change_x = 5
+            monster.player = self.MG_player
+            monster.level = self
             self.monster_list.add(monster)
 
             # Add a custom moving platform
@@ -482,7 +572,7 @@ def start_Stranded():
 
         pygame.display.set_caption("Stranded")
 
-
+        global score
         # create the MG_player
         mg_player = MG_Player()
 
@@ -496,6 +586,8 @@ def start_Stranded():
 
         active_sprite_list = pygame.sprite.Group()
         mg_player.level = current_level
+        # loading in font
+        font = pygame.font.SysFont('Arcadepix.ttf', 30)
 
         mg_player.rect.x = 20
         mg_player.rect.y = 800
@@ -507,11 +599,10 @@ def start_Stranded():
 
         # how fast it updates
         clock = pygame.time.Clock()
-        # there are 3600 clocks, 30 a second so 120 second or 2 minutes
-        start = 3600
-
+        score = 100000
         # main program loop
         while not done:
+            score = score - 1
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     done = True
@@ -562,9 +653,17 @@ def start_Stranded():
             # level and sprite draw
             current_level.draw(screen)
             active_sprite_list.draw(screen)
+
+            score -= 1
+            #Game over screen
+            if done:
+                print('game over')
+                game_over.start(score)
+
+            scoretext = font.render("Score {0}".format(score), 1, GREY)
+            screen.blit(scoretext, (5, 10))
             # timer
-            start -= 1
-            if start <= 0:
+            if score <= 0:
                 pygame.quit()
             # limit to 30 frames per second
             clock.tick(30)
@@ -574,7 +673,6 @@ def start_Stranded():
 
         # exit
         pygame.quit()
-
 
 
     main()
