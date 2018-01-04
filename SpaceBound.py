@@ -6,7 +6,6 @@ def start_SpaceBound():
     import random
     import pygame.locals
     pygame.init()
-
 #   things!
     FPS = 30
     display_width = 900 
@@ -14,7 +13,7 @@ def start_SpaceBound():
     clock = pygame.time.Clock()
     gameDisplay = pygame.display.set_mode((display_width, display_height))
     pygame.display.set_caption('SpaceBound')
-
+    Backgroundimg = pygame.image.load('resource/images/SpaceBound/Background_SpaceBound.gif')
 #   Colours!
     black = (0,0,0)
     white = (255,255,255)
@@ -24,7 +23,7 @@ def start_SpaceBound():
     grey = (100,100,100)
     gray = (50,50,50)
 
-#   Classes!
+#   Main Character
     class SBMainCharacter(pygame.sprite.Sprite):
         def __init__(self,health,attack,x,y,w,h):
             self.health = health
@@ -45,8 +44,8 @@ def start_SpaceBound():
             scores = 100 * self.kills + self.count
             return scores
 
-    SBMainChar = SBMainCharacter(500, 50, ((display_width - 50) * 0.5), ((display_height - 75) * 0.5), 50, 75)
-
+    SBMainChar = SBMainCharacter(5000, 500, 425, 410, 50, 75) #temporarily hightened
+#   Texts
     class SBEncounterTextBox(object):
         def __init__(self, x, y, w, h, text):
             self.x = x
@@ -99,7 +98,8 @@ def start_SpaceBound():
     SBBattlelog6 = SBEncounterTextBox(70,585,500,20,"")
     SBBattlelog7 = SBEncounterTextBox(70,605,500,20,"")
     SBBattlelog8 = SBEncounterTextBox(70,625,500,20,"Enemy encountered!")
-
+    SBLavaWarning = SBEncounterTextBox(350,650,200,30,"I shouldn't get too close to the lava")
+#   Enemies
     class SBenemy(pygame.sprite.Sprite):
         def __init__(self, health, attack, x, y, w, h, move, radius):
             self.health = health
@@ -173,6 +173,7 @@ def start_SpaceBound():
                                     self.SBEncountering = False
                                     self.timer = 0
                                     self.battlelogupdate("Enemy encountered!")
+                                    self.Your_Turn = True
                                 if SBMainChar.health <= 0:
                                     SpaceBound_Exit = True
             #                   Your turn
@@ -248,7 +249,7 @@ def start_SpaceBound():
                                         self.Your_Turn = True
                                         self.timer2 = 0
                                         time.sleep(1)
-                                        self.battlelogupdate("The enemy attacked you for " + str(self.attack) + "damage")
+                                        self.battlelogupdate("The enemy attacked you for " + str(self.attack) + " damage")
 
         def attacked(self):
             self.health = self.health - SBMainChar.attack
@@ -263,10 +264,16 @@ def start_SpaceBound():
 
         def Encountering(self):
             return self.SBEncountering
+        
+    SBenemy1 = SBenemy(100, 10, -885, 1850, 50, 75, 10, 250) #At obj 2
+    SBenemy2 = SBenemy(150, 15, 1185, 1553, 50, 75, 5, 300) #at obj 1, front
+    SBenemy3 = SBenemy(200, 20, 1245, 1793, 50, 75, 5, 250) #at obj 1, behind
+    SBenemy4 = SBenemy(100, 10, 375, 1763, 50, 75, 20, 1000) #big radius, slow spd
+    SBenemy5 = SBenemy(150, 15, 1315, 463, 50, 75, 7, 300) #rando
+    SBenemy6 = SBenemy(100, 20, -615, 553, 50, 75, 10, 250) #rando
+    SBenemy7 = SBenemy(500, 10, 285, 418, 50, 75, 0, 0) #stationairy, appears after both objectives are found
 
-    SBenemy1 = SBenemy(100, 10, 200, 200, 50, 75, 10, 250)
-    SBenemy2 = SBenemy(150, 15, 750, 200, 50, 75, 5, 300)
-
+#   Objectives
     class objective(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h ):
             self.x = x
@@ -281,53 +288,153 @@ def start_SpaceBound():
             if pygame.sprite.collide_rect(self, SBMainChar):
                 self.touched = True
             
+    Objective1 = objective(1235, 1653, 50, 50)
+    Objective2 = objective(-825, 1813, 50, 50)
 
-    Objective1 = objective(450, 50, 50, 50)
-#   Game loop
+#   Objects
+    class Object(pygame.sprite.Sprite):
+        def __init__(self, x, y, w, h, image):
+            self.x = x
+            self.y = y
+            self.w = w
+            self.h = h
+            self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
+            self.image = image
+        
+        def draw_Object(self):
+            gameDisplay.blit(self.image, (self.x,self.y))
+
+
+    Background = Object(-1015, -207, 2700, 2385, Backgroundimg)
+    Mountains = Object(-1015, -207, 2700, 357, None)
+    LavaLake = Object(-1015, 1930, 2700, 250, None)
+        
+#   Classless defs
+    def moveworld(direction, speed):
+        if direction == "right":
+            SBMainChar.x -= speed
+            Background.x -= speed 
+            Mountains.x -= speed
+            LavaLake.x -= speed
+            Objective1.x -= speed
+            Objective2.x -= speed
+            SBenemy1.x -= speed
+            SBenemy2.x -= speed
+            SBenemy3.x -= speed
+            SBenemy4.x -= speed
+            SBenemy5.x -= speed
+            SBenemy6.x -= speed
+            SBenemy7.x -= speed
+
+        if direction == "left":
+            SBMainChar.x += speed
+            Background.x += speed
+            Mountains.x += speed
+            LavaLake.x += speed
+            Objective1.x += speed
+            Objective2.x += speed
+            SBenemy1.x += speed
+            SBenemy2.x += speed
+            SBenemy3.x += speed
+            SBenemy4.x += speed
+            SBenemy5.x += speed
+            SBenemy6.x += speed
+            SBenemy7.x += speed
+
+        if direction == "up":
+            SBMainChar.y += speed
+            Background.y += speed
+            Mountains.y += speed
+            LavaLake.y += speed
+            Objective1.y += speed
+            Objective1.y += speed
+            SBenemy1.y += speed
+            SBenemy2.y += speed
+            SBenemy3.y += speed
+            SBenemy4.y += speed
+            SBenemy5.y += speed
+            SBenemy6.y += speed
+            SBenemy7.y += speed
+
+        if direction == "down":
+            SBMainChar.y -= speed
+            Background.y -= speed
+            Mountains.y -= speed
+            LavaLake.y -= speed
+            Objective1.y -= speed
+            Objective1.y -= speed
+            SBenemy1.y -= speed
+            SBenemy2.y -= speed
+            SBenemy3.y -= speed
+            SBenemy4.y -= speed
+            SBenemy5.y -= speed
+            SBenemy6.y -= speed
+            SBenemy7.y -= speed
+
+#   Game loop!
     def SBgame_loop():
         
         SpaceBound_Exit = False
         counter = 0
-
         while not SpaceBound_Exit:
-
-            if SBenemy1.Encountering() or SBenemy2.Encountering():
+            if SBenemy1.Encountering() or SBenemy2.Encountering() or SBenemy3.Encountering() or SBenemy4.Encountering() or SBenemy5.Encountering() or SBenemy6.Encountering() or SBenemy7.Encountering():
                 InEncounter = True
             else:
                 InEncounter = False
         #   When the game is over        
             pygame.event.pump()
             if pygame.event.peek(pygame.QUIT): 
+                print("Clicked X")
                 SpaceBound_Exit = True
-
-            if Objective1.touched:
+                
+            if Objective1.touched and Objective2.touched:
                 SBMainChar.count += 10000000/(1000 + counter)
                 Score.bigmessage_display()
                 time.sleep(1)
                 SpaceBound_Exit = True
-        #   Movements
             if not InEncounter:
-            #   Character movement
+        #   Character movement
+            #   Move left
                 if pygame.key.get_pressed()[pygame.K_LEFT]:
                     SBleft = -10 
                     if SBMainChar.x < 0:
                         SBleft = 0 
                     SBMainChar.x += SBleft
+                    if SBMainChar.x < SBMainChar.w + 300:
+                        if Background.x < -5:
+                            moveworld("left", 10)
+            #   Move right
                 if pygame.key.get_pressed()[pygame.K_RIGHT]:
                     SBright = 10 
                     if SBMainChar.x > display_width - SBMainChar.w:
                         SBright = 0
+                    if SBMainChar.x > display_width - SBMainChar.w - 300:
+                        if Background.x > -1795:
+                            moveworld("right", 10)
                     SBMainChar.x += SBright
+            #   Move up
                 if pygame.key.get_pressed()[pygame.K_UP]:
                     SBup = -10 
                     if SBMainChar.y < 0:
                         SBup = 0
+                    if SBMainChar.y <= Mountains.y + Mountains.h :
+                        SBup = 0
+                    if SBMainChar.y < SBMainChar.h + 300:
+                        if Background.y < -10:
+                            moveworld("up", 10)
                     SBMainChar.y += SBup
+            #   Move Down
                 if pygame.key.get_pressed()[pygame.K_DOWN]:
                     SBdown = 10 
                     if SBMainChar.y > display_height - SBMainChar.h:
                         SBdown = 0
+                    if SBMainChar.y + SBMainChar.h >= LavaLake.y:
+                        SBdown = 0
+                    if SBMainChar.y > display_height - SBMainChar.h - 300:
+                        if Background.y > -1480:
+                            moveworld("down", 10)
                     SBMainChar.y += SBdown
+
             #   Enemy Movement
                 if SBenemy1.alive:
                     if pygame.sprite.collide_circle(SBenemy1, SBMainChar):
@@ -359,31 +466,112 @@ def start_SpaceBound():
                         movey2 = 0
                 SBenemy2.x += movex2
                 SBenemy2.y += movey2
-    #       Create the world
+                if SBenemy3.alive:
+                    if pygame.sprite.collide_circle(SBenemy3, SBMainChar):
+                        if SBenemy3.x < SBMainChar.x:
+                            movex3 = SBenemy3.move
+                        if SBenemy3.x > SBMainChar.x:
+                            movex3 = -SBenemy3.move
+                        if SBenemy3.y < SBMainChar.y:
+                            movey3 = SBenemy3.move
+                        if SBenemy3.y > SBMainChar.y:
+                            movey3 = -SBenemy3.move
+                    else:
+                        movex3 = 0
+                        movey3 = 0
+                SBenemy3.x += movex3
+                SBenemy3.y += movey3
+                if SBenemy4.alive:
+                    if pygame.sprite.collide_circle(SBenemy4, SBMainChar):
+                        if SBenemy4.x < SBMainChar.x:
+                            movex4 = SBenemy4.move
+                        if SBenemy4.x > SBMainChar.x:
+                            movex4 = -SBenemy4.move
+                        if SBenemy4.y < SBMainChar.y:
+                            movey4 = SBenemy4.move
+                        if SBenemy4.y > SBMainChar.y:
+                            movey4 = -SBenemy4.move
+                    else:
+                        movex4 = 0
+                        movey4 = 0
+                SBenemy4.x += movex4
+                SBenemy4.y += movey4
+                if SBenemy5.alive:
+                    if pygame.sprite.collide_circle(SBenemy5, SBMainChar):
+                        if SBenemy5.x < SBMainChar.x:
+                            movex5 = SBenemy5.move
+                        if SBenemy5.x > SBMainChar.x:
+                            movex5 = -SBenemy5.move
+                        if SBenemy5.y < SBMainChar.y:
+                            movey5 = SBenemy5.move
+                        if SBenemy5.y > SBMainChar.y:
+                            movey5 = -SBenemy5.move
+                    else:
+                        movex5 = 0
+                        movey5 = 0
+                SBenemy5.x += movex5
+                SBenemy5.y += movey5
+                if SBenemy6.alive:
+                    if pygame.sprite.collide_circle(SBenemy6, SBMainChar):
+                        if SBenemy6.x < SBMainChar.x:
+                            movex6 = SBenemy6.move
+                        if SBenemy6.x > SBMainChar.x:
+                            movex6 = -SBenemy6.move
+                        if SBenemy6.y < SBMainChar.y:
+                            movey6 = SBenemy6.move
+                        if SBenemy6.y > SBMainChar.y:
+                            movey6 = -SBenemy6.move
+                    else:
+                        movex6 = 0
+                        movey6 = 0
+                SBenemy6.x += movex6
+                SBenemy6.y += movey6
+                
+        #   Create the world
             CharacterHealth = SBEncounterTextBox(425,700,50,30, "Health: " + str(SBMainChar.health))
             Score = SBEncounterTextBox(800,5,100,30,"Score: " + str(int(SBMainChar.scoring())))
             Timer = SBEncounterTextBox(0,5,100,30,"Time: "+str(int(counter/30)))
-            Objectivetext = SBEncounterTextBox(350,5,200,30,"Objective: Go to the blue square")
-            gameDisplay.fill(black)       
-        #       Draw the things           
-            SBenemy1.draw_enemy()
-            SBenemy2.draw_enemy()
+            Objectivetext1 = SBEncounterTextBox(350,5,200,30,"Objective: Go to the two blue squares")
+            Objectivetext2 = SBEncounterTextBox(350,5,200,30,"Objective: Go to the other blue square")
+            Objectivetext3 = SBEncounterTextBox(350,5,200,30,"Objective: Go back to the ship")
+            gameDisplay.fill(black)   
+            Background.draw_Object()
+        #   Draw the things           
             SBMainChar.draw_char()  
-            Objective1.draw_obj() 
             CharacterHealth.EncounterText()
             Score.EncounterText()
             Timer.EncounterText()
-            if not Objective1.touched:
-                Objectivetext.EncounterText()
-        #       Allow the enemies to fight you
+            if Objective1.touched and Objective2.touched:
+                Objectivetext3.EncounterText()
+            elif Objective1.touched or Objective2.touched:
+                Objectivetext2.EncounterText()
+            else:
+                Objectivetext1.EncounterText()
+            if SBMainChar.y + SBMainChar.h >= LavaLake.y:
+                SBLavaWarning.EncounterText()
+            Objective1.draw_obj() 
+            Objective2.draw_obj()
+            SBenemy1.draw_enemy()
+            SBenemy2.draw_enemy()
+            SBenemy3.draw_enemy()
+            SBenemy4.draw_enemy()
+            SBenemy5.draw_enemy()
+            SBenemy6.draw_enemy()
+            SBenemy7.draw_enemy()
+        #   Allow the enemies to fight you
             SBenemy1.Encounter()
             SBenemy2.Encounter()
-        #       Other things
+            SBenemy3.Encounter()
+            SBenemy4.Encounter()
+            SBenemy5.Encounter()
+            SBenemy6.Encounter()
+            SBenemy7.Encounter()
+        #   Other things
             counter += 1
             pygame.display.update()
             clock.tick(FPS)
-    #   end of while loop
 
+#   Other things!
     SBgame_loop()
     pygame.quit()
     quit()
