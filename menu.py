@@ -6,6 +6,8 @@ def start_menu():
     import game_over
     import astrodoge 
     import spacestrike
+    import SpaceBound
+    import Stranded
     import soundboard
     from time import sleep
     
@@ -112,6 +114,12 @@ def start_menu():
         elif define_location == "planet_spacestrike":
             pygame.mixer.music.stop()
             spacestrike.start_spacestrike()
+        elif define_location == "planet_SpaceBound":
+            pygame.mixer.music.stop()
+            SpaceBound.start_SpaceBound()
+        elif define_location == "planet_Stranded":
+            pygame.mixer.music.stop() 
+            Stranded.start_Stranded()
         else:
             print('under construction')
 
@@ -152,7 +160,7 @@ def start_menu():
                             define_location = "planet_spacestrike"
                     if pygame.mouse.get_pos()[0] >= 630 and pygame.mouse.get_pos()[1] >= 637:
                         if pygame.mouse.get_pos()[0] <= 720 and pygame.mouse.get_pos()[1] <= 722:
-                            define_location = "planet_3"
+                            define_location = "planet_SpaceBound"
                             # planet Eva
                             # rechts onderin 
                     if pygame.mouse.get_pos()[0] >= 596 and pygame.mouse.get_pos()[1] >= 5:
@@ -163,10 +171,10 @@ def start_menu():
                             print('planet_4')
                     if pygame.mouse.get_pos()[0] >= 21 and pygame.mouse.get_pos()[1] >= 557:
                         if pygame.mouse.get_pos()[0] <= 86 and pygame.mouse.get_pos()[1] <= 627:
-                            define_location = "planet_5" 
+                            define_location = "planet_Stranded" 
                             #planet Davin
                             # links onder 
-                            print('planet_5')       
+                                   
  
         pygame.display.flip()
     pygame.quit()
