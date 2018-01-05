@@ -13,7 +13,32 @@ def start_SpaceBound():
     clock = pygame.time.Clock()
     gameDisplay = pygame.display.set_mode((display_width, display_height))
     pygame.display.set_caption('SpaceBound')
+#   IMAGES
     Backgroundimg = pygame.image.load('resource/images/SpaceBound/Background_SpaceBound.gif')
+
+    MC_Stance_1R = pygame.image.load('resource/images/SpaceBound/Character/Right/Character_Stance_1_R.png')
+    MC_Stance_2R = pygame.image.load('resource/images/SpaceBound/Character/Right/Character_Stance_2_R.png')
+    MC_run_1R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_1_R.png')
+    MC_run_2R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_2_R.png')
+    MC_run_3R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_3_R.png')
+    MC_run_4R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_4_R.png')
+    MC_run_5R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_5_R.png')
+    MC_run_6R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_6_R.png')
+    MC_run_7R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_7_R.png')
+    MC_run_8R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_8_R.png')
+    MC_run_9R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_9_R.png')
+
+    MC_Stance_1l = pygame.image.load('resource/images/SpaceBound/Character/Left/Character_Stance_1_l.png')
+    MC_Stance_2l = pygame.image.load('resource/images/SpaceBound/Character/left/Character_Stance_2_l.png')
+    MC_run_1l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_1_l.png')
+    MC_run_2l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_2_l.png')
+    MC_run_3l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_3_l.png')
+    MC_run_4l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_4_l.png')
+    MC_run_5l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_5_l.png')
+    MC_run_6l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_6_l.png')
+    MC_run_7l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_7_l.png')
+    MC_run_8l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_8_l.png')
+    MC_run_9l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_9_l.png')
 #   Colours!
     black = (0,0,0)
     white = (255,255,255)
@@ -35,10 +60,101 @@ def start_SpaceBound():
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
             self.kills = 0
             self.count = 0
+            self.sprite = True
+            self.run = 1
+            self.timer = 0
+            self.running = False
+            self.direction = "right"
 
         def draw_char(self):
-            pygame.draw.rect(gameDisplay, green, [self.x,self.y,self.w,self.h])
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
+            if not self.running:
+                if self.direction == "right":
+                    if self.sprite:
+                        gameDisplay.blit(MC_Stance_1R, (self.x,self.y))
+                        self.timer += 1
+                        if self.timer == 10:
+                            self.sprite = False
+                    else:
+                        gameDisplay.blit(MC_Stance_2R, (self.x,self.y))
+                        self.timer -= 1
+                        if self.timer == 0:
+                            self.sprite = True
+                if self.direction == "left":
+                    if self.sprite:
+                        gameDisplay.blit(MC_Stance_1l, (self.x,self.y))
+                        self.timer += 1
+                        if self.timer == 10:
+                            self.sprite = False
+                    else:
+                        gameDisplay.blit(MC_Stance_2l, (self.x,self.y))
+                        self.timer -= 1
+                        if self.timer == 0:
+                            self.sprite = True
+            else:
+                if self.direction == "right":
+                    if self.run >= 0 and self.run < 5:
+                        gameDisplay.blit(MC_run_1R, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 5 and self.run < 10:
+                        gameDisplay.blit(MC_run_2R, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 10 and self.run < 15:
+                        gameDisplay.blit(MC_run_3R, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 15 and self.run < 20:
+                        gameDisplay.blit(MC_run_4R, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 20 and self.run < 25:
+                        gameDisplay.blit(MC_run_5R, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 25 and self.run < 30:
+                        gameDisplay.blit(MC_run_6R, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 30 and self.run < 35:
+                        gameDisplay.blit(MC_run_7R, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 35 and self.run < 40:
+                        gameDisplay.blit(MC_run_8R, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 40 and self.run < 45:
+                        gameDisplay.blit(MC_run_9R, (self.x,self.y))
+                        self.run += 1
+                    if self.run == 45:
+                        self.run = 0
+                if self.direction == "left":
+                    if self.run >= 0 and self.run < 5:
+                        gameDisplay.blit(MC_run_1l, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 5 and self.run < 10:
+                        gameDisplay.blit(MC_run_2l, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 10 and self.run < 15:
+                        gameDisplay.blit(MC_run_3l, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 15 and self.run < 20:
+                        gameDisplay.blit(MC_run_4l, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 20 and self.run < 25:
+                        gameDisplay.blit(MC_run_5l, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 25 and self.run < 30:
+                        gameDisplay.blit(MC_run_6l, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 30 and self.run < 35:
+                        gameDisplay.blit(MC_run_7l, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 35 and self.run < 40:
+                        gameDisplay.blit(MC_run_8l, (self.x,self.y))
+                        self.run += 1
+                    if self.run >= 40 and self.run < 45:
+                        gameDisplay.blit(MC_run_9l, (self.x,self.y))
+                        self.run += 1
+                    if self.run == 45:
+                        self.run = 0
+                print(self.run)
+
+                
 
         def scoring(self):
             scores = 100 * self.kills + self.count
@@ -399,10 +515,13 @@ def start_SpaceBound():
                     SBleft = -10 
                     if SBMainChar.x < 0:
                         SBleft = 0 
-                    SBMainChar.x += SBleft
                     if SBMainChar.x < SBMainChar.w + 300:
                         if Background.x < -5:
                             moveworld("left", 10)
+                    SBMainChar.x += SBleft
+                    SBMainChar.direction = "left"
+                else:
+                    SBleft = 0
             #   Move right
                 if pygame.key.get_pressed()[pygame.K_RIGHT]:
                     SBright = 10 
@@ -412,6 +531,9 @@ def start_SpaceBound():
                         if Background.x > -1795:
                             moveworld("right", 10)
                     SBMainChar.x += SBright
+                    SBMainChar.direction = "right"
+                else:
+                    SBright = 0
             #   Move up
                 if pygame.key.get_pressed()[pygame.K_UP]:
                     SBup = -10 
@@ -423,6 +545,8 @@ def start_SpaceBound():
                         if Background.y < -10:
                             moveworld("up", 10)
                     SBMainChar.y += SBup
+                else:
+                    SBup = 0
             #   Move Down
                 if pygame.key.get_pressed()[pygame.K_DOWN]:
                     SBdown = 10 
@@ -434,7 +558,13 @@ def start_SpaceBound():
                         if Background.y > -1480:
                             moveworld("down", 10)
                     SBMainChar.y += SBdown
-
+                else: 
+                    SBdown = 0
+            #   Are you walking?
+                if SBup != 0 or SBdown != 0 or SBright != 0 or SBleft != 0:
+                    SBMainChar.running = True
+                else:
+                    SBMainChar.running = False
             #   Enemy Movement
                 if SBenemy1.alive:
                     if pygame.sprite.collide_circle(SBenemy1, SBMainChar):
