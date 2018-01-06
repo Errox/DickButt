@@ -2,6 +2,7 @@ def start_sumo_smash():
     import pygame
     import random
     import menu
+    import game_over
 
     WIDTH = 900
     HEIGHT = 900
@@ -147,6 +148,7 @@ def start_sumo_smash():
         mobs.add(m1, m2, m3, m4)
 
     time = 10_000
+    count = 0
 
     block_1 = -450
     block_2 = 850
@@ -174,17 +176,20 @@ def start_sumo_smash():
             # check for closing window
             if event.type == pygame.QUIT:
                 running = False
-            
+        
+        count += 1
+        score = int(count / 3)
 
         # Update
         all_sprites.update()
 
         hits = pygame.sprite.spritecollide(player, mobs, False)
         if hits:
+            game_over.start(score)
             running = False
         if player.alive == False:
             running = False
-
+            game_over.start(score) 
 
         # Draw / render
         screen.fill(WHITE)
@@ -197,3 +202,4 @@ def start_sumo_smash():
         pygame.display.flip()
 
     pygame.quit()
+    quit()
