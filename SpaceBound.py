@@ -18,7 +18,8 @@ def start_SpaceBound():
     Backgroundimg = pygame.image.load('resource/images/SpaceBound/Background_SpaceBound.gif')
     Obj_act = pygame.image.load('resource/images/SpaceBound/Objective_active.png')
     Obj_inact = pygame.image.load('resource/images/SpaceBound/Objective_inactive.png')
-
+    Quit_Butt = pygame.image.load('resource/images/select_planet/button_quit_small.png')
+#   Healimg
     Healsimg = pygame.image.load('resource/images/SpaceBound/Heals/Heals.png')
     Heal1img = pygame.image.load('resource/images/SpaceBound/Heals/Heal1.png')
     Heal2img = pygame.image.load('resource/images/SpaceBound/Heals/Heal2.png')
@@ -31,7 +32,7 @@ def start_SpaceBound():
     Heal9img = pygame.image.load('resource/images/SpaceBound/Heals/Heal9.png')
     Heal10img = pygame.image.load('resource/images/SpaceBound/Heals/Heal10.png')
     Heal11img = pygame.image.load('resource/images/SpaceBound/Heals/Heal11.png')
-
+#   Rightimg
     MC_Stance_1R = pygame.image.load('resource/images/Character/Purple/Right/Stance/1.png')
     MC_Stance_2R = pygame.image.load('resource/images/Character/Purple/Right/Stance/2.png')
     MC_run_1R = pygame.image.load('resource/images/Character/Purple/Right/Run/1.png')
@@ -43,7 +44,7 @@ def start_SpaceBound():
     MC_run_7R = pygame.image.load('resource/images/Character/Purple/Right/Run/7.png')
     MC_run_8R = pygame.image.load('resource/images/Character/Purple/Right/Run/8.png')
     MC_run_9R = pygame.image.load('resource/images/Character/Purple/Right/Run/9.png')
-
+#   Leftimg
     MC_Stance_1l = pygame.image.load('resource/images/Character/Purple/Left/Stance/1.png')
     MC_Stance_2l = pygame.image.load('resource/images/Character/Purple/Left/Stance/2.png')
     MC_run_1l = pygame.image.load('resource/images/Character/Purple/Left/Run/1.png')
@@ -55,6 +56,47 @@ def start_SpaceBound():
     MC_run_7l = pygame.image.load('resource/images/Character/Purple/Left/Run/7.png')
     MC_run_8l = pygame.image.load('resource/images/Character/Purple/Left/Run/8.png')
     MC_run_9l = pygame.image.load('resource/images/Character/Purple/Left/Run/9.png')
+#   Aliens
+    AB1 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Back/1.png')
+    AB2 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Back/2.png')
+    AB3 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Back/3.png')
+
+    AF0 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Front/0.png')
+    AF1 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Front/1.png')
+    AF2 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Front/2.png')
+    AF3 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Front/3.png')
+
+    AL0 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Left/0.png')
+    AL1 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Left/1.png')
+    AL2 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Left/2.png')
+    AL3 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Left/3.png')
+
+    ALB1 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Left_Back/1.png')
+    ALB2 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Left_Back/2.png')
+    ALB3 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Left_Back/3.png')
+
+    ALF0 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Left_Front/0.png')
+    ALF1 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Left_Front/1.png')
+    ALF2 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Left_Front/2.png')
+    ALF3 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Left_Front/3.png')
+
+    AR0 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Right/0.png')
+    AR1 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Right/1.png')
+    AR2 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Right/2.png')
+    AR3 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Right/3.png')
+
+    ARB1 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Right_Back/1.png')
+    ARB2 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Right_Back/2.png')
+    ARB3 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Right_Back/3.png')
+
+    ARF0 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Right_Front/0.png')
+    ARF1 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Right_Front/1.png')
+    ARF2 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Right_Front/2.png')
+    ARF3 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Right_Front/3.png')
+
+    AlienDead = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Dead.png')
+
+
 #   Colours!
     black = (0,0,0)
     white = (255,255,255)
@@ -252,11 +294,178 @@ def start_SpaceBound():
             self.runclickedfailed = False
             self.enemyattacked = False
             self.escaped = False
+            self.direw = 0
+            self.dirns = 0
+            self.run = 0
+            self.running = False
 
         def draw_enemy(self):
+            self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
             if self.alive:
-                pygame.draw.rect(gameDisplay, red, [self.x,self.y,self.w,self.h])
-                self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
+                if self.run >= 20:
+                    self.run = 0
+                #North...
+                if self.dirns == 1:
+                    if self.direw == 1:
+                        #NorthEast
+                        if self.running:
+                            if self.run >= 0 and self.run < 5:
+                                gameDisplay.blit(ARB1, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 5 and self.run < 10:
+                                gameDisplay.blit(ARB2, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 10 and self.run < 15:
+                                gameDisplay.blit(ARB3, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 15 and self.run < 20:
+                                gameDisplay.blit(ARB2, (self.x,self.y))
+                                self.run += 1
+                        else:
+                            gameDisplay.blit(ARB2, (self.x,self.y))
+                    if self.direw == 0:
+                        #North
+                        if self.running:
+                            if self.run >= 0 and self.run < 5:
+                                gameDisplay.blit(AB1, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 5 and self.run < 10:
+                                gameDisplay.blit(AB2, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 10 and self.run < 15:
+                                gameDisplay.blit(AB3, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 15 and self.run < 20:
+                                gameDisplay.blit(AB2, (self.x,self.y))
+                                self.run += 1
+                        else:
+                            gameDisplay.blit(AB2, (self.x,self.y))
+                    if self.direw == -1:
+                        #NorthWest
+                        if self.running:
+                            if self.run >= 0 and self.run < 5:
+                                gameDisplay.blit(ALB1, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 5 and self.run < 10:
+                                gameDisplay.blit(ALB2, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 10 and self.run < 15:
+                                gameDisplay.blit(ALB3, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 15 and self.run < 20:
+                                gameDisplay.blit(ALB2, (self.x,self.y))
+                                self.run += 1
+                        else:
+                            gameDisplay.blit(ALB2, (self.x,self.y))
+                #...
+                if self.dirns == 0:
+                    if self.direw == 1:
+                        #East
+                        if self.running:
+                            if self.run >= 0 and self.run < 5:
+                                gameDisplay.blit(AR1, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 5 and self.run < 10:
+                                gameDisplay.blit(AR2, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 10 and self.run < 15:
+                                gameDisplay.blit(AR3, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 15 and self.run < 20:
+                                gameDisplay.blit(AR2, (self.x,self.y))
+                                self.run += 1
+                        else:
+                            gameDisplay.blit(AR0, (self.x,self.y))
+                    if self.direw == 0:
+                        #X
+                        if self.running:
+                            if self.run >= 0 and self.run < 5:
+                                gameDisplay.blit(AF1, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 5 and self.run < 10:
+                                gameDisplay.blit(AF2, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 10 and self.run < 15:
+                                gameDisplay.blit(AF3, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 15 and self.run < 20:
+                                gameDisplay.blit(AF2, (self.x,self.y))
+                                self.run += 1
+                        else:
+                            gameDisplay.blit(AF0, (self.x,self.y))
+                    if self.direw == -1:
+                        #West
+                        if self.running:
+                            if self.run >= 0 and self.run < 5:
+                                gameDisplay.blit(AL1, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 5 and self.run < 10:
+                                gameDisplay.blit(AL2, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 10 and self.run < 15:
+                                gameDisplay.blit(AL3, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 15 and self.run < 20:
+                                gameDisplay.blit(AL2, (self.x,self.y))
+                                self.run += 1
+                        else:
+                            gameDisplay.blit(AL0, (self.x,self.y))
+                #South...
+                if self.dirns == -1:
+                    if self.direw == 1:
+                        #SouthEast
+                        if self.running:
+                            if self.run >= 0 and self.run < 5:
+                                gameDisplay.blit(ARF1, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 5 and self.run < 10:
+                                gameDisplay.blit(ARF2, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 10 and self.run < 15:
+                                gameDisplay.blit(ARF3, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 15 and self.run < 20:
+                                gameDisplay.blit(ARF2, (self.x,self.y))
+                                self.run += 1
+                        else:
+                            gameDisplay.blit(ARF0, (self.x,self.y))
+                    if self.direw == 0:
+                        #South
+                        if self.running:
+                            if self.run >= 0 and self.run < 5:
+                                gameDisplay.blit(AF1, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 5 and self.run < 10:
+                                gameDisplay.blit(AF2, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 10 and self.run < 15:
+                                gameDisplay.blit(AF3, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 15 and self.run < 20:
+                                gameDisplay.blit(AF2, (self.x,self.y))
+                                self.run += 1
+                        else:
+                            gameDisplay.blit(AF0, (self.x,self.y))
+                    if self.direw == -1:
+                        #SouthWest
+                        if self.running:
+                            if self.run >= 0 and self.run < 5:
+                                gameDisplay.blit(ALF1, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 5 and self.run < 10:
+                                gameDisplay.blit(ALF2, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 10 and self.run < 15:
+                                gameDisplay.blit(ALF3, (self.x,self.y))
+                                self.run += 1
+                            if self.run >= 15 and self.run < 20:
+                                gameDisplay.blit(ALF2, (self.x,self.y))
+                                self.run += 1
+                        else:
+                            gameDisplay.blit(ALF0, (self.x,self.y))
+            else:
+                gameDisplay.blit(AlienDead, (self.x,self.y))
+
 
         def battlelogupdate(self,text):
             SBBattlelog1.text = SBBattlelog2.text
@@ -394,14 +603,13 @@ def start_SpaceBound():
         def Encountering(self):
             return self.SBEncountering
         
-    SBenemy1 = SBenemy(100, 10, -885, 1850, 50, 75, 10, 250) #At obj 2
-    SBenemy2 = SBenemy(150, 15, 1185, 1553, 50, 75, 5, 300) #at obj 1, front
-    SBenemy3 = SBenemy(200, 20, 1245, 1793, 50, 75, 5, 250) #at obj 1, behind
-    SBenemy4 = SBenemy(100, 10, 375, 1763, 50, 75, 20, 1000) #big radius, slow spd. Big robot sprite
-    SBenemy5 = SBenemy(150, 15, 1315, 463, 50, 75, 7, 300) #rando
-    SBenemy6 = SBenemy(100, 20, -615, 553, 50, 75, 10, 250) #rando
-    SBenemy7 = SBenemy(500, 10, 285, 418, 50, 75, 0, 0) #stationairy, appears after both objectives are found. Sprite with no movement.
-
+    SBenemy1 = SBenemy(100, 10, -885, 1850, 35, 60, 10, 250) #At obj 2
+    SBenemy2 = SBenemy(150, 15, 1185, 1553, 35, 60, 5, 300) #at obj 1, front
+    SBenemy3 = SBenemy(200, 20, 1245, 1793, 35, 60, 5, 250) #at obj 1, behind
+    SBenemy4 = SBenemy(100, 10, 375, 1763, 35, 60, 20, 1000) #big radius, slow spd. Big robot sprite
+    SBenemy5 = SBenemy(150, 15, 1315, 463, 35, 60, 7, 100) #rando
+    SBenemy6 = SBenemy(100, 20, -615, 553, 35, 60, 10, 100) #rando
+    SBenemy7 = SBenemy(500, 10, 285, 418, 35, 60, 0, 0) #stationairy, appears after both objectives are found. Sprite with no movement.
 #   Objectives
     class objective(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h ):
@@ -423,7 +631,6 @@ def start_SpaceBound():
             
     Objective1 = objective(1235, 1653, 50, 30)
     Objective2 = objective(-825, 1813, 50, 30)
-
 #   Objects
     class Object(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h, image):
@@ -435,6 +642,8 @@ def start_SpaceBound():
             self.image = image
             self.healing = False
             self.timer = 0
+            self.tims = 0
+            self.dir = 0
         
         def draw_Object(self):
             if not self.healing:
@@ -483,6 +692,7 @@ def start_SpaceBound():
     Mountains = Object(-1015, -207, 2700, 357, None)
     LavaLake = Object(-1015, 1930, 2700, 250, None)
     Healing_ship = Object(400,425, 100, 100, Healsimg)
+    Quit_Button = Object(5, 5, 67, 65, Quit_Butt)
         
 #   Classless defs
     def moveworld(direction, speed):
@@ -583,6 +793,11 @@ def start_SpaceBound():
 
             if SBMainChar.health <= 0:
                 game_over.start(score)
+
+            if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
+                if pygame.mouse.get_pos()[0] <= 72 and pygame.mouse.get_pos()[1] <= 70:
+                    game_over.start(score)
+
             if not InEncounter:
         #   Character movement
             #   Move left
@@ -654,6 +869,18 @@ def start_SpaceBound():
                     else:
                         movex1 = 0
                         movey1 = 0
+                    if movex1 > 0:
+                        SBenemy1.direw = 1
+                    if movex1 < 0:
+                        SBenemy1.direw = -1
+                    if movey1 > 0:
+                        SBenemy1.dirns = -1
+                    if movey1 < 0:
+                        SBenemy1.dirns = 1
+                    if movey1 == 0 and movex1 == 0:
+                        SBenemy1.running = False
+                    else: 
+                        SBenemy1.running = True
                 SBenemy1.x += movex1
                 SBenemy1.y += movey1   
                 if SBenemy2.alive:
@@ -669,6 +896,18 @@ def start_SpaceBound():
                     else: 
                         movex2 = 0
                         movey2 = 0
+                    if movex2 > 0:
+                        SBenemy2.direw = 1
+                    if movex2 < 0:
+                        SBenemy2.direw = -1
+                    if movey2 > 0:
+                        SBenemy2.dirns = -1
+                    if movey2 < 0:
+                        SBenemy2.dirns = 1
+                    if movey2 == 0 and movex2 == 0:
+                        SBenemy2.running = False
+                    else: 
+                        SBenemy2.running = True
                 SBenemy2.x += movex2
                 SBenemy2.y += movey2
                 if SBenemy3.alive:
@@ -684,6 +923,18 @@ def start_SpaceBound():
                     else:
                         movex3 = 0
                         movey3 = 0
+                    if movex3 > 0:
+                        SBenemy3.direw = 1
+                    if movex3 < 0:
+                        SBenemy3.direw = -1
+                    if movey3 > 0:
+                        SBenemy3.dirns = -1
+                    if movey3 < 0:
+                        SBenemy3.dirns = 1
+                    if movey3 == 0 and movex3 == 0:
+                        SBenemy3.running = False
+                    else: 
+                        SBenemy3.running = True
                 SBenemy3.x += movex3
                 SBenemy3.y += movey3
                 if SBenemy4.alive:
@@ -699,6 +950,18 @@ def start_SpaceBound():
                     else:
                         movex4 = 0
                         movey4 = 0
+                    if movex4 > 0:
+                        SBenemy4.direw = 1
+                    if movex4 < 0:
+                        SBenemy4.direw = -1
+                    if movey4 > 0:
+                        SBenemy4.dirns = -1
+                    if movey4 < 0:
+                        SBenemy4.dirns = 1
+                    if movey4 == 0 and movex4 == 0:
+                        SBenemy4.running = False
+                    else: 
+                        SBenemy4.running = True
                 SBenemy4.x += movex4
                 SBenemy4.y += movey4
                 if SBenemy5.alive:
@@ -714,6 +977,18 @@ def start_SpaceBound():
                     else:
                         movex5 = 0
                         movey5 = 0
+                    if movex5 > 0:
+                        SBenemy5.direw = 1
+                    if movex5 < 0:
+                        SBenemy5.direw = -1
+                    if movey5 > 0:
+                        SBenemy5.dirns = -1
+                    if movey5 < 0:
+                        SBenemy5.dirns = 1
+                    if movey5 == 0 and movex5 == 0:
+                        SBenemy5.running = False
+                    else: 
+                        SBenemy5.running = True
                 SBenemy5.x += movex5
                 SBenemy5.y += movey5
                 if SBenemy6.alive:
@@ -729,13 +1004,25 @@ def start_SpaceBound():
                     else:
                         movex6 = 0
                         movey6 = 0
+                    if movex6 > 0:
+                        SBenemy6.direw = 1
+                    if movex6 < 0:
+                        SBenemy6.direw = -1
+                    if movey6 > 0:
+                        SBenemy6.dirns = -1
+                    if movey6 < 0:
+                        SBenemy6.dirns = 1
+                    if movey6 == 0 and movex6 == 0:
+                        SBenemy6.running = False
+                    else: 
+                        SBenemy6.running = True
                 SBenemy6.x += movex6
                 SBenemy6.y += movey6
                 
         #   Create the world
             CharacterHealth = SBEncounterTextBox(425,700,50,30, "Health: " + str(SBMainChar.health))
-            Score = SBEncounterTextBox(800,5,100,30,"Score: " + str(int(SBMainChar.scoring())))
-            Timer = SBEncounterTextBox(0,5,100,30,"Time: "+str(int(counter/30)))
+            Score = SBEncounterTextBox(800,700,100,30,"Score: " + str(int(SBMainChar.scoring())))
+            Timer = SBEncounterTextBox(800,5,100,30,"Time: "+str(int(counter/30)))
             Objectivetext1 = SBEncounterTextBox(350,5,200,30,"Objective: Find and deactivate the alien structures")
             Objectivetext2 = SBEncounterTextBox(350,5,200,30,"Objective: Deactivate the other alien structure")
             Objectivetext3 = SBEncounterTextBox(350,5,200,30,"Objective: Go back to the ship")
@@ -753,6 +1040,7 @@ def start_SpaceBound():
                 Objectivetext1.EncounterText()
             if SBMainChar.y + SBMainChar.h >= LavaLake.y:
                 SBLavaWarning.EncounterText()
+            Quit_Button.draw_Object()
             Healing_ship.draw_Object()
             Objective1.draw_obj() 
             Objective2.draw_obj()
@@ -762,7 +1050,7 @@ def start_SpaceBound():
             SBenemy4.draw_enemy()
             SBenemy5.draw_enemy()
             SBenemy6.draw_enemy()
-            SBenemy7.draw_enemy()
+            #SBenemy7.draw_enemy()
             SBMainChar.draw_char()
         #   Allow things to happen
             SBenemy1.Encounter()
@@ -771,7 +1059,7 @@ def start_SpaceBound():
             SBenemy4.Encounter()
             SBenemy5.Encounter()
             SBenemy6.Encounter()
-            SBenemy7.Encounter()
+            #SBenemy7.Encounter()
             Healing_ship.Healing()
             SBMainChar.scoring()
         #   Other things 2
