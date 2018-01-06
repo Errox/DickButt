@@ -7,6 +7,7 @@ from time import sleep
 import spacestrike
 import SpaceBound
 import Stranded
+import sumo_smash
 
 
 menu.start_menu()

@@ -9,6 +9,7 @@ def start_menu():
     import SpaceBound
     import Stranded
     import soundboard
+    import sumo_smash
     from time import sleep
     
     #All global variables are set here
@@ -120,6 +121,9 @@ def start_menu():
         elif define_location == "planet_Stranded":
             pygame.mixer.music.stop() 
             Stranded.start_Stranded()
+        elif define_location == "planet_sumo_smash":
+            pygame.mixer.music.stop() 
+            sumo_smash.start_sumo_smash()            
         else:
             print('under construction')
 
@@ -165,7 +169,7 @@ def start_menu():
                             # rechts onderin 
                     if pygame.mouse.get_pos()[0] >= 596 and pygame.mouse.get_pos()[1] >= 5:
                         if pygame.mouse.get_pos()[0] <= 693 and pygame.mouse.get_pos()[1] <= 71:
-                            define_location = "planet_4"
+                            define_location = "planet_sumo_smash"
                             #planet Kimberly
                             #Boven aan het scherm
                             print('planet_4')
