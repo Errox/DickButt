@@ -5,6 +5,7 @@ def start_SpaceBound():
     import time
     import random
     import pygame.locals
+    import game_over
     pygame.init()
 #   things!
     FPS = 30
@@ -15,30 +16,45 @@ def start_SpaceBound():
     pygame.display.set_caption('SpaceBound')
 #   IMAGES
     Backgroundimg = pygame.image.load('resource/images/SpaceBound/Background_SpaceBound.gif')
+    Obj_act = pygame.image.load('resource/images/SpaceBound/Objective_active.png')
+    Obj_inact = pygame.image.load('resource/images/SpaceBound/Objective_inactive.png')
 
-    MC_Stance_1R = pygame.image.load('resource/images/SpaceBound/Character/Right/Character_Stance_1_R.png')
-    MC_Stance_2R = pygame.image.load('resource/images/SpaceBound/Character/Right/Character_Stance_2_R.png')
-    MC_run_1R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_1_R.png')
-    MC_run_2R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_2_R.png')
-    MC_run_3R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_3_R.png')
-    MC_run_4R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_4_R.png')
-    MC_run_5R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_5_R.png')
-    MC_run_6R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_6_R.png')
-    MC_run_7R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_7_R.png')
-    MC_run_8R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_8_R.png')
-    MC_run_9R = pygame.image.load('resource/images/SpaceBound/Character/Right/Char_run_9_R.png')
+    Healsimg = pygame.image.load('resource/images/SpaceBound/Heals/Heals.png')
+    Heal1img = pygame.image.load('resource/images/SpaceBound/Heals/Heal1.png')
+    Heal2img = pygame.image.load('resource/images/SpaceBound/Heals/Heal2.png')
+    Heal3img = pygame.image.load('resource/images/SpaceBound/Heals/Heal3.png')
+    Heal4img = pygame.image.load('resource/images/SpaceBound/Heals/Heal4.png')
+    Heal5img = pygame.image.load('resource/images/SpaceBound/Heals/Heal5.png')
+    Heal6img = pygame.image.load('resource/images/SpaceBound/Heals/Heal6.png')
+    Heal7img = pygame.image.load('resource/images/SpaceBound/Heals/Heal7.png')
+    Heal8img = pygame.image.load('resource/images/SpaceBound/Heals/Heal8.png')
+    Heal9img = pygame.image.load('resource/images/SpaceBound/Heals/Heal9.png')
+    Heal10img = pygame.image.load('resource/images/SpaceBound/Heals/Heal10.png')
+    Heal11img = pygame.image.load('resource/images/SpaceBound/Heals/Heal11.png')
 
-    MC_Stance_1l = pygame.image.load('resource/images/SpaceBound/Character/Left/Character_Stance_1_l.png')
-    MC_Stance_2l = pygame.image.load('resource/images/SpaceBound/Character/left/Character_Stance_2_l.png')
-    MC_run_1l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_1_l.png')
-    MC_run_2l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_2_l.png')
-    MC_run_3l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_3_l.png')
-    MC_run_4l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_4_l.png')
-    MC_run_5l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_5_l.png')
-    MC_run_6l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_6_l.png')
-    MC_run_7l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_7_l.png')
-    MC_run_8l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_8_l.png')
-    MC_run_9l = pygame.image.load('resource/images/SpaceBound/Character/left/Char_run_9_l.png')
+    MC_Stance_1R = pygame.image.load('resource/images/Character/Purple/Right/Stance/1.png')
+    MC_Stance_2R = pygame.image.load('resource/images/Character/Purple/Right/Stance/2.png')
+    MC_run_1R = pygame.image.load('resource/images/Character/Purple/Right/Run/1.png')
+    MC_run_2R = pygame.image.load('resource/images/Character/Purple/Right/Run/2.png')
+    MC_run_3R = pygame.image.load('resource/images/Character/Purple/Right/Run/3.png')
+    MC_run_4R = pygame.image.load('resource/images/Character/Purple/Right/Run/4.png')
+    MC_run_5R = pygame.image.load('resource/images/Character/Purple/Right/Run/5.png')
+    MC_run_6R = pygame.image.load('resource/images/Character/Purple/Right/Run/6.png')
+    MC_run_7R = pygame.image.load('resource/images/Character/Purple/Right/Run/7.png')
+    MC_run_8R = pygame.image.load('resource/images/Character/Purple/Right/Run/8.png')
+    MC_run_9R = pygame.image.load('resource/images/Character/Purple/Right/Run/9.png')
+
+    MC_Stance_1l = pygame.image.load('resource/images/Character/Purple/Left/Stance/1.png')
+    MC_Stance_2l = pygame.image.load('resource/images/Character/Purple/Left/Stance/2.png')
+    MC_run_1l = pygame.image.load('resource/images/Character/Purple/Left/Run/1.png')
+    MC_run_2l = pygame.image.load('resource/images/Character/Purple/Left/Run/2.png')
+    MC_run_3l = pygame.image.load('resource/images/Character/Purple/Left/Run/3.png')
+    MC_run_4l = pygame.image.load('resource/images/Character/Purple/Left/Run/4.png')
+    MC_run_5l = pygame.image.load('resource/images/Character/Purple/Left/Run/5.png')
+    MC_run_6l = pygame.image.load('resource/images/Character/Purple/Left/Run/6.png')
+    MC_run_7l = pygame.image.load('resource/images/Character/Purple/Left/Run/7.png')
+    MC_run_8l = pygame.image.load('resource/images/Character/Purple/Left/Run/8.png')
+    MC_run_9l = pygame.image.load('resource/images/Character/Purple/Left/Run/9.png')
 #   Colours!
     black = (0,0,0)
     white = (255,255,255)
@@ -68,6 +84,7 @@ def start_SpaceBound():
 
         def draw_char(self):
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
+        #   Standing still
             if not self.running:
                 if self.direction == "right":
                     if self.sprite:
@@ -91,6 +108,7 @@ def start_SpaceBound():
                         self.timer -= 1
                         if self.timer == 0:
                             self.sprite = True
+        #   Moving
             else:
                 if self.direction == "right":
                     if self.run >= 0 and self.run < 5:
@@ -152,15 +170,12 @@ def start_SpaceBound():
                         self.run += 1
                     if self.run == 45:
                         self.run = 0
-                print(self.run)
-
-                
 
         def scoring(self):
             scores = 100 * self.kills + self.count
             return scores
 
-    SBMainChar = SBMainCharacter(5000, 500, 425, 410, 50, 75) #temporarily hightened
+    SBMainChar = SBMainCharacter(250, 500, 425, 410, 50, 75) #att should be 10
 #   Texts
     class SBEncounterTextBox(object):
         def __init__(self, x, y, w, h, text):
@@ -260,7 +275,7 @@ def start_SpaceBound():
                 if self.timer2 >= FPS:
                     self.escaped = False
                     self.timer2 = 0
-            #           Collision
+            #           Collision SpaceBound_Exit = True
             if not self.escaped:
                 if SBMainChar.x > self.x and SBMainChar.x < self.x + self.w or SBMainChar.x + SBMainChar.w > self.x and SBMainChar.x + SBMainChar.w < self.x + self.w:
                     if SBMainChar.y > self.y and SBMainChar.y < self.y + self.h or SBMainChar.y + SBMainChar.h > self.y and SBMainChar.y + SBMainChar.h < self.y + self.h:
@@ -290,8 +305,6 @@ def start_SpaceBound():
                                     self.timer = 0
                                     self.battlelogupdate("Enemy encountered!")
                                     self.Your_Turn = True
-                                if SBMainChar.health <= 0:
-                                    SpaceBound_Exit = True
             #                   Your turn
                                 if self.Your_Turn:
                                     if self.timer2 == 0:
@@ -384,10 +397,10 @@ def start_SpaceBound():
     SBenemy1 = SBenemy(100, 10, -885, 1850, 50, 75, 10, 250) #At obj 2
     SBenemy2 = SBenemy(150, 15, 1185, 1553, 50, 75, 5, 300) #at obj 1, front
     SBenemy3 = SBenemy(200, 20, 1245, 1793, 50, 75, 5, 250) #at obj 1, behind
-    SBenemy4 = SBenemy(100, 10, 375, 1763, 50, 75, 20, 1000) #big radius, slow spd
+    SBenemy4 = SBenemy(100, 10, 375, 1763, 50, 75, 20, 1000) #big radius, slow spd. Big robot sprite
     SBenemy5 = SBenemy(150, 15, 1315, 463, 50, 75, 7, 300) #rando
     SBenemy6 = SBenemy(100, 20, -615, 553, 50, 75, 10, 250) #rando
-    SBenemy7 = SBenemy(500, 10, 285, 418, 50, 75, 0, 0) #stationairy, appears after both objectives are found
+    SBenemy7 = SBenemy(500, 10, 285, 418, 50, 75, 0, 0) #stationairy, appears after both objectives are found. Sprite with no movement.
 
 #   Objectives
     class objective(pygame.sprite.Sprite):
@@ -400,12 +413,16 @@ def start_SpaceBound():
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
         
         def draw_obj(self):
-            pygame.draw.rect(gameDisplay, blue, [self.x,self.y,self.w,self.h])
+            self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
+            if not self.touched:
+                gameDisplay.blit(Obj_act, (self.x,self.y))
+            if self.touched:
+                gameDisplay.blit(Obj_inact, (self.x,self.y + 5))
             if pygame.sprite.collide_rect(self, SBMainChar):
                 self.touched = True
             
-    Objective1 = objective(1235, 1653, 50, 50)
-    Objective2 = objective(-825, 1813, 50, 50)
+    Objective1 = objective(1235, 1653, 50, 30)
+    Objective2 = objective(-825, 1813, 50, 30)
 
 #   Objects
     class Object(pygame.sprite.Sprite):
@@ -416,14 +433,56 @@ def start_SpaceBound():
             self.h = h
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
             self.image = image
+            self.healing = False
+            self.timer = 0
         
         def draw_Object(self):
-            gameDisplay.blit(self.image, (self.x,self.y))
+            if not self.healing:
+                gameDisplay.blit(self.image, (self.x,self.y))
+            self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
 
+        def Healing(self):
+            if self.healing:
+                if self.timer >= 0 and self.timer < 3:
+                    gameDisplay.blit(Heal1img, (self.x,self.y))
+                    self.timer += 1
+                if self.timer >= 3 and self.timer < 6:
+                    gameDisplay.blit(Heal2img, (self.x,self.y))
+                    self.timer += 1
+                if self.timer >= 6 and self.timer < 9:
+                    gameDisplay.blit(Heal3img, (self.x,self.y))
+                    self.timer += 1
+                if self.timer >= 9 and self.timer < 12:
+                    gameDisplay.blit(Heal4img, (self.x,self.y))
+                    self.timer += 1
+                if self.timer >= 12 and self.timer < 15:
+                    gameDisplay.blit(Heal5img, (self.x,self.y))
+                    self.timer += 1
+                if self.timer >= 15 and self.timer < 18:
+                    gameDisplay.blit(Heal6img, (self.x,self.y))
+                    self.timer += 1
+                if self.timer >= 18 and self.timer < 21:
+                    gameDisplay.blit(Heal7img, (self.x,self.y))
+                    self.timer += 1
+                if self.timer >= 21 and self.timer < 24:
+                    gameDisplay.blit(Heal8img, (self.x,self.y))
+                    self.timer += 1
+                if self.timer >= 24 and self.timer < 27:
+                    gameDisplay.blit(Heal9img, (self.x,self.y))
+                    self.timer += 1
+                if self.timer >= 27 and self.timer < 30:
+                    gameDisplay.blit(Heal10img, (self.x,self.y))
+                    self.timer += 1
+                if self.timer >= 30 and self.timer < 33:
+                    gameDisplay.blit(Heal11img, (self.x,self.y))
+                    self.timer += 1
+                if self.timer == 33:
+                    self.timer = 0
 
     Background = Object(-1015, -207, 2700, 2385, Backgroundimg)
     Mountains = Object(-1015, -207, 2700, 357, None)
     LavaLake = Object(-1015, 1930, 2700, 250, None)
+    Healing_ship = Object(400,425, 100, 100, Healsimg)
         
 #   Classless defs
     def moveworld(direction, speed):
@@ -432,6 +491,7 @@ def start_SpaceBound():
             Background.x -= speed 
             Mountains.x -= speed
             LavaLake.x -= speed
+            Healing_ship.x -= speed
             Objective1.x -= speed
             Objective2.x -= speed
             SBenemy1.x -= speed
@@ -447,6 +507,7 @@ def start_SpaceBound():
             Background.x += speed
             Mountains.x += speed
             LavaLake.x += speed
+            Healing_ship.x += speed
             Objective1.x += speed
             Objective2.x += speed
             SBenemy1.x += speed
@@ -462,8 +523,9 @@ def start_SpaceBound():
             Background.y += speed
             Mountains.y += speed
             LavaLake.y += speed
+            Healing_ship.y += speed
             Objective1.y += speed
-            Objective1.y += speed
+            Objective2.y += speed
             SBenemy1.y += speed
             SBenemy2.y += speed
             SBenemy3.y += speed
@@ -477,8 +539,9 @@ def start_SpaceBound():
             Background.y -= speed
             Mountains.y -= speed
             LavaLake.y -= speed
+            Healing_ship.y -= speed
             Objective1.y -= speed
-            Objective1.y -= speed
+            Objective2.y -= speed
             SBenemy1.y -= speed
             SBenemy2.y -= speed
             SBenemy3.y -= speed
@@ -493,21 +556,33 @@ def start_SpaceBound():
         SpaceBound_Exit = False
         counter = 0
         while not SpaceBound_Exit:
+        #   Other things 1
+            score = SBMainChar.scoring()
             if SBenemy1.Encountering() or SBenemy2.Encountering() or SBenemy3.Encountering() or SBenemy4.Encountering() or SBenemy5.Encountering() or SBenemy6.Encountering() or SBenemy7.Encountering():
                 InEncounter = True
             else:
                 InEncounter = False
+            if not InEncounter:
+                if pygame.sprite.collide_rect(Healing_ship, SBMainChar):
+                    if SBMainChar.health < 500:
+                        SBMainChar.health += 1
+                        Healing_ship.healing = True
+                    else:
+                        Healing_ship.healing = False
+                else:
+                    Healing_ship.healing = False
         #   When the game is over        
             pygame.event.pump()
             if pygame.event.peek(pygame.QUIT): 
                 print("Clicked X")
-                SpaceBound_Exit = True
+                game_over.start(score)
                 
             if Objective1.touched and Objective2.touched:
-                SBMainChar.count += 10000000/(1000 + counter)
-                Score.bigmessage_display()
-                time.sleep(1)
-                SpaceBound_Exit = True
+                score += int(10000000/(1000 + counter))
+                game_over.start(score)
+
+            if SBMainChar.health <= 0:
+                game_over.start(score)
             if not InEncounter:
         #   Character movement
             #   Move left
@@ -661,13 +736,12 @@ def start_SpaceBound():
             CharacterHealth = SBEncounterTextBox(425,700,50,30, "Health: " + str(SBMainChar.health))
             Score = SBEncounterTextBox(800,5,100,30,"Score: " + str(int(SBMainChar.scoring())))
             Timer = SBEncounterTextBox(0,5,100,30,"Time: "+str(int(counter/30)))
-            Objectivetext1 = SBEncounterTextBox(350,5,200,30,"Objective: Go to the two blue squares")
-            Objectivetext2 = SBEncounterTextBox(350,5,200,30,"Objective: Go to the other blue square")
+            Objectivetext1 = SBEncounterTextBox(350,5,200,30,"Objective: Find and deactivate the alien structures")
+            Objectivetext2 = SBEncounterTextBox(350,5,200,30,"Objective: Deactivate the other alien structure")
             Objectivetext3 = SBEncounterTextBox(350,5,200,30,"Objective: Go back to the ship")
             gameDisplay.fill(black)   
             Background.draw_Object()
-        #   Draw the things           
-            SBMainChar.draw_char()  
+        #   Draw the things             
             CharacterHealth.EncounterText()
             Score.EncounterText()
             Timer.EncounterText()
@@ -679,6 +753,7 @@ def start_SpaceBound():
                 Objectivetext1.EncounterText()
             if SBMainChar.y + SBMainChar.h >= LavaLake.y:
                 SBLavaWarning.EncounterText()
+            Healing_ship.draw_Object()
             Objective1.draw_obj() 
             Objective2.draw_obj()
             SBenemy1.draw_enemy()
@@ -688,7 +763,8 @@ def start_SpaceBound():
             SBenemy5.draw_enemy()
             SBenemy6.draw_enemy()
             SBenemy7.draw_enemy()
-        #   Allow the enemies to fight you
+            SBMainChar.draw_char()
+        #   Allow things to happen
             SBenemy1.Encounter()
             SBenemy2.Encounter()
             SBenemy3.Encounter()
@@ -696,12 +772,16 @@ def start_SpaceBound():
             SBenemy5.Encounter()
             SBenemy6.Encounter()
             SBenemy7.Encounter()
-        #   Other things
+            Healing_ship.Healing()
+            SBMainChar.scoring()
+        #   Other things 2
             counter += 1
             pygame.display.update()
             clock.tick(FPS)
+            print(Healing_ship.healing)
 
 #   Other things!
     SBgame_loop()
-    pygame.quit()
-    quit()
+    main()
+    #pygame.quit()
+    #quit()
