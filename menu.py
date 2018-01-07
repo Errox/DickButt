@@ -6,7 +6,10 @@ def start_menu():
     import game_over
     import astrodoge 
     import spacestrike
+    import SpaceBound
+    import Stranded
     import soundboard
+    import sumo_smash
     from time import sleep
     
     #All global variables are set here
@@ -112,6 +115,15 @@ def start_menu():
         elif define_location == "planet_spacestrike":
             pygame.mixer.music.stop()
             spacestrike.start_spacestrike()
+        elif define_location == "planet_SpaceBound":
+            pygame.mixer.music.stop()
+            SpaceBound.start_SpaceBound()
+        elif define_location == "planet_Stranded":
+            pygame.mixer.music.stop() 
+            Stranded.start_Stranded()
+        elif define_location == "planet_sumo_smash":
+            pygame.mixer.music.stop() 
+            sumo_smash.start_sumo_smash()            
         else:
             print('under construction')
 
@@ -152,21 +164,21 @@ def start_menu():
                             define_location = "planet_spacestrike"
                     if pygame.mouse.get_pos()[0] >= 630 and pygame.mouse.get_pos()[1] >= 637:
                         if pygame.mouse.get_pos()[0] <= 720 and pygame.mouse.get_pos()[1] <= 722:
-                            define_location = "planet_3"
+                            define_location = "planet_SpaceBound"
                             # planet Eva
                             # rechts onderin 
                     if pygame.mouse.get_pos()[0] >= 596 and pygame.mouse.get_pos()[1] >= 5:
                         if pygame.mouse.get_pos()[0] <= 693 and pygame.mouse.get_pos()[1] <= 71:
-                            define_location = "planet_4"
+                            define_location = "planet_sumo_smash"
                             #planet Kimberly
                             #Boven aan het scherm
                             print('planet_4')
                     if pygame.mouse.get_pos()[0] >= 21 and pygame.mouse.get_pos()[1] >= 557:
                         if pygame.mouse.get_pos()[0] <= 86 and pygame.mouse.get_pos()[1] <= 627:
-                            define_location = "planet_5" 
+                            define_location = "planet_Stranded" 
                             #planet Davin
                             # links onder 
-                            print('planet_5')       
+                                   
  
         pygame.display.flip()
     pygame.quit()
