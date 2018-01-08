@@ -10,10 +10,10 @@ pygame.mixer.init()
 
 #check if there is already a sound playing. Else fade the current one out
 
-
 #all music functions
 def main_menu():
     pygame.mixer.music.load('resource/soundboard/music/main_menu/main_menu.ogg')
+    pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(1)
 
 #sequence when game_over scene is triggered
@@ -30,27 +30,27 @@ def game_over(score):
             pygame.mixer.music.load('resource/soundboard/music/game_over/game_over_85.ogg')
         else:
             pygame.mixer.music.load('resource/soundboard/music/game_over/game_over.ogg')
+    pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(1)
 
 #define pause
 def pause():
     pygame.mixer.music.pause()
 
-
 #Astrododge main. 
 def ast_main():
     pygame.mixer.music.load('resource/soundboard/music/astrododge/song_1.ogg')
     pygame.mixer.music.queue('resource/soundboard/music/astrododge/song_2.ogg')
     pygame.mixer.music.queue('resource/soundboard/music/astrododge/song_3.ogg')
+    pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
     
 def bullet_shoot_friendly():
     bullet = pygame.mixer.Sound('resource/soundboard/shoot/friendly/sfx_1.ogg')
-    bullet.set_volume(0.5)
+    bullet.set_volume(0.3)
     bullet.play()
     
 def bullet_on_hit_enemy():
-
     random_1 = random.randint(0, 100)
     if random_1 >= 81:
         bullet = pygame.mixer.Sound('resource/soundboard/onhit/enemy/hit_1.wav')
