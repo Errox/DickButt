@@ -488,9 +488,7 @@ def start_SpaceBound():
         #           Collision
             if not self.escaped:
                 if SBMainChar.x >= self.x and SBMainChar.x <= self.x + self.w or SBMainChar.x + SBMainChar.w >= self.x and SBMainChar.x + SBMainChar.w <= self.x + self.w:
-                    print("Touching x")
                     if SBMainChar.y >= self.y and SBMainChar.y <= self.y + self.h or SBMainChar.y + SBMainChar.h >= self.y and SBMainChar.y + SBMainChar.h <= self.y + self.h:
-                        print("Touching y")
                         if self.timer <= FPS:
                             SBEncountertext.bigmessage_display()
                             self.timer += 1
@@ -634,7 +632,6 @@ def start_SpaceBound():
                 gameDisplay.blit(Obj_inact, (self.x,self.y + 5))
             if pygame.sprite.collide_rect(self, SBMainChar):
                 self.touched = True
-                SBMainChar.attack += 10
             
     Objective1 = objective(1235, 1653, 50, 30)
     Objective2 = objective(-825, 1813, 50, 30)
@@ -895,18 +892,20 @@ def start_SpaceBound():
             ObjClear = SBEncounterTextBox(350, SBMainChar.y + 80,100,30,"You deactivated the structure. You feel your power growing stronger...")
             gameDisplay.fill(black)   
             Background.draw_Object()
-        #   Draw the things             
+        #   Draw the things         SBMainChar.attack    
             CharacterHealth.EncounterText()
             Score.EncounterText()
             Timer.EncounterText()
             if Objective1.touched and Objective2.touched:
                 Objectivetext3.EncounterText()
                 Obj_Cleared = True
+                SBMainChar.attack = 50
                 if times <= 60:
                     ObjClear.EncounterText()
                     times += 1
             elif Objective1.touched or Objective2.touched:
                 Objectivetext2.EncounterText()
+                SBMainChar.attack = 25
                 if times <= 30:
                     ObjClear.EncounterText()
                     times += 1
