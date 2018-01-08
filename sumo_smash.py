@@ -38,16 +38,16 @@ def start_sumo_smash():
         def update(self):
             keystate = pygame.key.get_pressed()
             if keystate[pygame.K_LEFT]:
-                    self.speedx = -12
+                    self.speedx = -10
                     self.speedy = 0
             if keystate[pygame.K_RIGHT]:
-                    self.speedx = 12
+                    self.speedx = 10
                     self.speedy = 0
             if keystate[pygame.K_UP]:
-                    self.speedy = -12
+                    self.speedy = -10
                     self.speedx = 0
             if keystate[pygame.K_DOWN]:
-                    self.speedy = 12 
+                    self.speedy = 10
                     self.speedx = 0     
             self.rect.x += self.speedx
             self.rect.y += self.speedy
@@ -160,10 +160,10 @@ def start_sumo_smash():
     while running:
         time = time - 1
         if time == 9750: 
-            block_1 = -400
-            block_2 = 800
-            block_3 = 800
-            block_4 = -400
+            block_1 = -450
+            block_2 = 850
+            block_3 = 850
+            block_4 = -450
         if time == 9500: 
             block_1 = -350
             block_2 = 750
