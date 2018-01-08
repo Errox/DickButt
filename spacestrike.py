@@ -148,7 +148,7 @@ def start_spacestrike():
         #give properties to the bullet itself
         def __init__(self, x, y):
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.image.load('resource/images/spacestrike/projectiles/cube.png').convert()
+            self.image = pygame.image.load('resource/images/spacestrike/projectiles/bullet.png').convert()
             self.image.set_colorkey(BLACK)
             self.rect = self.image.get_rect()
             self.rect.bottom = y
