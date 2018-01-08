@@ -56,7 +56,7 @@ def start_SpaceBound():
     MC_run_7l = pygame.image.load('resource/images/Character/Purple/Left/Run/7.png')
     MC_run_8l = pygame.image.load('resource/images/Character/Purple/Left/Run/8.png')
     MC_run_9l = pygame.image.load('resource/images/Character/Purple/Left/Run/9.png')
-#   Aliens
+#   Alienimg
     AB1 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Back/1.png')
     AB2 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Back/2.png')
     AB3 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Back/3.png')
@@ -105,7 +105,7 @@ def start_SpaceBound():
     gray = (50,50,50)
 #   Main Character
     class SBMainCharacter(pygame.sprite.Sprite):
-        def __init__(self,health,attack,x,y,w,h):
+        def __init__(self,health,attack,x,y,w,h,stam):
             self.health = health
             self.attack = attack
             self.x = x
@@ -214,7 +214,7 @@ def start_SpaceBound():
             scores = 100 * self.kills + self.count
             return scores
 
-    SBMainChar = SBMainCharacter(250, 10, 425, 410, 50, 75) #att should be 10
+    SBMainChar = SBMainCharacter(250, 10, 425, 410, 50, 75, 100)
 #   Texts
     class SBEncounterTextBox(object):
         def __init__(self, x, y, w, h, text):
@@ -274,13 +274,13 @@ def start_SpaceBound():
     Objectivetext3 = SBEncounterTextBox(350,5,200,30,"Objective: Go back to the ship")
 #   Enemies
     class SBenemy(pygame.sprite.Sprite):
-        def __init__(self, health, attack, x, y, w, h, move, radius):
+        def __init__(self, health, attack, x, y, move, radius):
             self.health = health
             self.attack = attack
             self.x = x
             self.y = y
-            self.w = w
-            self.h = h
+            self.w = 50
+            self.h = 75
             self.move = move
             self.radius = radius
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
@@ -290,6 +290,8 @@ def start_SpaceBound():
             self.Your_Turn = True
             self.SBEncountering = False
             self.attackclicked = False
+            self.gunclicked = False
+            self.itemsclicked = False
             self.runclicked = False
             self.runclickedfailed = False
             self.enemyattacked = False
@@ -483,11 +485,12 @@ def start_SpaceBound():
                 if self.timer2 >= FPS:
                     self.escaped = False
                     self.timer2 = 0
-            #           Collision
+        #           Collision
             if not self.escaped:
-                if SBMainChar.x > self.x and SBMainChar.x < self.x + self.w or SBMainChar.x + SBMainChar.w > self.x and SBMainChar.x + SBMainChar.w < self.x + self.w:
-                    if SBMainChar.y > self.y and SBMainChar.y < self.y + self.h or SBMainChar.y + SBMainChar.h > self.y and SBMainChar.y + SBMainChar.h < self.y + self.h:
-                        print("touching")
+                if SBMainChar.x >= self.x and SBMainChar.x <= self.x + self.w or SBMainChar.x + SBMainChar.w >= self.x and SBMainChar.x + SBMainChar.w <= self.x + self.w:
+                    print("Touching x")
+                    if SBMainChar.y >= self.y and SBMainChar.y <= self.y + self.h or SBMainChar.y + SBMainChar.h >= self.y and SBMainChar.y + SBMainChar.h <= self.y + self.h:
+                        print("Touching y")
                         if self.timer <= FPS:
                             SBEncountertext.bigmessage_display()
                             self.timer += 1
@@ -530,11 +533,9 @@ def start_SpaceBound():
                                         if SBFight.EncounterText().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                                             self.attackclicked = True
                                         if SBMoves.EncounterText().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-                                            print("WIP")
-                                            self.Your_Turn = False
+                                            self.gunclicked = True
                                         if SBItems.EncounterText().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-                                            print("WIP")
-                                            self.Your_Turn = False
+                                            self.itemsclicked = True
                                         if SBRun.EncounterText().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                                             if random.randint(0,100) < 75:
                                                 self.runclicked = True
@@ -555,6 +556,10 @@ def start_SpaceBound():
                                             self.timer2 = 0
                                             time.sleep(1)
                                             self.battlelogupdate("You attacked for " + str(SBMainChar.attack) + " damage")
+                                    if self.gunclicked:
+                                        pass
+                                    if self.itemsclicked:
+                                        pass
                                     if self.runclicked:
                                         if self.timer2 <= FPS:
                                             SBEscape.bigmessage_display()
@@ -603,13 +608,13 @@ def start_SpaceBound():
         def Encountering(self):
             return self.SBEncountering
         
-    SBenemy1 = SBenemy(100, 10, -885, 1850, 35, 60, 9, 250) #At obj 2
-    SBenemy2 = SBenemy(150, 15, 1185, 1553, 35, 60, 9, 300) #at obj 1, front
-    SBenemy3 = SBenemy(200, 20, 1245, 1793, 35, 60, 5, 250) #at obj 1, behind
-    SBenemy4 = SBenemy(100, 10, 375, 1763, 35, 60, 5, 1000) #big radius, slow spd. Big robot sprite
-    SBenemy5 = SBenemy(150, 15, 1315, 463, 35, 60, 7, 100) #rando
-    SBenemy6 = SBenemy(100, 20, -615, 553, 35, 60, 9, 100) #rando
-    SBenemy7 = SBenemy(500, 20, 433, 500, 35, 60, 0, 0) #stationairy, appears after both objectives are found. Sprite with no movement.
+    SBenemy1 = SBenemy(100, 10, -885, 1850, 9, 250) #At obj 2
+    SBenemy2 = SBenemy(150, 15, 1185, 1553, 9, 300) #at obj 1, front
+    SBenemy3 = SBenemy(200, 20, 1245, 1793, 5, 250) #at obj 1, behind
+    SBenemy4 = SBenemy(100, 10, 375, 1763, 5, 1000) #big radius, slow spd. Big robot sprite
+    SBenemy5 = SBenemy(150, 15, 1315, 463, 7, 100) #rando
+    SBenemy6 = SBenemy(100, 20, -615, 553, 9, 100) #rando
+    SBenemy7 = SBenemy(500, 20, 433, 500, 0, 0) #stationairy, appears after both objectives are found. Sprite with no movement.
     Aliens = [SBenemy1,SBenemy2,SBenemy3,SBenemy4,SBenemy5,SBenemy6,SBenemy7]
 #   Objectives
     class objective(pygame.sprite.Sprite):
@@ -695,7 +700,6 @@ def start_SpaceBound():
     LavaLake = Object(-1015, 1930, 2700, 250, None)
     Healing_ship = Object(400,425, 100, 100, Healsimg)
     Quit_Button = Object(5, 5, 67, 65, Quit_Butt)
-
 #   Classless defs
     def moveworld(direction, speed):
         if direction == "right":
@@ -883,8 +887,7 @@ def start_SpaceBound():
                         else: 
                             alien.running = True
                     alien.x += movex
-                    alien.y += movey 
-                    print (str(movex) + str(movey))          
+                    alien.y += movey  
         #   Create the world
             CharacterHealth = SBEncounterTextBox(425,700,50,30, "Health: " + str(SBMainChar.health))
             Score = SBEncounterTextBox(800,700,100,30,"Score: " + str(int(SBMainChar.scoring())))
