@@ -9,6 +9,7 @@ def start_Stranded():
     import time
 
     # Global constants
+    # images
 
     # Colors
     BLACK = (0, 0, 0)
@@ -42,7 +43,11 @@ def start_Stranded():
             # create and color the blocks
             width = 50
             height = 75
-            self.image = pygame.image.load('resource/images/Stranded/player.png').convert()
+            self.walking = False
+            self.current_frame = 0
+            self.last_update = 0
+            self.load_images()
+            self.image = pygame.image.load('resource/images/Character/Purple/Right/Stance/1.png').convert()
             self.image = pygame.transform.scale(self.image, (50, 75))
             self.image.set_colorkey(BLACK)
             self.rect = self.image.get_rect()
@@ -59,9 +64,28 @@ def start_Stranded():
             self.level = None
             # Inventory
             self.inventory = None
+        def load_images(self):
+            self.standing_frames = [pygame.image.load('resource/images/Stranded/player purple/s1.png').convert(),
+                                    pygame.image.load('resource/images/Stranded/player purple/s2.png').convert()]
+            for frame in self.standing_frames:
+                frame.set_colorkey(BLACK)
+            self.walk_frames_r = [pygame.image.load('resource/images/Stranded/player purple/1.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/2.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/3.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/4.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/5.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/6.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/7.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/8.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/9.png').convert()]
+            self.walk_frames_l = []
+            for frame in self.walk_frames_r:
+                frame.set_colorkey(BLACK)
+                self.walk_frames_l.append(pygame.transform.flip(frame, True, False))
 
         def update(self):
             # move the player
+            self.animate()
             # calculate gravity
             self.calc_grav()
 
@@ -95,7 +119,7 @@ def start_Stranded():
                     # set left side to right side
                     self.rect.left = block.rect.right
 
-            # move up and down
+            # move up and down 2
             self.rect.y += self.change_y
 
             # Check if MG_Player hits anything
@@ -114,6 +138,7 @@ def start_Stranded():
             # Check if MG_Player hits monster
             monster_hit_list = pygame.sprite.spritecollide(self, self.level.monster_list, False)
             for block in monster_hit_list:
+
                 done = True
                 # reset position based on objects
                 if self.change_y > 0:
@@ -139,6 +164,30 @@ def start_Stranded():
                 done = False
                 self.inventory = True
                 block.hide()
+        def animate(self):
+            now = pygame.time.get_ticks()
+            if self.change_x != 0:
+                self.walking = True
+            else:
+                self.walking = False
+            if self.walking:
+                if now - self.last_update > 50:
+                    self.last_update = now
+                    self.current_frame = (self.current_frame + 1) % len(self.walk_frames_r)
+
+                    if self.change_x > 13:
+                        self.image = self.walk_frames_r[self.current_frame]
+                    else:
+                        self.image = self.walk_frames_l[self.current_frame]
+
+
+            if not self.walking:
+                if now - self.last_update > 400:
+                    self.last_update = now
+                    self.current_frame = (self.current_frame + 1) % len(self.standing_frames)
+                    bottom = self.rect.bottom
+                    self.image = self.standing_frames[self.current_frame]
+                    self.rect.bottom = bottom
 
         # calculating gravity
         def calc_grav(self):
@@ -184,7 +233,6 @@ def start_Stranded():
         def __init__(self, width, height):
             # monster constructor
             super().__init__()
-
             self.image = pygame.Surface([width, height])
             self.image.fill(RED)
 
@@ -196,6 +244,8 @@ def start_Stranded():
 
         def __init__(self, width, height):
             # Cship constructor
+
+            # call the parent's constructor
             super().__init__()
 
             self.image = pygame.Surface([width, height])
@@ -209,6 +259,8 @@ def start_Stranded():
 
         def __init__(self, width, height):
             # Skey constructor
+
+            # call the parent's constructor
             super().__init__()
 
             self.image = pygame.Surface([width, height])
@@ -228,6 +280,8 @@ def start_Stranded():
 
         def __init__(self, width, height):
             # platform constructor
+
+            # call the parent's constructor
             super().__init__()
 
             self.image = pygame.Surface([width, height])
@@ -500,6 +554,19 @@ def start_Stranded():
             monster.MG_player = self.MG_player
             self.monster_list.add(monster)
 
+            #Kill block left of map
+            monster = Monster(1000, 900)
+            monster.rect.x = -1500
+            monster.rect.y = 0
+            monster.MG_player = self.MG_player
+            self.monster_list.add(monster)
+            #Kill block right of map
+            monster = Monster(700, 100)
+            monster.rect.x = 9000
+            monster.rect.y = 000
+            monster.MG_player = self.MG_player
+            self.monster_list.add(monster)
+
             monster = Monster(400, 50)
             monster.rect.x = 3800
             monster.rect.y = 830
@@ -532,8 +599,8 @@ def start_Stranded():
             monster = MovingMonster(50, 75)
             monster.rect.x = 5300
             monster.rect.y = 755
-            monster.boundary_left = 5300
-            monster.boundary_right = 6400
+            monster.boundary_left = 5200
+            monster.boundary_right = 6450
             monster.change_x = 8
             monster.player = self.MG_player
             monster.level = self
@@ -583,7 +650,6 @@ def start_Stranded():
 
         pygame.display.set_caption("Stranded")
 
-        global score
         # create the MG_player
         mg_player = MG_Player()
 
@@ -625,13 +691,11 @@ def start_Stranded():
                         mg_player.go_right()
                     if event.key == pygame.K_UP:
                         mg_player.jump()
-
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT and mg_player.change_x < 0:
                         mg_player.stop()
                     if event.key == pygame.K_RIGHT and mg_player.change_x > 0:
                         mg_player.stop()
-
             # update the player
             active_sprite_list.update()
 
@@ -666,6 +730,7 @@ def start_Stranded():
             active_sprite_list.draw(screen)
 
             score -= 1
+
             #Game over screen
             if done:
                 print('game over')
