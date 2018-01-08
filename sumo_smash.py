@@ -38,16 +38,16 @@ def start_sumo_smash():
         def update(self):
             keystate = pygame.key.get_pressed()
             if keystate[pygame.K_LEFT]:
-                    self.speedx = -12
+                    self.speedx = -10
                     self.speedy = 0
             if keystate[pygame.K_RIGHT]:
-                    self.speedx = 12
+                    self.speedx = 10
                     self.speedy = 0
             if keystate[pygame.K_UP]:
-                    self.speedy = -12
+                    self.speedy = -10
                     self.speedx = 0
             if keystate[pygame.K_DOWN]:
-                    self.speedy = 12 
+                    self.speedy = 10
                     self.speedx = 0     
             self.rect.x += self.speedx
             self.rect.y += self.speedy
