@@ -112,6 +112,7 @@ def start_SpaceBound():
             self.y = y
             self.w = w
             self.h = h
+            self.stam = stam
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
             self.kills = 0
             self.count = 0
@@ -211,7 +212,7 @@ def start_SpaceBound():
                         self.run = 0
 
         def scoring(self):
-            scores = 100 * self.kills + self.count
+            scores = 1000 * self.kills + self.count
             return scores
 
     SBMainChar = SBMainCharacter(250, 10, 425, 410, 50, 75, 100)
@@ -223,6 +224,7 @@ def start_SpaceBound():
             self.w = w
             self.h = h
             self.text = text
+            self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
 
         def EncounterText(self):
             font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 20)
@@ -241,6 +243,7 @@ def start_SpaceBound():
 
         def addbox(self):
             pygame.draw.rect(gameDisplay, grey, [self.x, self.y, self.w, self.h])
+            return self.rect
 
         
         def bigmessage_display(self):
@@ -252,22 +255,35 @@ def start_SpaceBound():
             gameDisplay.blit(TextSurf, text_rect)
 
     SBEncountertext = SBEncounterTextBox(0,0,700,100,"Encounter!")
+   # Encounter blocks
     SBFight = SBEncounterTextBox(670,475,110,30,"    Fight    ")
     SBMoves = SBEncounterTextBox(670,525,110,30,"     Gun     ")
     SBItems = SBEncounterTextBox(670,575,110,30,"    Items    ")
     SBRun = SBEncounterTextBox(670,625,110,30,  "     Run     ")
+   # Gun moves
+    GunPowershot = SBEncounterTextBox(670,475,110,30,"Power Shot")
+    GunHeal = SBEncounterTextBox(670,525,110,30,"Stimpack")
+    GunHealthshot = SBEncounterTextBox(670,575,110,30,"Health Shot")
+    GunBack = SBEncounterTextBox(670,625,110,30,"Back")
+
+   # Battle text
     SBAttack = SBEncounterTextBox(0,0,700,100,"You attacked!")
+    SBGunPowershot = SBEncounterTextBox(0,0,700,100,"Power Shot!")
+    SBGunHeal = SBEncounterTextBox(0,0,700,100,"Stimpack!")
+    SBGunHealthshot = SBEncounterTextBox(0,0,700,100,"Health Shot!")
     SBAttacked = SBEncounterTextBox(0,0,700,100,"Enemy attacked!")
     SBEscape = SBEncounterTextBox(0,0,700,100,"You escaped!")
     SBEscapefail = SBEncounterTextBox(0,0,700,100,"Couldn't escape!")
+   # Battle logs
     SBBattlelog1 = SBEncounterTextBox(70,485,500,20,"")
     SBBattlelog2 = SBEncounterTextBox(70,505,500,20,"")
-    SBBattlelog3 = SBEncounterTextBox(70,525,500,20,"")
+    SBBattlelog3 = SBEncounterTextBox(70,525,500,20,"Enemy Encountered!")
     SBBattlelog4 = SBEncounterTextBox(70,545,500,20,"")
-    SBBattlelog5 = SBEncounterTextBox(70,565,500,20,"")
-    SBBattlelog6 = SBEncounterTextBox(70,585,500,20,"")
-    SBBattlelog7 = SBEncounterTextBox(70,605,500,20,"")
-    SBBattlelog8 = SBEncounterTextBox(70,625,500,20,"Enemy encountered!")
+    SBBattlelog5 = SBEncounterTextBox(70,565,500,20,"Click Fight for a regular attack")
+    SBBattlelog6 = SBEncounterTextBox(70,585,500,20,"Click Gun for special moves")
+    SBBattlelog7 = SBEncounterTextBox(70,605,500,20,"Items currently in progress")
+    SBBattlelog8 = SBEncounterTextBox(70,625,500,20,"Click Run to attempt to flee, but be quick, you won't have long")
+   # Other
     SBLavaWarning = SBEncounterTextBox(350,650,200,30,"I shouldn't get too close to the lava")
     Objectivetext1 = SBEncounterTextBox(350,5,200,30,"Objective: Find and deactivate the alien structures")
     Objectivetext2 = SBEncounterTextBox(350,5,200,30,"Objective: Deactivate the other alien structure")
@@ -294,6 +310,7 @@ def start_SpaceBound():
             self.itemsclicked = False
             self.runclicked = False
             self.runclickedfailed = False
+            self.clicked = ""
             self.enemyattacked = False
             self.escaped = False
             self.direw = 0
@@ -486,119 +503,225 @@ def start_SpaceBound():
                     self.escaped = False
                     self.timer2 = 0
         #           Collision
-            if not self.escaped:
-                if SBMainChar.x >= self.x and SBMainChar.x <= self.x + self.w or SBMainChar.x + SBMainChar.w >= self.x and SBMainChar.x + SBMainChar.w <= self.x + self.w:
-                    if SBMainChar.y >= self.y and SBMainChar.y <= self.y + self.h or SBMainChar.y + SBMainChar.h >= self.y and SBMainChar.y + SBMainChar.h <= self.y + self.h:
-                        if self.timer <= FPS:
-                            SBEncountertext.bigmessage_display()
-                            self.timer += 1
-                            self.SBEncountering = True
-                        if self.timer >= FPS:
-                            if self.SBEncountering:
-                #               Drawing the encounter
-                                pygame.draw.rect(gameDisplay, gray, [25, 100, 850, 600]) # Initial box
-                                pygame.draw.rect(gameDisplay, black, [60,150,775,275]) # Enemy visual box
-                                pygame.draw.rect(gameDisplay, black, [60,475,510,180]) # Battle log box
-                    #           Battle log text
-                                SBBattlelog1.Battlelogtext()
-                                SBBattlelog2.Battlelogtext()
-                                SBBattlelog3.Battlelogtext()
-                                SBBattlelog4.Battlelogtext()
-                                SBBattlelog5.Battlelogtext()
-                                SBBattlelog6.Battlelogtext()
-                                SBBattlelog7.Battlelogtext()
-                                SBBattlelog8.Battlelogtext()
-                                (SBEncounterTextBox(425,105,50,30,"Enemy Health: " + str(self.health))).EncounterText()#enemy health
-                #                       When does the combat end
-                                if self.health <= 0:
-                                    self.SBEncountering = False
-                                    self.timer = 0
-                                    self.battlelogupdate("Enemy encountered!")
-                                    self.Your_Turn = True
-            #                   Your turn
-                                if self.Your_Turn:
-                                    if self.timer2 == 0:
-                #                           Create the things
-                                        SBFight.addbox()
-                                        SBMoves.addbox()
-                                        SBItems.addbox()
-                                        SBRun.addbox()
-                                        SBFight.EncounterText()
-                                        SBMoves.EncounterText()
-                                        SBItems.EncounterText()
-                                        SBRun.EncounterText()
-                #                           Click the things
-                                        if SBFight.EncounterText().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-                                            self.attackclicked = True
-                                        if SBMoves.EncounterText().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-                                            self.gunclicked = True
-                                        if SBItems.EncounterText().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-                                            self.itemsclicked = True
-                                        if SBRun.EncounterText().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-                                            if random.randint(0,100) < 75:
-                                                self.runclicked = True
-                                            else:
-                                                self.runclickedfailed = True
-                #                       Do the things
-                                    if self.attackclicked:
-                                        if self.timer2 <= FPS:
-                                            SBAttack.bigmessage_display()
-                                            self.timer2 += 1
-                                        if self.timer2 > FPS:
-                                            self.attacked()
-                                            self.Your_Turn = False
-                                            if not self.alive:
-                                                self.SBEncountering = False
-                                                SBMainChar.kills += 1
-                                            self.attackclicked = False
-                                            self.timer2 = 0
-                                            time.sleep(1)
-                                            self.battlelogupdate("You attacked for " + str(SBMainChar.attack) + " damage")
-                                    if self.gunclicked:
-                                        pass
-                                    if self.itemsclicked:
-                                        pass
-                                    if self.runclicked:
-                                        if self.timer2 <= FPS:
-                                            SBEscape.bigmessage_display()
-                                            self.timer2 += 1
-                                        if self.timer2 > FPS:
+            if self.alive:
+                if not self.escaped:
+                    if SBMainChar.x >= self.x and SBMainChar.x <= self.x + self.w or SBMainChar.x + SBMainChar.w >= self.x and SBMainChar.x + SBMainChar.w <= self.x + self.w:
+                        if SBMainChar.y >= self.y and SBMainChar.y <= self.y + self.h or SBMainChar.y + SBMainChar.h >= self.y and SBMainChar.y + SBMainChar.h <= self.y + self.h:
+                            if self.timer <= FPS:
+                                SBEncountertext.bigmessage_display()
+                                self.timer += 1
+                                self.SBEncountering = True
+                            if self.timer >= FPS:
+                                if self.SBEncountering:
+                    #               Drawing the encounter
+                                    pygame.draw.rect(gameDisplay, gray, [25, 100, 850, 600]) # Initial box
+                                    pygame.draw.rect(gameDisplay, black, [60,150,775,275]) # Enemy visual box
+                                    pygame.draw.rect(gameDisplay, black, [60,475,510,180]) # Battle log box
+                    #               Battle log text
+                                    SBBattlelog1.Battlelogtext()
+                                    SBBattlelog2.Battlelogtext()
+                                    SBBattlelog3.Battlelogtext()
+                                    SBBattlelog4.Battlelogtext()
+                                    SBBattlelog5.Battlelogtext()
+                                    SBBattlelog6.Battlelogtext()
+                                    SBBattlelog7.Battlelogtext()
+                                    SBBattlelog8.Battlelogtext()
+                                    (SBEncounterTextBox(425,105,50,30,"Enemy Health: " + str(self.health))).EncounterText()
+                                    (SBEncounterTextBox(550,700,50,30,"Gun energy: " + str(SBMainChar.stam))).EncounterText()
+                    #               When does the combat end
+                                    if self.health <= 0:
+                                        self.die()
+                                    if not self.alive:
                                             self.SBEncountering = False
-                                            self.runclicked = False
-                                            self.escaped = True
+                                            SBMainChar.kills += 1
+                                            SBMainChar.stam = 100
                                             self.timer = 0
-                                            self.timer2 = 0
-                                            time.sleep(1)
-                                            self.battlelogupdate("You escaped! (75%)")
-                                    if self.runclickedfailed:
+                                            self.battlelogupdate("Enemy encountered!")
+                                            self.Your_Turn = True                                     
+                #                   Your turn
+                                    if self.Your_Turn:
+                                        if self.timer2 == 0:
+                    #                       Click the things
+                                            if SBFight.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                                                self.attackclicked = True
+                                            if SBMoves.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                                                self.gunclicked = True
+                                            if SBItems.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                                                self.itemsclicked = True
+                                            if SBRun.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                                                if random.randint(0,100) < 75:
+                                                    self.runclicked = True
+                                                else:
+                                                    self.runclickedfailed = True
+                    #                       Do the things
+                                        if not self.gunclicked and not self.itemsclicked:
+                                            SBFight.addbox()
+                                            SBFight.EncounterText()
+                                            SBMoves.addbox()
+                                            SBMoves.EncounterText()
+                                            SBItems.addbox()
+                                            SBItems.EncounterText()
+                                            SBRun.addbox()
+                                            SBRun.EncounterText()
+                                        if self.attackclicked:
+                                            if self.timer2 <= FPS:
+                                                SBAttack.bigmessage_display()
+                                                self.timer2 += 1
+                                            if self.timer2 > FPS:
+                                                self.attacked(1,0,0)
+                                                self.Your_Turn = False
+                                                self.attackclicked = False
+                                                self.timer2 = 0
+                                        if self.gunclicked:
+                                            if self.timer2 == 1:
+                                                self.battlelogupdate("")
+                                            if self.timer2 == 4:
+                                                self.battlelogupdate("Powershot deals 1.5 x dmg and costs 20 gun energy")
+                                            if self.timer2 == 7:
+                                                self.battlelogupdate("Healing heals you for 100 dmg at the cost of 25 gun energy")
+                                            if self.timer2 == 10:
+                                                self.battlelogupdate("Health shot will dmg you, but deal double dmg to the enemy")
+                                            if self.timer2 == 13:
+                                                self.battlelogupdate("(dmg to self can't crit)")
+                                            if self.timer2 == 16:
+                                                self.battlelogupdate("Click back to go back")
+                                            if self.timer2 <= 16:
+                                                self.timer2 += 1
+                                                SBFight.addbox()
+                                                SBMoves.addbox()
+                                                SBItems.addbox()
+                                                SBRun.addbox()
+                                            if self.timer2 > 16:
+                                                if SBFight.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                                                    self.clicked = "Powershot"
+                                                if SBMoves.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                                                    self.clicked = "Healing"
+                                                if SBItems.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                                                    self.clicked = "Health shot"
+                                                if SBRun.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                                                    self.clicked = "Back"
+                                                GunPowershot.EncounterText()
+                                                GunHeal.EncounterText()
+                                                GunHealthshot.EncounterText()
+                                                GunBack.EncounterText()
+                                        if self.clicked == "Powershot":
+                                            if SBMainChar.stam >= 20:
+                                                if self.timer2 <= 45:
+                                                    SBGunPowershot.bigmessage_display()
+                                                    self.timer2 += 1
+                                                if self.timer2 > 45:
+                                                    self.attacked(1.5, 20, 0)
+                                                    self.Your_Turn = False
+                                                    self.gunclicked = False
+                                                    self.clicked = ""
+                                                    self.timer2 = 0
+                                            else:
+                                                self.battlelogupdate("Not enough energy ( 20 gun energy )")
+                                                self.clicked = ""
+                                                time.sleep(0.2)
+                                        if self.clicked == "Healing":
+                                            if SBMainChar.stam >= 25:
+                                                if self.timer2 <= 45:
+                                                    SBGunHeal.bigmessage_display()
+                                                    self.timer2 += 1
+                                                if self.timer2 > 45:
+                                                    self.attacked(0,25,100)
+                                                    self.Your_Turn = False
+                                                    self.gunclicked = False
+                                                    self.clicked = ""
+                                                    self.timer2 = 0
+                                            else:
+                                                self.battlelogupdate("Not enough energy! ( 25 energy )")
+                                                self.clicked = ""
+                                                time.sleep(0.2)
+                                        if self.clicked == "Health shot":
+                                            if self.timer2 <= 45:
+                                                SBGunHealthshot.bigmessage_display()
+                                                self.timer2 += 1
+                                            if self.timer2 > 45:
+                                                self.attacked(2,0,-(SBMainChar.attack))
+                                                self.Your_Turn = False
+                                                self.gunclicked = False
+                                                self.clicked = ""
+                                                self.timer2 = 0
+                                        if self.clicked == "Back":
+                                            self.gunclicked = False
+                                            if self.timer2 == 17 and SBBattlelog1.text != "":
+                                                self.battlelogupdate("")
+                                            if self.timer2 == 20:
+                                                self.battlelogupdate("Click Fight for a regular attack")
+                                            if self.timer2 == 23:
+                                                self.battlelogupdate("Click Gun for special moves")
+                                            if self.timer2 == 26:
+                                                self.battlelogupdate("Items currently in progress")
+                                            if self.timer2 == 29:
+                                                self.battlelogupdate("Click Run to attempt to flee, but be quick, you won't have long")
+                                            if self.timer2 <= 30:
+                                                self.timer2 += 1
+                                            if self.timer2 > 30:
+                                                self.timer2 = 0
+                                                self.clicked = ""
+                                        if self.itemsclicked:
+                                            self.itemsclicked = False
+                                        if self.runclicked:
+                                            if self.timer2 <= FPS:
+                                                SBEscape.bigmessage_display()
+                                                self.timer2 += 1
+                                            if self.timer2 > FPS:
+                                                self.SBEncountering = False
+                                                self.runclicked = False
+                                                self.escaped = True
+                                                self.timer = 0
+                                                self.timer2 = 0
+                                                time.sleep(1)
+                                                self.battlelogupdate("You escaped! (75%)")
+                                        if self.runclickedfailed:
+                                            if self.timer2 <= FPS:
+                                                SBEscapefail.bigmessage_display()
+                                                self.timer2 += 1
+                                            if self.timer2 > FPS:
+                                                self.Your_Turn = False
+                                                self.runclickedfailed = False
+                                                self.timer2 = 0
+                                                time.sleep(1)
+                                                self.battlelogupdate("You failed to escape (75%)")
+                #                   Enemy's turn
+                                    if not self.Your_Turn:
                                         if self.timer2 <= FPS:
-                                            SBEscapefail.bigmessage_display()
+                                            SBAttacked.bigmessage_display()
                                             self.timer2 += 1
-                                        if self.timer2 > FPS:
-                                            self.Your_Turn = False
-                                            self.runclickedfailed = False
+                                        if self.timer2 >= FPS:
+                                            self.attacking()
+                                            self.Your_Turn = True
                                             self.timer2 = 0
-                                            time.sleep(1)
-                                            self.battlelogupdate("You failed to escape (75%)")
-            #                   Enemy's turn
-                                if not self.Your_Turn:
-                                    if self.timer2 <= FPS:
-                                        SBAttacked.bigmessage_display()
-                                        self.timer2 += 1
-                                    if self.timer2 >= FPS:
-                                        self.attacking()
-                                        self.Your_Turn = True
-                                        self.timer2 = 0
-                                        time.sleep(1)
-                                        self.battlelogupdate("The enemy attacked you for " + str(self.attack) + " damage")
 
-        def attacked(self):
-            self.health = self.health - SBMainChar.attack
-            if self.health <= 0:
-                self.die()
+        def attacked(self, dmgmult, stam, heal):
+            self.battlelogupdate("")
+            if random.randint(0,100) > 90:
+                dmgmult = dmgmult * 2
+                heal = heal * 2
+                if self.clicked == "Healing":
+                    self.battlelogupdate("Critical shot! Double healing")
+                else:
+                    self.battlelogupdate("Critical shot! Double damage")
+            damage = SBMainChar.attack * dmgmult
+            if self.clicked == "Healing":
+                self.battlelogupdate("You healed " + str(heal) + " damage")
+                SBMainChar.stam -= stam
+                SBMainChar.health += heal
+            else:
+                self.battlelogupdate("You attacked for " + str(damage) + " damage")
+                self.health -= damage
+                SBMainChar.stam -= stam
+                SBMainChar.health += heal
         
         def attacking(self):
-            SBMainChar.health = SBMainChar.health - self.attack
+            dmg = self.attack
+            if random.randint(0,100) > 90:
+                dmg = dmg * 2
+                self.battlelogupdate("Critical hit! Double damage")
+            self.battlelogupdate("The enemy attacked you for " + str(dmg) + " damage")
+            SBMainChar.health -= dmg
         
         def die(self):
             self.alive = False
@@ -606,13 +729,14 @@ def start_SpaceBound():
         def Encountering(self):
             return self.SBEncountering
         
-    SBenemy1 = SBenemy(100, 10, -885, 1850, 9, 250) #At obj 2
-    SBenemy2 = SBenemy(150, 15, 1185, 1553, 9, 300) #at obj 1, front
-    SBenemy3 = SBenemy(200, 20, 1245, 1793, 5, 250) #at obj 1, behind
+    SBenemy1 = SBenemy(100, 10, -885, 1850, 9, 350) #At obj 2
+    SBenemy2 = SBenemy(150, 15, 1185, 1553, 9, 400) #at obj 1, front
+    SBenemy3 = SBenemy(200, 20, 1245, 1793, 5, 350) #at obj 1, behind
     SBenemy4 = SBenemy(100, 10, 375, 1763, 5, 1000) #big radius, slow spd. Big robot sprite
-    SBenemy5 = SBenemy(150, 15, 1315, 463, 7, 100) #rando
-    SBenemy6 = SBenemy(100, 20, -615, 553, 9, 100) #rando
+    SBenemy5 = SBenemy(150, 15, 1315, 463, 7, 200) #rando
+    SBenemy6 = SBenemy(100, 20, -615, 553, 9, 300) #rando
     SBenemy7 = SBenemy(500, 20, 433, 500, 0, 0) #stationairy, appears after both objectives are found. Sprite with no movement.
+    
     Aliens = [SBenemy1,SBenemy2,SBenemy3,SBenemy4,SBenemy5,SBenemy6,SBenemy7]
 #   Objectives
     class objective(pygame.sprite.Sprite):
@@ -771,7 +895,7 @@ def start_SpaceBound():
                 game_over.start(score)
                 
             if Objective1.touched and Objective2.touched and not SBenemy7.alive:
-                score += int(10000000/(1000 + counter))
+                score += int(10000000/counter)
                 game_over.start(score)
 
             if SBMainChar.health <= 0:
@@ -892,7 +1016,7 @@ def start_SpaceBound():
             ObjClear = SBEncounterTextBox(350, SBMainChar.y + 80,100,30,"You deactivated the structure. You feel your power growing stronger...")
             gameDisplay.fill(black)   
             Background.draw_Object()
-        #   Draw the things         SBMainChar.attack    
+        #   Draw the things 
             CharacterHealth.EncounterText()
             Score.EncounterText()
             Timer.EncounterText()
