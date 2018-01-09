@@ -305,7 +305,7 @@ def start_spacestrike():
             screen.blit(hearts, [770, 0])
         else:
             print('game over')
-            game_over.start(score)
+            game_over.start(score, 2)
             
 
         scoretext = font.render("Score {0}".format(score), 1, WHITE)

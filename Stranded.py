@@ -734,7 +734,7 @@ def start_Stranded():
             #Game over screen
             if done:
                 print('game over')
-                game_over.start(score)
+                game_over.start(score, 3)
 
             scoretext = font.render("Score {0}".format(score), 1, GREY)
             screen.blit(scoretext, (5, 10))

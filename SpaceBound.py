@@ -897,19 +897,19 @@ def start_SpaceBound():
         #   When the game is over        
             pygame.event.pump()
             if pygame.event.peek(pygame.QUIT): 
-                game_over.start(score)
+                game_over.start(score, 3)
                 
             if Objective1.touched and Objective2.touched and not SBenemy7.alive:
                 score += int(10000000/counter)
-                game_over.start(score)
+                game_over.start(score, 3)
 
             if SBMainChar.health <= 0:
-                game_over.start(score)
+                game_over.start(score, 3)
 
             if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
                 if pygame.mouse.get_pos()[0] <= 72 and pygame.mouse.get_pos()[1] <= 70:
                     if pygame.mouse.get_pressed()[0]:
-                        game_over.start(score)
+                        game_over.start(score, 3)
 
             if not InEncounter:
         #   Character movement

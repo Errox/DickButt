@@ -1,10 +1,14 @@
-def start(score):
+def start(score, game_id):
     #defining every library needed
     import sys
     import pygame
     import os
     import menu
-    import soundboard
+    import astrodoge
+    import spacestrike
+    import SpaceBound
+    import Stranded
+    import sumo_smash
     from time import sleep
 
     #setting variables
@@ -66,18 +70,22 @@ def start(score):
 
     def buttons_game_over():
         quit_button         = pygame.image.load('resource/images/game_over/button_quit.png').convert()
+        retry_button         = pygame.image.load('resource/images/game_over/button_restart.png').convert()
         quit_rect           = quit_button.get_rect()
+        retry_rect           = quit_button.get_rect()
         screen.blit(quit_button, (325,550))
+        screen.blit(retry_button, (325,470))
     
-    def text_score():        
-        scoretext = font.render("Your Score was : {0}".format(score), 1, WHITE)
-        screen.blit(scoretext, (300, 400))
-
+    def text_score(score):       
+    
+        scoretext = font.render("Your Score ", 1, WHITE)
+        score = font.render(" {0}".format(score), 1, WHITE)
+        screen.blit(scoretext, (375, 405))
+        screen.blit(score, (417, 435))
     #beginning of the main loop
     main_loop = True
     my_sprite = animated_select_planet()
     my_group = pygame.sprite.Group(my_sprite)
-    soundboard.game_over(score)
     while main_loop:
         #reset the screen and set screen image's
         screen.fill(BLACK)
@@ -85,7 +93,7 @@ def start(score):
         start_game_over()
         my_group.update()
         my_group.draw(screen)
-        text_score()
+        text_score(score)
         #check events
         for evento in pygame.event.get():
             #define event's of quiting the game.
@@ -96,11 +104,23 @@ def start(score):
             print(evento)
             #Catch mouse position and if it's pressed on the button
             if evento.type == pygame.MOUSEBUTTONDOWN:
-                if pygame.mouse.get_pos()[0] >= 315 and pygame.mouse.get_pos()[1] >= 550:
+                if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 550:
                     if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 615:
                         menu.start_menu()
-
-
+                if pygame.mouse.get_pos()[0] >= 315 and pygame.mouse.get_pos()[1] >= 470:
+                    if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 535:
+                        if game_id == 1:
+                            astrodoge.start_astrodoge()
+                        elif game_id == 2:
+                            spacestrike.start_spacestrike()
+                        elif game_id == 3:
+                            SpaceBound.start_SpaceBound()
+                        elif game_id == 4:
+                            sumo_smash.start_sumo_smash()
+                        elif game_id == 5:
+                            Stranded.start_Stranded()
+                        else:
+                            print('well done, you fucked up. Idunno how but congratulations.')
         pygame.display.flip()
 
     pygame.quit()
