@@ -275,13 +275,13 @@ def start_spacestrike():
         hits = pygame.sprite.spritecollide(player, enemys, True, pygame.sprite.collide_circle)
         if hits:
             soundboard.bullet_on_hit_friendly()
-            heart_amount -= 1
+            lose_heart()
 
      #collision if enemy bullet hits player
         hits = pygame.sprite.spritecollide(player, en_bullets, True, pygame.sprite.collide_circle)
         if hits:
             soundboard.bullet_on_hit_friendly()
-            heart_amount -= 1
+            lose_heart()
         
         def lose_heart():
             global heart_amount
@@ -297,13 +297,13 @@ def start_spacestrike():
         if heart_amount == 3:
             hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_3.png'), (130,45))
             screen.blit(hearts, [770, 0])
-        if heart_amount == 2:
+        elif heart_amount == 2:
             hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_2.png'), (130,45))
             screen.blit(hearts, [770, 0])
-        if heart_amount == 1:
+        elif heart_amount == 1:
             hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_1.png'), (130,45))
             screen.blit(hearts, [770, 0])
-        if heart_amount == 0:
+        else:
             print('game over')
             game_over.start(score)
             
@@ -318,4 +318,4 @@ def start_spacestrike():
 
     pygame.quit()
 
-#start_spacestrike()
+start_spacestrike()

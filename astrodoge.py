@@ -169,6 +169,8 @@ def start_astrodoge():
                     player.shoot() 
  
         #update 
+
+        
         all_sprites.update()
         
          
