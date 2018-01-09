@@ -257,7 +257,7 @@ def start_SpaceBound():
     SBEncountertext = SBEncounterTextBox(0,0,700,100,"Encounter!")
    # Encounter blocks
     SBFight = SBEncounterTextBox(670,475,110,30,"    Fight    ")
-    SBMoves = SBEncounterTextBox(670,525,110,30,"     Gun     ")
+    SBMoves = SBEncounterTextBox(670,525,110,30,"  Gun moves  ")
     SBItems = SBEncounterTextBox(670,575,110,30,"    Items    ")
     SBRun = SBEncounterTextBox(670,625,110,30,  "     Run     ")
    # Gun moves
@@ -537,7 +537,8 @@ def start_SpaceBound():
                                             SBMainChar.stam = 100
                                             self.timer = 0
                                             self.battlelogupdate("Enemy encountered!")
-                                            self.Your_Turn = True                                     
+                                            self.Your_Turn = True         
+                                            self.escaped = True                            
                 #                   Your turn
                                     if self.Your_Turn:
                                         if self.timer2 == 0:
@@ -578,11 +579,11 @@ def start_SpaceBound():
                                             if self.timer2 == 4:
                                                 self.battlelogupdate("Powershot deals 1.5 x dmg and costs 20 gun energy")
                                             if self.timer2 == 7:
-                                                self.battlelogupdate("Healing heals you for 100 dmg at the cost of 25 gun energy")
+                                                self.battlelogupdate("Stimpack heals you for 100 dmg at the cost of 25 gun energy")
                                             if self.timer2 == 10:
                                                 self.battlelogupdate("Health shot will dmg you, but deal double dmg to the enemy")
                                             if self.timer2 == 13:
-                                                self.battlelogupdate("(dmg to self can't crit)")
+                                                self.battlelogupdate("Gun energy replenishes after every kill")
                                             if self.timer2 == 16:
                                                 self.battlelogupdate("Click back to go back")
                                             if self.timer2 <= 16:
@@ -620,7 +621,7 @@ def start_SpaceBound():
                                                 self.clicked = ""
                                                 time.sleep(0.2)
                                         if self.clicked == "Healing":
-                                            if SBMainChar.stam >= 25:
+                                            if SBMainChar.stam >= 25 and SBMainChar.health <= 750:
                                                 if self.timer2 <= 45:
                                                     SBGunHeal.bigmessage_display()
                                                     self.timer2 += 1
@@ -630,7 +631,11 @@ def start_SpaceBound():
                                                     self.gunclicked = False
                                                     self.clicked = ""
                                                     self.timer2 = 0
-                                            else:
+                                            elif SBMainChar.health > 750:
+                                                self.battlelogupdate("Your health is maxed out!")
+                                                self.clicked = ""
+                                                time.sleep(0.2)
+                                            elif SBMainChar.stam < 25:
                                                 self.battlelogupdate("Not enough energy! ( 25 energy )")
                                                 self.clicked = ""
                                                 time.sleep(0.2)
@@ -729,12 +734,12 @@ def start_SpaceBound():
         def Encountering(self):
             return self.SBEncountering
         
-    SBenemy1 = SBenemy(100, 10, -885, 1850, 9, 350) #At obj 2
-    SBenemy2 = SBenemy(150, 15, 1185, 1553, 9, 400) #at obj 1, front
-    SBenemy3 = SBenemy(200, 20, 1245, 1793, 5, 350) #at obj 1, behind
-    SBenemy4 = SBenemy(100, 10, 375, 1763, 5, 1000) #big radius, slow spd. Big robot sprite
-    SBenemy5 = SBenemy(150, 15, 1315, 463, 7, 200) #rando
-    SBenemy6 = SBenemy(100, 20, -615, 553, 9, 300) #rando
+    SBenemy1 = SBenemy(100, 10, -885, 1850, 7, 350) #At obj 2
+    SBenemy2 = SBenemy(150, 15, 1185, 1553, 7, 400) #at obj 1, front
+    SBenemy3 = SBenemy(200, 20, 1245, 1793, 4, 350) #at obj 1, behind
+    SBenemy4 = SBenemy(100, 10, 375, 1763, 3, 1000) #big radius, slow spd. Big robot sprite
+    SBenemy5 = SBenemy(150, 15, 1315, 463, 5, 200) #rando
+    SBenemy6 = SBenemy(100, 20, -615, 553, 7, 300) #rando
     SBenemy7 = SBenemy(500, 20, 433, 500, 0, 0) #stationairy, appears after both objectives are found. Sprite with no movement.
     
     Aliens = [SBenemy1,SBenemy2,SBenemy3,SBenemy4,SBenemy5,SBenemy6,SBenemy7]
