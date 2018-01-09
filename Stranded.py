@@ -742,6 +742,9 @@ def start_Stranded():
 
             scoretext = font.render("Score {0}".format(score), 1, WHITE)
             screen.blit(scoretext, (5, 10))
+            if mg_player.rect.y < 0:
+                playermarker = font.render("^^^".format(score), 1, GREEN)
+                screen.blit(playermarker, (462, 10))
             objectivetext = font.render("Collect and retrieve the object!".format(score), 1, WHITE)
             screen.blit(objectivetext, (595, 10))
             # timer
