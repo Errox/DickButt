@@ -5,7 +5,6 @@ def start_Stranded():
     import menu
     import game_over
     import soundboard
-    import highscore
     import time
 
     # Global constants
