@@ -318,4 +318,4 @@ def start_spacestrike():
 
     pygame.quit()
 
-start_spacestrike()
+#start_spacestrike()
