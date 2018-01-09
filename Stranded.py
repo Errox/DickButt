@@ -1,5 +1,4 @@
 
-
 def start_Stranded():
     import pygame
     import menu
@@ -20,8 +19,8 @@ def start_Stranded():
     BROWN = (139,125,107)
     GREY = (128, 128, 128)
 
-    # score = 1000000
-    global score
+    # score = 100000
+    score = 100000
 
     # Screen size
     SCREEN_WIDTH = 900
@@ -108,6 +107,8 @@ def start_Stranded():
             # check if a monster has been hit
             monster_hit_list = pygame.sprite.spritecollide(self, self.level.monster_list, False)
             for block in monster_hit_list:
+                nonlocal score
+                score = 0
                 global done
                 done = True
                 # if moving right
@@ -138,6 +139,7 @@ def start_Stranded():
             monster_hit_list = pygame.sprite.spritecollide(self, self.level.monster_list, False)
             for block in monster_hit_list:
 
+                score = 0
                 done = True
                 # reset position based on objects
                 if self.change_y > 0:
@@ -173,7 +175,7 @@ def start_Stranded():
                 if now - self.last_update > 50:
                     self.last_update = now
                     self.current_frame = (self.current_frame + 1) % len(self.walk_frames_r)
-
+                    bottom = self.rect.bottom
                     if self.change_x > 13:
                         self.image = self.walk_frames_r[self.current_frame]
                     else:
@@ -263,7 +265,7 @@ def start_Stranded():
             super().__init__()
 
             self.image = pygame.Surface([width, height])
-            self.image.fill(BROWN)
+            self.image.fill(GREEN)
 
             self.rect = self.image.get_rect()
             # SHow by default
@@ -284,7 +286,7 @@ def start_Stranded():
             super().__init__()
 
             self.image = pygame.Surface([width, height])
-            self.image.fill(BLACK)
+            self.image.fill(BROWN)
 
             self.rect = self.image.get_rect()
 
@@ -433,6 +435,7 @@ def start_Stranded():
 
             # draw the background
             screen.fill(WHITE)
+            screen.blit(self.background,(self.world_shift // 20000000,0))
 
             # draw the sprite lists
             self.platform_list.draw(screen)
@@ -461,7 +464,8 @@ def start_Stranded():
 
             # call parent constructor
             Level.__init__(self, mg_player)
-
+            self.background = pygame.image.load("resource/images/Stranded/davin_bg.png").convert()
+            self.background.set_colorkey(WHITE)
             self.level_limit = -1000
 
             # width, height, x, and y of platform
@@ -652,6 +656,7 @@ def start_Stranded():
         # create the MG_player
         mg_player = MG_Player()
 
+
         # create all levels
         level_list = []
         level_list.append(Level_01(mg_player))
@@ -675,9 +680,10 @@ def start_Stranded():
 
         # how fast it updates
         clock = pygame.time.Clock()
-        score = 100000
+        #score = 100000
         # main program loop
         while not done:
+            nonlocal score
             score = score - 1
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -699,7 +705,6 @@ def start_Stranded():
             active_sprite_list.update()
 
             # check collision
-
 
             # update items in the level
             current_level.update()
@@ -728,16 +733,16 @@ def start_Stranded():
             current_level.draw(screen)
             active_sprite_list.draw(screen)
 
-            score -= 1
+
 
             #Game over screen
             if done:
                 print('game over')
-                game_over.start(score, 3)
+                game_over.start(score, 5)
 
-            scoretext = font.render("Score {0}".format(score), 1, GREY)
+            scoretext = font.render("Score {0}".format(score), 1, WHITE)
             screen.blit(scoretext, (5, 10))
-            objectivetext = font.render("Collect and retrieve the object!".format(score), 1, GREY)
+            objectivetext = font.render("Collect and retrieve the object!".format(score), 1, WHITE)
             screen.blit(objectivetext, (595, 10))
             # timer
             if score <= 0:
