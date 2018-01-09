@@ -128,7 +128,7 @@ def start_sumo_smash():
             self.image = pygame.Surface((60, 60))
             self.image.fill(BLUE)
             self.rect = self.image.get_rect()
-            self.rect.x = random.randrange(50, 850)
+            self.rect.x = 450
             self.rect.y = 1200
             self.speedy = random.randrange(10, 15)
 
@@ -219,7 +219,7 @@ def start_sumo_smash():
             if event.type == pygame.QUIT:
                 running = False
         
-        count += 100
+        count += 10
         score = int(count)
 
         # Update
