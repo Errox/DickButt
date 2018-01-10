@@ -210,7 +210,6 @@ def start_astrodoge():
     
             spawn_random = random.randrange(1, 100) 
     
-    
             if spawn_random > spawn_rate: 
                 m = Mob() 
                 all_sprites.add(m) 
@@ -221,6 +220,11 @@ def start_astrodoge():
     
             #process input (events)
             for event in pygame.event.get():
+                 #Catch mouse position and if it's pressed on the button
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
+                        if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
+                           menu.start_menu()
                 #check for closing the windows
                 if event.type == pygame.QUIT:
                     #if the close button is pressed, the game will close
@@ -259,6 +263,10 @@ def start_astrodoge():
                 start_init = False
             screen.blit(background, background_rect)
 
+            quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
+            quit_rect           = quit_button.get_rect()
+            screen.blit(quit_button, (5,5))  
+
             def lose_heart():
                 global heart_amount
                 heart_amount -= 1
@@ -279,10 +287,10 @@ def start_astrodoge():
                 
 
             scoretext = font.render("Score :  {0}".format(score), 1, WHITE)
-            screen.blit(scoretext, (720, 10))
+            screen.blit(scoretext, (720, 5))
             
             scoretext = font.render("Time    :  {0}".format(round(time_alive)), 1, WHITE) 
-            screen.blit(scoretext, (720, 30)) 
+            screen.blit(scoretext, (720, 25)) 
 
             all_sprites.draw(screen)
             #After drawing everything, flip the display.

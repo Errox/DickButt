@@ -235,6 +235,7 @@ def start_spacestrike():
         
 
     bullet_sound = pygame.mixer.Sound('resource/music/splaceholder/sounds/sfx_wpn_laser10.wav')
+
     #de main game loops
     running = True
     while running:
@@ -274,8 +275,8 @@ def start_spacestrike():
             pygame.display.flip()
 
         while pause == False:
-        
-                
+          
+              
             # Laat de clock ticken op de fps
             clock.tick(FPS)
 
@@ -285,6 +286,11 @@ def start_spacestrike():
                 #Check of de exit knop is ingedrukt
                 if event.type == pygame.QUIT:
                     running = False
+                #Catch mouse position and if it's pressed on the button
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
+                        if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
+                           menu.start_menu()
 
                 #als spatie word ingedrukt moet er een kogel afgeschoten worden
                 elif event.type == pygame.KEYDOWN:
@@ -328,6 +334,10 @@ def start_spacestrike():
                 screen.fill(BLACK)
                 start_init = False
             screen.blit(surface, surface_rect)
+            
+            quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
+            quit_rect           = quit_button.get_rect()
+            screen.blit(quit_button, (5,5))    
             
             #check lives, else load game over screen
             if heart_amount == 3:
