@@ -55,19 +55,19 @@ def start(game_id):
     
 
     if game_id == 1:
-        background = pygame.image.load('resource/images/cheat_sheet/astrodoge').convert()
+        background = pygame.image.load('resource/images/cheat_sheets/Astrododge_cs.png').convert()
         background_rect = background.get_rect()
     elif game_id == 2:
-        background = pygame.image.load('resource/images/cheat_sheet').convert()
+        background = pygame.image.load('resource/images/cheat_sheets/SpaceStrike_cs.png').convert()
         background_rect = background.get_rect()
     elif game_id == 3:
-        background = pygame.image.load('resource/images/cheat_sheet').convert()
+        background = pygame.image.load('resource/images/cheat_sheets/Spacebound_cs.png').convert()
         background_rect = background.get_rect()
     elif game_id == 4:
-        background = pygame.image.load('resource/images/cheat_sheet').convert()
+        background = pygame.image.load('resource/images/cheat_sheets/Invasion_cs.png').convert()
         background_rect = background.get_rect()
     elif game_id == 5: 
-        background = pygame.image.load('resource/images/cheat_sheet').convert()
+        background = pygame.image.load('resource/images/cheat_sheets/Stranded_cs.png').convert()
         background_rect = background.get_rect()
 
     while main_loop:
