@@ -2,6 +2,7 @@ def start_sumo_smash():
     import pygame
     import random
     import menu
+    import soundboard
     import game_over
 
     WIDTH = 900
@@ -26,14 +27,15 @@ def start_sumo_smash():
     pygame.init()
     pygame.mixer.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("ALIEN INVATION")
+    pygame.display.set_caption("INVATION OF THE UNKNOWN")
     clock = pygame.time.Clock()
 
     class Player(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.Surface((40, 40))
-            self.image.fill(GREEN)
+            self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png').convert()
+            self.image.set_colorkey(WHITE)                             
+            self.image = pygame.transform.scale(self.image, (40, 40))  
             self.rect = self.image.get_rect()
             self.rect.centerx = WIDTH / 2
             self.rect.centery = HEIGHT / 2
@@ -134,8 +136,11 @@ def start_sumo_smash():
     class Mob4(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.Surface((60, 60))
-            self.image.fill(BLUE)
+            self.image  = pygame.image.load('resource/images/sumo_smash/alien_2.png').convert()
+            self.image = pygame.transform.scale(self.image, (60, 60)) 
+            self.image.set_colorkey(WHITE)               
+            #self.image = pygame.Surface((60, 60))
+            #self.image.fill(BLUE)
             self.rect = self.image.get_rect()
             self.rect.x = 450
             self.rect.y = 1200
@@ -176,7 +181,7 @@ def start_sumo_smash():
     block_4 = -450
 
     backround = YELLOW
-    background = pygame.image.load('resource/images/sumo_smash/platformlevel1.png').convert()
+    background = pygame.image.load('resource/images/sumo_smash/stars_bg.png').convert()
     background_rect = background.get_rect()
 
     # Game loop
@@ -184,8 +189,7 @@ def start_sumo_smash():
     while running:
         time = time - 1
         level = 2
-        if time == 9700: 
-            background = pygame.image.load('resource/images/sumo_smash/platformlevel2.png').convert()
+        if time == 9700:
             block_1 = -400
             block_2 = 800
             block_3 = 800
@@ -247,19 +251,17 @@ def start_sumo_smash():
             if event.type == pygame.QUIT:
                 running = False
         
-        count += 10
+        count += 5
         score = int(count)
 
         # Update
         all_sprites.update()
 
         hits = pygame.sprite.spritecollide(player, mobs, False)
-        if hits:
-            game_over.start(score, 4)
-            running = False
+        
         if player.alive == False:
             running = False
-            game_over.start(score, 4)
+            game_over.start(score, 3)
 
         levels = "level 1"
         
@@ -287,7 +289,7 @@ def start_sumo_smash():
         if player.heart_amount == 0:
             player.alive = False
             print('game over')
-            game_over.start(score)
+            game_over.start(score, 4)
 
              
         # *after* drawing everything, flip the display

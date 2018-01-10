@@ -9,6 +9,7 @@ def start(score, game_id):
     import SpaceBound
     import Stranded
     import sumo_smash
+    import soundboard
     from time import sleep
 
     #setting variables
@@ -84,6 +85,7 @@ def start(score, game_id):
         screen.blit(score, (417, 435))
     #beginning of the main loop
     main_loop = True
+    soundboard.game_over(score) 
     my_sprite = animated_select_planet()
     my_group = pygame.sprite.Group(my_sprite)
     while main_loop:
