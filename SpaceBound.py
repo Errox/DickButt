@@ -95,6 +95,8 @@ def start_SpaceBound():
     ARF3 = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Right_Front/3.png')
 
     AlienDead = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Dead.png')
+
+    Alienboss = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Alien_boss.png')
 #   Colours!
     black = (0,0,0)
     white = (255,255,255)
@@ -121,6 +123,8 @@ def start_SpaceBound():
             self.timer = 0
             self.running = False
             self.direction = "right"
+            self.escaped = False
+            self.timer = 0
 
         def draw_char(self):
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
@@ -312,7 +316,6 @@ def start_SpaceBound():
             self.runclickedfailed = False
             self.clicked = ""
             self.enemyattacked = False
-            self.escaped = False
             self.direw = 0
             self.dirns = 0
             self.run = 0
@@ -485,6 +488,10 @@ def start_SpaceBound():
             else:
                 gameDisplay.blit(AlienDead, (self.x,self.y))
 
+        def draw_boss(self):
+            gameDisplay.blit(Alienboss, (self.x,self.y))
+            self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
+
         def battlelogupdate(self,text):
             SBBattlelog1.text = SBBattlelog2.text
             SBBattlelog2.text = SBBattlelog3.text
@@ -496,15 +503,15 @@ def start_SpaceBound():
             SBBattlelog8.text = text
 
         def Encounter(self):
-            if self.escaped:
-                if self.timer2 <= FPS:
-                    self.timer2 += 1
-                if self.timer2 >= FPS:
-                    self.escaped = False
-                    self.timer2 = 0
-        #           Collision
+            if SBMainChar.escaped:
+                if SBMainChar.timer <= 60 and self.SBEncountering == False:
+                    SBMainChar.timer += 1
+                if SBMainChar.timer >= 60 and self.SBEncountering == False:
+                    SBMainChar.escaped = False
+                    SBMainChar.timer = 0
+         #           Collision
             if self.alive:
-                if not self.escaped:
+                if not SBMainChar.escaped:
                     if SBMainChar.x >= self.x and SBMainChar.x <= self.x + self.w or SBMainChar.x + SBMainChar.w >= self.x and SBMainChar.x + SBMainChar.w <= self.x + self.w:
                         if SBMainChar.y >= self.y and SBMainChar.y <= self.y + self.h or SBMainChar.y + SBMainChar.h >= self.y and SBMainChar.y + SBMainChar.h <= self.y + self.h:
                             if self.timer <= FPS:
@@ -527,7 +534,6 @@ def start_SpaceBound():
                                     SBBattlelog7.Battlelogtext()
                                     SBBattlelog8.Battlelogtext()
                                     (SBEncounterTextBox(425,105,50,30,"Enemy Health: " + str(self.health))).EncounterText()
-                                    (SBEncounterTextBox(550,700,50,30,"Gun energy: " + str(SBMainChar.stam))).EncounterText()
                     #               When does the combat end
                                     if self.health <= 0:
                                         self.die()
@@ -538,7 +544,7 @@ def start_SpaceBound():
                                             self.timer = 0
                                             self.battlelogupdate("Enemy encountered!")
                                             self.Your_Turn = True         
-                                            self.escaped = True                            
+                                            SBMainChar.escaped = True                            
                 #                   Your turn
                                     if self.Your_Turn:
                                         if self.timer2 == 0:
@@ -675,7 +681,7 @@ def start_SpaceBound():
                                             if self.timer2 > FPS:
                                                 self.SBEncountering = False
                                                 self.runclicked = False
-                                                self.escaped = True
+                                                SBMainChar.escaped = True
                                                 self.timer = 0
                                                 self.timer2 = 0
                                                 time.sleep(1)
@@ -1002,10 +1008,14 @@ def start_SpaceBound():
                     #   Directions
                         if movex > 0:
                             alien.direw = 1
+                        if movex == 0:
+                            alien.direw = 0
                         if movex < 0:
                             alien.direw = -1
                         if movey > 0:
                             alien.dirns = -1
+                        if movey == 0:
+                            alien.dirns = 0
                         if movey < 0:
                             alien.dirns = 1
                         if movey == 0 and movex == 0:
@@ -1018,6 +1028,8 @@ def start_SpaceBound():
             CharacterHealth = SBEncounterTextBox(425,700,50,30, "Health: " + str(SBMainChar.health))
             Score = SBEncounterTextBox(800,700,100,30,"Score: " + str(int(SBMainChar.scoring())))
             Timer = SBEncounterTextBox(800,5,100,30,"Time: "+str(int(counter/30)))
+            Gun_Energy = SBEncounterTextBox(550,700,50,30,"Gun energy: " + str(SBMainChar.stam))
+            Attacktext = SBEncounterTextBox(300, 700, 50, 30, "Attack: " + str(SBMainChar.attack))
             ObjClear = SBEncounterTextBox(350, SBMainChar.y + 80,100,30,"You deactivated the structure. You feel your power growing stronger...")
             gameDisplay.fill(black)   
             Background.draw_Object()
@@ -1025,6 +1037,8 @@ def start_SpaceBound():
             CharacterHealth.EncounterText()
             Score.EncounterText()
             Timer.EncounterText()
+            Gun_Energy.EncounterText()
+            Attacktext.EncounterText()
             if Objective1.touched and Objective2.touched:
                 Objectivetext3.EncounterText()
                 Obj_Cleared = True
@@ -1051,7 +1065,7 @@ def start_SpaceBound():
                     alien.draw_enemy()
                 if alien == SBenemy7:
                     if Obj_Cleared:
-                        alien.draw_enemy()
+                        alien.draw_boss()
             SBMainChar.draw_char()
         #   Allow things to happen
             for alien in Aliens:
