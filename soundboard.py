@@ -37,6 +37,11 @@ def game_over(score):
 def pause():
     pygame.mixer.music.pause()
 
+def st_jump():
+    stjump = pygame.mixer.Sound('resource/soundboard/jump/jump.wav')
+    stjump.set_volume(1)
+    stjump.play()
+
 #Astrododge main. 
 def ast_main():
     pygame.mixer.music.load('resource/soundboard/music/astrododge/song_1.ogg')
@@ -74,4 +79,10 @@ def bullet_on_hit_friendly():
     elif random_1 >= 21 and random_1 <= 40:
         bullet = pygame.mixer.Sound('resource/soundboard/onhit/friendly/hit_3.wav')
     bullet.play()
+
+def credits_theme():
+    pygame.mixer.music.load('resource/music/credits/song_1.ogg')
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play(-1)
+    
 
