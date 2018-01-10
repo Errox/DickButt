@@ -22,7 +22,7 @@ def start(score, game_id):
     #setting the settings of pygame itself
     screen = pygame.display.set_mode((900,900))
     pygame.display.set_caption("game_over")
-    font = pygame.font.SysFont('resource/fonts/Arcadepix.ttf', 40)
+    font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 40)
     clock = pygame.time.Clock()
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)
     define_location = "main_menu"

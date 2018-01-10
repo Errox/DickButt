@@ -78,7 +78,7 @@ def start_menu():
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_0.png'))
             self.index = 0
             self.image = self.images[self.index]
-            self.rect = pygame.Rect(00,0,0,0)
+            self.rect = pygame.Rect(0,0,0,0)
       
         #here we update the sprite used for the animated text. 
         def update(self):

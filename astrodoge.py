@@ -46,7 +46,7 @@ def start_astrodoge():
         #sprite and other properties for the player
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image  = pygame.image.load('resource/images/astrodoge/player/Ship_big_purple.png').convert()                            
+            self.image  = pygame.image.load('resource/images/astrodoge/player/Ship_big_purple.png')                            
             self.image = pygame.transform.scale(self.image, (90, 70))
             self.image.set_colorkey(BLACK)
             self.rect   = self.image.get_rect()
@@ -58,17 +58,17 @@ def start_astrodoge():
         #This function is given to update the player itself into the game
         def update(self):
             self.speedx = 0
-            self.image  = pygame.image.load('resource/images/astrodoge/player/Ship_big_purple.png').convert()   
+            self.image  = pygame.image.load('resource/images/astrodoge/player/Ship_big_purple.png') 
             self.image = pygame.transform.scale(self.image, (90, 70))
             self.image.set_colorkey(BLACK)
             keystate = pygame.key.get_pressed()
             if keystate[pygame.K_LEFT]:
-                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple_booster.png').convert()
+                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple_booster.png')
                 self.image = pygame.transform.scale(self.image, (90, 70))
                 self.image.set_colorkey(BLACK)
                 self.speedx = -10
             if keystate[pygame.K_RIGHT]:
-                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple_booster.png').convert()
+                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple_booster.png')
                 self.image = pygame.transform.scale(self.image, (90, 70))
                 self.image.set_colorkey(BLACK)
                 self.speedx = 10
@@ -150,7 +150,7 @@ def start_astrodoge():
     background_rect = background.get_rect()
     
     #loading in font
-    font = pygame.font.SysFont('Arcadepix.ttf', 30)
+    font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 30)
  
     all_sprites = pygame.sprite.Group()
     mobs = pygame.sprite.Group()
@@ -211,7 +211,6 @@ def start_astrodoge():
     
             spawn_random = random.randrange(1, 100) 
     
-    
             if spawn_random > spawn_rate: 
                 m = Mob() 
                 all_sprites.add(m) 
@@ -222,6 +221,11 @@ def start_astrodoge():
     
             #process input (events)
             for event in pygame.event.get():
+                 #Catch mouse position and if it's pressed on the button
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
+                        if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
+                           menu.start_menu()
                 #check for closing the windows
                 if event.type == pygame.QUIT:
                     #if the close button is pressed, the game will close
@@ -262,30 +266,34 @@ def start_astrodoge():
                 start_init = False
             screen.blit(background, background_rect)
 
+            quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
+            quit_rect           = quit_button.get_rect()
+            screen.blit(quit_button, (5,5))  
+
             def lose_heart():
                 global heart_amount
                 heart_amount -= 1
             
             #check how many lives the player has, else invoke the game_over scene 
             if heart_amount == 3:
-                hearts = pygame.image.load('resource/UI/astrodoge/3_heart.png')
-                screen.blit(hearts, [220, 0])
-            if heart_amount == 2:
-                hearts = pygame.image.load('resource/UI/astrodoge/2_heart.png')
-                screen.blit(hearts, [220, 0])
-            if heart_amount == 1:
-                hearts = pygame.image.load('resource/UI/astrodoge/1_heart.png')
-                screen.blit(hearts, [220, 0])
+                hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_3.png'), (130,45))
+                screen.blit(hearts, [365, 0])
+            elif heart_amount == 2:
+                hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_2.png'), (130,45))
+                screen.blit(hearts, [365, 0])
+            elif heart_amount == 1:
+                hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_1.png'), (130,45))
+                screen.blit(hearts, [365, 0])
             if heart_amount == 0:
                 print('game over')
                 game_over.start(score, 1)
                 
 
-            scoretext = font.render("Score {0}".format(score), 1, WHITE)
-            screen.blit(scoretext, (5, 10))
+            scoretext = font.render("Score :  {0}".format(score), 1, WHITE)
+            screen.blit(scoretext, (720, 5))
             
-            scoretext = font.render("Time Alive {0}".format(round(time_alive)), 1, WHITE) 
-            screen.blit(scoretext, (5, 30)) 
+            scoretext = font.render("Time    :  {0}".format(round(time_alive)), 1, WHITE) 
+            screen.blit(scoretext, (720, 25)) 
 
             all_sprites.draw(screen)
             #After drawing everything, flip the display.
