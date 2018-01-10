@@ -232,13 +232,13 @@ def start_astrodoge():
         #check how many lives the player has, else invoke the game_over scene 
         if heart_amount == 3:
             hearts = pygame.image.load('resource/UI/astrodoge/3_heart.png')
-            screen.blit(hearts, [250, 0])
+            screen.blit(hearts, [220, 0])
         if heart_amount == 2:
             hearts = pygame.image.load('resource/UI/astrodoge/2_heart.png')
-            screen.blit(hearts, [250, 0])
+            screen.blit(hearts, [220, 0])
         if heart_amount == 1:
             hearts = pygame.image.load('resource/UI/astrodoge/1_heart.png')
-            screen.blit(hearts, [250, 0])
+            screen.blit(hearts, [220, 0])
         if heart_amount == 0:
             print('game over')
             game_over.start(score, 1)
