@@ -33,19 +33,16 @@ def start(game_id):
 
     def introduction_id(game_id):
         if game_id == 1:
-            print('penis1')            
+            astrodoge.start_astrodoge()          
         elif game_id == 2:
-            print('penis2')
+            spacestrike.start_spacestrike()
         elif game_id == 3:
-            print('penis3')            
+            SpaceBound.start_SpaceBound()
         elif game_id == 4:
-            print('penis4')            
+            Stranded.start_Stranded()
         elif game_id == 5: 
-            print('penis5')
+            sumo_smash.start_sumo_smash()
 
-    def async(counting):
-        scoretext = font.render(str(counting), 1,(255,255,255))
-        screen.blit(scoretext, (500, 500))     
 
     #initializing pygame's mixer
     # pygame.mixer.init()
@@ -60,59 +57,32 @@ def start(game_id):
     
     counting = 3
     while main_loop:
-        screen.blit(background, background_rect)
-        while count_down == True:
-            screen.fill(BLACK)
-            screen.blit(background, background_rect)
-            clock.tick(FPS)
 
-            #check events
-            for evento in pygame.event.get():
-                #define event's of quiting the game.
-                if evento.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
-                #printing every event that's happening within the python script.
-                print(evento)
-                #Catch mouse position and if it's pressed on the button
-                            
-            pygame.display.flip()
-            for count in range(0,3):
-                sleep(1)
-                print(counting) 
-                async(counting)
-                counting -= 1
-                if counting == 0:
-                    if game_id == 1:
-                        astrodoge.start_astrodoge()            
-                    elif game_id == 2:
-                        spacestrike.start_spacestrike()
-                    elif game_id == 3:
-                        SpaceBound.start_SpaceBound()
-                    elif game_id == 4:
-                        sumo_smash.start_sumo_smash()
-                    elif game_id == 5: 
-                        Stranded.start_Stranded()
-                    else:
-                        quit()
-                
- 
-        while count_down == False:
-            #reset the screen and set screen image's
-            screen.fill(BLACK)
-            introduction_id(game_id)
-            screen.blit(background, background_rect)
-            clock.tick(FPS)
-            #check events
-            for evento in pygame.event.get():
-                #define event's of quiting the game.
-                if evento.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
-                elif evento.type == pygame.KEYDOWN:
-                    count_down = True
+        #reset the screen and set screen image's
+        screen.fill(BLACK)
+        
+        if game_id == 1:
+            print('penis1')
+        elif game_id == 2:
+            print('penis2')
+        elif game_id == 3:
+            print('penis3')
+        elif game_id == 4:
+            print('penis4')
+        elif game_id == 5: 
+            print('penis5')
 
-            pygame.display.flip()
+        clock.tick(FPS)
+        #check events
+        for evento in pygame.event.get():
+            #define event's of quiting the game.
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            elif evento.type == pygame.KEYDOWN:
+                introduction_id(game_id)
+
+        pygame.display.flip()
  
     pygame.quit()
     quit()

@@ -12,6 +12,7 @@ def start_menu():
     import soundboard
     import sumo_smash
     import credits
+    import highscore
     from time import sleep
     
     #All global variables are set here
@@ -180,8 +181,11 @@ def start_menu():
                     if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 380:
                         if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 445:
                             define_location = "select_planet"
-                    if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 520:
-                        if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 585:
+                    if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 450:
+                        if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 500:
+                            highscore.start()
+                    if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 525:
+                        if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 600:
                             credits.start()
                     if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 600:
                         if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 665:

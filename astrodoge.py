@@ -190,6 +190,7 @@ def start_astrodoge():
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         pause = False
+                        soundboard.resume()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 550:
                         if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 615:
@@ -197,6 +198,7 @@ def start_astrodoge():
                     if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 470:
                         if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 535:
                             pause = False
+                            soundboard.resume()
                     if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
                         if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
                             print('goes to cheet sheet.')
@@ -237,6 +239,7 @@ def start_astrodoge():
                         player.shoot() 
                     elif event.key == pygame.K_ESCAPE:
                         pause = True
+                        soundboard.pause()
     
             #update 
         
