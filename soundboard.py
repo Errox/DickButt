@@ -44,14 +44,21 @@ def resume():
     play.play()
     pygame.mixer.music.unpause()
 
+def stranded_main():
+    pygame.mixer.music.load('resource/soundboard/music/astrododge/song_3.ogg')
+    pygame.mixer.music.queue('resource/soundboard/music/astrododge/song_3.ogg')
+    pygame.mixer.music.queue('resource/soundboard/music/astrododge/song_3.ogg')
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play(-1)
+
 def st_collect():
     stcollect = pygame.mixer.Sound('resource/soundboard/jump/collect.wav')
-    stcollect.set_volume(1)
+    stcollect.set_volume(0.5)
     stcollect.play()
     
 def st_jump():
     stjump = pygame.mixer.Sound('resource/soundboard/jump/jump.wav')
-    stjump.set_volume(1)
+    stjump.set_volume(0.5)
     stjump.play()
 
 #Astrododge main. 

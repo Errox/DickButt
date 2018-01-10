@@ -604,7 +604,7 @@ def start_Stranded():
             monster.rect.y = 755
             monster.boundary_left = 5200
             monster.boundary_right = 6450
-            monster.change_x = 10
+            monster.change_x = 15
             monster.player = self.MG_player
             monster.level = self
             self.monster_list.add(monster)
@@ -621,18 +621,18 @@ def start_Stranded():
             self.platform_list.add(block)
 
             # Add another custom moving platform
-            block = MovingPlatform(700, 10)
+            block = MovingPlatform(400, 20)
             block.rect.x = 5300
             block.rect.y = 650
             block.boundary_left = 5200
-            block.boundary_right = 5500
-            block.change_x = 10
+            block.boundary_right = 5800
+            block.change_x = 15
             block.player = self.MG_player
             block.level = self
             self.platform_list.add(block)
 
             # another one
-            block = MovingPlatform(250, 20)
+            block = MovingPlatform(400, 20)
             block.rect.x = 8400
             block.rect.y = 600
             block.boundary_top = 370
@@ -667,6 +667,8 @@ def start_Stranded():
 
         active_sprite_list = pygame.sprite.Group()
         mg_player.level = current_level
+
+        soundboard.stranded_main()
         # loading in font
         font = pygame.font.SysFont('Arcadepix.ttf', 30)
 
