@@ -253,23 +253,10 @@ def start_sumo_smash():
         # Update
         all_sprites.update()
 
-<<<<<<< HEAD
-        # hits = pygame.sprite.spritecollide(player, mobs, True)
-        # if hits:
-        #     if not player.is_hit:
-        #         player.heart_amount -= 1
-        #         player.is_hit = True
-        # else:
-        #     player.is_hit = False
-
-            # game_over.start(score)
-            # running = False
-=======
         hits = pygame.sprite.spritecollide(player, mobs, False)
         if hits:
             game_over.start(score, 3)
             running = False
->>>>>>> 7c3a05530b8782268b62e7b63c10eb3ab2e693f5
         if player.alive == False:
             running = False
             game_over.start(score, 3)
