@@ -1,8 +1,6 @@
 #This script is for playing and moving around a sprite
 #import all lib's + intergratie
-
 heart_amount = 3
-
 def start_spacestrike():
     import pygame
     import random
@@ -44,7 +42,7 @@ def start_spacestrike():
         #sprite and other properties for the player
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue.png').convert()
+            self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple.png')
             self.image = pygame.transform.scale(self.image, (70, 55))
             self.image.set_colorkey(BLACK)
             self.rect   = self.image.get_rect()
@@ -56,29 +54,29 @@ def start_spacestrike():
 
         #This function is given to update the player in the game
         def update(self):
-            self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue.png').convert()
+            self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple.png')
             self.image = pygame.transform.scale(self.image, (100, 70))
             self.image.set_colorkey(BLACK)
             self.speedx = 0
             self.speedy = 0
             keystate = pygame.key.get_pressed()
             if keystate[pygame.K_LEFT]:
-                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue_booster.png').convert()
+                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple_booster.png')
                 self.image = pygame.transform.scale(self.image, (100, 70))
                 self.image.set_colorkey(BLACK)
                 self.speedx = -10
             if keystate[pygame.K_RIGHT]:
-                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue_booster.png').convert()
+                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple_booster.png')
                 self.image = pygame.transform.scale(self.image, (100, 70))
                 self.image.set_colorkey(BLACK)
                 self.speedx = 10
             if keystate[pygame.K_UP]:
-                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue_booster.png').convert()
+                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple_booster.png')
                 self.image = pygame.transform.scale(self.image, (100, 70))
                 self.image.set_colorkey(BLACK)
                 self.speedy = -10
             if keystate[pygame.K_DOWN]:
-                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue_booster.png').convert()
+                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple_booster.png')
                 self.image = pygame.transform.scale(self.image, (100, 70))
                 self.image.set_colorkey(BLACK)
                 self.speedy = 10
@@ -262,7 +260,16 @@ def start_spacestrike():
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         pause = False
-
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 550:
+                        if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 615:
+                            menu.start_menu()
+                    if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 470:
+                        if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 535:
+                            pause = False
+                    if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
+                        if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
+                            print('goes to cheet sheet.')
             #flip the display.
             pygame.display.flip()
 
@@ -286,10 +293,7 @@ def start_spacestrike():
                         player.shoot()
                     if event.key == pygame.K_ESCAPE:
                         pause = True
-                        
-
                         # pygame.mixer.Sound.play()
-                
             #update
             all_sprites.update()
 
