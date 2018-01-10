@@ -38,9 +38,9 @@ def start(game_id):
             spacestrike.start_spacestrike()
         elif game_id == 3:
             SpaceBound.start_SpaceBound()
-        elif game_id == 4:
+        elif game_id == 5:
             Stranded.start_Stranded()
-        elif game_id == 5: 
+        elif game_id == 4:
             sumo_smash.start_sumo_smash()
 
 
