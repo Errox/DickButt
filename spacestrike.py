@@ -332,20 +332,21 @@ def start_spacestrike():
             #check lives, else load game over screen
             if heart_amount == 3:
                 hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_3.png'), (130,45))
-                screen.blit(hearts, [770, 0])
+                screen.blit(hearts, [365, 0])
             elif heart_amount == 2:
                 hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_2.png'), (130,45))
-                screen.blit(hearts, [770, 0])
+                screen.blit(hearts, [365, 0])
             elif heart_amount == 1:
                 hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_1.png'), (130,45))
-                screen.blit(hearts, [770, 0])
+                screen.blit(hearts, [365, 0])
             else:
                 print('game over')
                 game_over.start(score, 2)
                 
 
-            scoretext = font.render("Score {0}".format(score), 1, WHITE)
-            screen.blit(scoretext, (5, 10))
+            scoretext = font.render("Score :  {0}".format(score), 1, WHITE)
+            screen.blit(scoretext, (720, 10))
+            
 
             all_sprites.draw(screen)
 
