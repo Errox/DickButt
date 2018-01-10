@@ -135,7 +135,7 @@ def start_menu():
                 quit()
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_LEFT:
-                    game_over.start(9999999999999999)    
+                    game_over.start(9999999999999999, 9)    
                 if evento.key == pygame.K_DOWN:
                     soundboard.pause()   
             #printing every event that's happening within the python script.

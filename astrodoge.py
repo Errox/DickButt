@@ -7,6 +7,7 @@ def start_astrodoge():
     import random
     import os
     import menu
+    import time
     import highscore
     import game_over
     import soundboard
@@ -15,10 +16,13 @@ def start_astrodoge():
     WIDTH   = 900
     HEIGHT  = 900
     FPS     = 30
+    seconds = 5
     X       = 500
     Y       = 100
-    MOB_AMOUNT = 100
+    MOB_AMOUNT = 10
     heart_amount = 3
+    spawn_rate = 95
+    startTime = time.time()
     start_init = True
     score   = 0
  
@@ -42,7 +46,7 @@ def start_astrodoge():
         #sprite and other properties for the player
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image  = pygame.image.load('resource/images/astrodoge/player/spaceship.png').convert()
+            self.image  = pygame.image.load('resource/images/astrodoge/player/spaceship.png').convert()                            
             self.image = pygame.transform.scale(self.image, (90, 70))
             self.image.set_colorkey(BLACK)
             self.rect   = self.image.get_rect()
@@ -54,10 +58,19 @@ def start_astrodoge():
         #This function is given to update the player itself into the game
         def update(self):
             self.speedx = 0
+            self.image  = pygame.image.load('resource/images/astrodoge/player/spaceship.png').convert()   
+            self.image = pygame.transform.scale(self.image, (90, 70))
+            self.image.set_colorkey(BLACK)
             keystate = pygame.key.get_pressed()
             if keystate[pygame.K_LEFT]:
+                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue_booster.png').convert()
+                self.image = pygame.transform.scale(self.image, (90, 70))
+                self.image.set_colorkey(BLACK)
                 self.speedx = -10
             if keystate[pygame.K_RIGHT]:
+                self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_blue_booster.png').convert()
+                self.image = pygame.transform.scale(self.image, (90, 70))
+                self.image.set_colorkey(BLACK)
                 self.speedx = 10
             self.rect.x += self.speedx
             if self.rect.right > WIDTH:
@@ -155,6 +168,22 @@ def start_astrodoge():
     running = True
     while running:
             
+        time_alive = time.time() - startTime 
+ 
+
+
+        if time_alive == seconds:
+            seconds += random.randrange(1,7)
+            spawn_rate = 30 
+ 
+        spawn_random = random.randrange(1, 100) 
+ 
+ 
+        if spawn_random > spawn_rate: 
+            m = Mob() 
+            all_sprites.add(m) 
+            mobs.add(m) 
+
         # keep loop running at the right fps
         clock.tick(FPS)
  
@@ -210,11 +239,14 @@ def start_astrodoge():
             screen.blit(hearts, [220, 0])
         if heart_amount == 0:
             print('game over')
-            game_over.start(score)
+            game_over.start(score, 1)
             
 
         scoretext = font.render("Score {0}".format(score), 1, WHITE)
         screen.blit(scoretext, (5, 10))
+         
+        scoretext = font.render("Time Alive {0}".format(round(time_alive)), 1, WHITE) 
+        screen.blit(scoretext, (5, 30)) 
 
         all_sprites.draw(screen)
         #After drawing everything, flip the display.

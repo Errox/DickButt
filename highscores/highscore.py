@@ -1,3 +1,54 @@
+def find_values(id, json_repr):
+        results = []
+
+def _decode_dict(a_dict):
+    try: results.append(a_dict[id])
+    except KeyError: pass
+        return a_dict
+
+    json.loads(json_repr, object_hook=_decode_dict)
+    return results
+
+
+def save(score, game_id):
+    import json
+    from pathlib import Path
+
+    score = Path("/highscores/highscore.json")
+    
+    
+    json_repr = json.loads(urlopen('/highscores/highscore.json').read())  
+    print find_values(game_id, json_repr)
+    
+    
+    
+    
+    # if score.is_file():    
+    # data = json.loads(urlopen('/highscores/highscore.json').read())  
+
+
+
+    # data['people'] = []  
+    # data['people'].append({  
+    #     '1': '0',
+    #     '2': '0',
+    #     '3': '0',
+    #     '4': '0',
+    #     '5': '0'
+    # })
+
+    # with open('data.txt', 'w') as outfile:  
+    #     json.dump(data, outfile)
+    
+def setup(score, game_id):
+    
+
+
+def get_highscore(score, game_id):
+    
+
+
+
 def start(score, game_id):
     #defining every library needed
     import sys
@@ -77,11 +128,11 @@ def start(score, game_id):
         screen.blit(retry_button, (325,470))
     
     def text_score(score):       
-    
         scoretext = font.render("Your Score ", 1, WHITE)
         score = font.render(" {0}".format(score), 1, WHITE)
         screen.blit(scoretext, (375, 405))
         screen.blit(score, (417, 435))
+
     #beginning of the main loop
     main_loop = True
     my_sprite = animated_select_planet()
@@ -125,3 +176,6 @@ def start(score, game_id):
 
     pygame.quit()
     quit()
+
+
+save(5000, 1)
