@@ -44,6 +44,11 @@ def resume():
     play.play()
     pygame.mixer.music.unpause()
 
+def st_collect():
+    stcollect = pygame.mixer.Sound('resource/soundboard/jump/collect.wav')
+    stcollect.set_volume(1)
+    stcollect.play()
+    
 def st_jump():
     stjump = pygame.mixer.Sound('resource/soundboard/jump/jump.wav')
     stjump.set_volume(1)

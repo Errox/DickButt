@@ -166,6 +166,7 @@ def start_Stranded():
             skey_hit_list = pygame.sprite.spritecollide(self, self.level.skey_list, False)
             for block in skey_hit_list:
                 done = False
+                soundboard.st_collect()
                 self.inventory = True
                 block.hide()
         def animate(self):
@@ -211,11 +212,11 @@ def start_Stranded():
             self.rect.y += 5
             platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
             self.rect.y -= 5
-
+            soundboard.st_jump()
             self.rect.y += 5
             monster_hit_list = pygame.sprite.spritecollide(self, self.level.monster_list, False)
             self.rect.y -= 5
-            soundboard.st_jump()
+
 
             # if jump is possible change y speed
             if len(platform_hit_list) > 0 or self.rect.bottom >= display_height:
@@ -503,7 +504,7 @@ def start_Stranded():
                      [1000, 100, 5000, 250],
                      [20, 10, 6180, 450],
                      [100, 700, 6200, 000],
-                     [900, 50, 5300, 650],
+                     #[900, 50, 5300, 650],
                      [500, 50, 6500, 780],
                      [500, 50, 6700, 580],
                      [500, 50, 6900, 380],
@@ -603,7 +604,7 @@ def start_Stranded():
             monster.rect.y = 755
             monster.boundary_left = 5200
             monster.boundary_right = 6450
-            monster.change_x = 8
+            monster.change_x = 10
             monster.player = self.MG_player
             monster.level = self
             self.monster_list.add(monster)
@@ -611,8 +612,8 @@ def start_Stranded():
             # Add a custom moving platform
             block = MovingPlatform(400, 20)
             block.rect.x = 1100
-            block.rect.y = 300
-            block.boundary_top = 300
+            block.rect.y = 310
+            block.boundary_top = 310
             block.boundary_bottom = 830
             block.change_y = 4
             block.player = self.MG_player
@@ -635,7 +636,7 @@ def start_Stranded():
             block.rect.x = 8400
             block.rect.y = 600
             block.boundary_top = 370
-            block.boundary_bottom = 800
+            block.boundary_bottom = 750
             block.change_y = 4
             block.player = self.MG_player
             block.level = self
