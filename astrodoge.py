@@ -184,7 +184,8 @@ def start_astrodoge():
                 #Check of de exit knop is ingedrukt
                 if event.type == pygame.QUIT:
                     running = False
-
+                    pygame.quit()
+                    quit()
                 #als esc ingedrukt wordt pauseert het spel
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
@@ -225,6 +226,8 @@ def start_astrodoge():
                 if event.type == pygame.QUIT:
                     #if the close button is pressed, the game will close
                     running = False
+                    pygame.quit()
+                    quit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         player.shoot() 

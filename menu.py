@@ -8,6 +8,7 @@ def start_menu():
     import spacestrike
     import SpaceBound
     import Stranded
+    import cheat_sheet
     import soundboard
     import sumo_smash
     import credits
@@ -70,18 +71,18 @@ def start_menu():
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_1.png'))
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_2.png'))
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_3.png'))
+            self.images.append(load_image('resource/images/select_planet/planet_glow/glow_4.png'))
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_3.png'))
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_2.png'))
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_1.png'))
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_0.png'))
             self.index = 0
             self.image = self.images[self.index]
-            self.rect = pygame.Rect(20,0,0,0)
+            self.rect = pygame.Rect(00,0,0,0)
       
         #here we update the sprite used for the animated text. 
         def update(self):
             self.index += 1
-            sleep(0.1)
             if self.index >= len(self.images):
                 self.index = 0
                 count = 0
@@ -142,19 +143,19 @@ def start_menu():
             start_select_planet()
         elif define_location == "planet_astrodoge":
             pygame.mixer.music.stop()
-            astrodoge.start_astrodoge()
+            cheat_sheet.start(1)
         elif define_location == "planet_spacestrike":
             pygame.mixer.music.stop()
-            spacestrike.start_spacestrike()
+            cheat_sheet.start(2)
         elif define_location == "planet_SpaceBound":
             pygame.mixer.music.stop()
-            SpaceBound.start_SpaceBound()
+            cheat_sheet.start(3)
         elif define_location == "planet_Stranded":
-            pygame.mixer.music.stop() 
-            Stranded.start_Stranded()
+            pygame.mixer.music.stop()
+            cheat_sheet.start(4)
         elif define_location == "planet_sumo_smash":
             pygame.mixer.music.stop() 
-            sumo_smash.start_sumo_smash()            
+            cheat_sheet.start(5)            
         else:
             print('under construction')
 
