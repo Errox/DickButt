@@ -10,6 +10,7 @@ def start(score, game_id):
     import Stranded
     import sumo_smash
     import soundboard
+    import highscore
     from time import sleep
 
     #setting variables
@@ -22,7 +23,7 @@ def start(score, game_id):
     #setting the settings of pygame itself
     screen = pygame.display.set_mode((900,900))
     pygame.display.set_caption("game_over")
-    font = pygame.font.SysFont('resource/fonts/Arcadepix.ttf', 40)
+    font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 40)
     clock = pygame.time.Clock()
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)
     define_location = "main_menu"
@@ -77,17 +78,25 @@ def start(score, game_id):
         screen.blit(quit_button, (325,550))
         screen.blit(retry_button, (325,470))
     
-    def text_score(score):       
-    
+    def text_score(score, highscore):       
         scoretext = font.render("Your Score ", 1, WHITE)
         score = font.render(" {0}".format(score), 1, WHITE)
-        screen.blit(scoretext, (375, 405))
-        screen.blit(score, (417, 435))
+        scorehightext = font.render("Your highscore ", 1, WHITE)
+        scorehigh = font.render(" {0}".format(highscore), 1, WHITE)
+        screen.blit(scoretext, (250, 385))
+        screen.blit(score, (250, 415))
+        screen.blit(scorehightext, (500, 385))
+        screen.blit(scorehigh, (500, 415))
+
+
+
     #beginning of the main loop
     main_loop = True
     soundboard.game_over(score) 
     my_sprite = animated_select_planet()
     my_group = pygame.sprite.Group(my_sprite)
+    highscore.save(score, game_id)
+    
     while main_loop:
         #reset the screen and set screen image's
         screen.fill(BLACK)
@@ -95,7 +104,10 @@ def start(score, game_id):
         start_game_over()
         my_group.update()
         my_group.draw(screen)
-        text_score(score)
+        highscorer = highscore.read(game_id)
+        text_score(score, highscorer)
+        pygame.display.flip()
+
         #check events
         for evento in pygame.event.get():
             #define event's of quiting the game.
@@ -123,7 +135,6 @@ def start(score, game_id):
                             Stranded.start_Stranded()
                         else:
                             print('well done, you fucked up. Idunno how but congratulations.')
-        pygame.display.flip()
 
     pygame.quit()
     quit()

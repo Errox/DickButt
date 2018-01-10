@@ -4,6 +4,7 @@ def start_Stranded():
     import menu
     import game_over
     import soundboard
+    import pygame.locals
     import time
 
     # Global constants
@@ -20,12 +21,14 @@ def start_Stranded():
     GREY = (128, 128, 128)
 
     # score = 100000
-    score = 100000
+    score = 10000
 
     startTime = time.time()
     # Screen size
-    SCREEN_WIDTH = 900
-    SCREEN_HEIGHT = 900
+    display_width = 900
+    display_height = 900
+
+    gameDisplay = pygame.display.set_mode((display_width,display_height))
 
     done = False
 
@@ -163,6 +166,7 @@ def start_Stranded():
             skey_hit_list = pygame.sprite.spritecollide(self, self.level.skey_list, False)
             for block in skey_hit_list:
                 done = False
+                soundboard.st_collect()
                 self.inventory = True
                 block.hide()
         def animate(self):
@@ -199,23 +203,23 @@ def start_Stranded():
                 self.change_y += .50
 
             # check if ground bellow player
-            if self.rect.y >= SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
+            if self.rect.y >= display_height - self.rect.height and self.change_y >= 0:
                 self.change_y = 0
-                self.rect.y = SCREEN_HEIGHT - self.rect.height
+                self.rect.y = display_height - self.rect.height
 
         def jump(self):
             # check if there is ground bellow so that the MG_Player can jump
             self.rect.y += 5
             platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
             self.rect.y -= 5
-
+            soundboard.st_jump()
             self.rect.y += 5
             monster_hit_list = pygame.sprite.spritecollide(self, self.level.monster_list, False)
             self.rect.y -= 5
-            soundboard.st_jump()
+
 
             # if jump is possible change y speed
-            if len(platform_hit_list) > 0 or self.rect.bottom >= SCREEN_HEIGHT:
+            if len(platform_hit_list) > 0 or self.rect.bottom >= display_height:
                 self.change_y = -12
 
         # player movement speed
@@ -235,8 +239,12 @@ def start_Stranded():
         def __init__(self, width, height):
             # monster constructor
             super().__init__()
-            self.image = pygame.Surface([width, height])
-            self.image.fill(RED)
+
+            self.image = pygame.image.load('resource/images/Stranded/lava.png').convert()
+            self.image.set_colorkey(BLACK)
+            self.rect = self.image.get_rect()
+            #self.image = pygame.Surface([width, height])
+            #self.image.fill(RED)
 
             self.rect = self.image.get_rect()
 
@@ -496,7 +504,7 @@ def start_Stranded():
                      [1000, 100, 5000, 250],
                      [20, 10, 6180, 450],
                      [100, 700, 6200, 000],
-                     [900, 50, 5300, 650],
+                     #[900, 50, 5300, 650],
                      [500, 50, 6500, 780],
                      [500, 50, 6700, 580],
                      [500, 50, 6900, 380],
@@ -509,9 +517,6 @@ def start_Stranded():
                      [500, 50, 8100, 180],
                      [50, 520, 8350, 380],
                      [50, 300, 8550, -100],
-                     [400, 20, 8600, 380],
-                     [20, 220, 8600, 380],
-                     [400, 20, 8600, 810]
                      ]
 
             # go through the array above and add platforms
@@ -525,24 +530,19 @@ def start_Stranded():
             # placing a Strandedkey block
             skey = Skey(43, 31)
             skey.rect.x = 8950
-            skey.rect.y = 810 - 31
+            skey.rect.y = 810 - 51
             skey.MG_player = self.MG_player
             self.skey_list.add(skey)
 
 
-            # placing a test ship block
+            # placing a ship block
             cship = Cship(290, 200)
             cship.rect.x = 0
             cship.rect.y = 237
             cship.MG_player = self.MG_player
             self.cship_list.add(cship)
 
-            # placing a kill block
-            monster = Monster(200, 70)
-            monster.rect.x = 8400
-            monster.rect.y = 830
-            monster.MG_player = self.MG_player
-            self.monster_list.add(monster)
+            
 
             # placing the kill blocks beneath the pits
             monster = Monster(400, 50)
@@ -566,7 +566,7 @@ def start_Stranded():
             #Kill block right of map
             monster = Monster(700, 100)
             monster.rect.x = 9000
-            monster.rect.y = 000
+            monster.rect.y = -100
             monster.MG_player = self.MG_player
             self.monster_list.add(monster)
 
@@ -604,7 +604,7 @@ def start_Stranded():
             monster.rect.y = 755
             monster.boundary_left = 5200
             monster.boundary_right = 6450
-            monster.change_x = 8
+            monster.change_x = 10
             monster.player = self.MG_player
             monster.level = self
             self.monster_list.add(monster)
@@ -612,8 +612,8 @@ def start_Stranded():
             # Add a custom moving platform
             block = MovingPlatform(400, 20)
             block.rect.x = 1100
-            block.rect.y = 300
-            block.boundary_top = 300
+            block.rect.y = 310
+            block.boundary_top = 310
             block.boundary_bottom = 830
             block.change_y = 4
             block.player = self.MG_player
@@ -632,11 +632,11 @@ def start_Stranded():
             self.platform_list.add(block)
 
             # another one
-            block = MovingPlatform(200, 20)
+            block = MovingPlatform(250, 20)
             block.rect.x = 8400
             block.rect.y = 600
             block.boundary_top = 370
-            block.boundary_bottom = 830
+            block.boundary_bottom = 750
             block.change_y = 4
             block.player = self.MG_player
             block.level = self
@@ -648,7 +648,7 @@ def start_Stranded():
         pygame.init()
 
         # set height and width of screen
-        size = [SCREEN_WIDTH, SCREEN_HEIGHT]
+        size = [display_width, display_height]
         screen = pygame.display.set_mode(size)
 
         pygame.display.set_caption("Stranded")
@@ -687,6 +687,11 @@ def start_Stranded():
             nonlocal score
             score = score - 1
             for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
+                        if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
+                           score = 0
+                           game_over.start(score, 5)
                 if event.type == pygame.QUIT:
                     done = True
 
@@ -734,13 +739,15 @@ def start_Stranded():
             current_level.draw(screen)
             active_sprite_list.draw(screen)
 
-
-
+            quit_button = pygame.transform.scale(
+                pygame.image.load('resource/images/select_planet/button_quit_small.png'), (42, 40))
+            quit_rect = quit_button.get_rect()
+            screen.blit(quit_button, (5, 5))
             #Game over screen
             if done:
                 print('game over')
                 game_over.start(score, 5)
-
+            font = pygame.font.Font("resource/fonts/Arcadepix.ttf", 30)
             scoretext = font.render("Score {0}".format(score), 1, WHITE)
             screen.blit(scoretext, (705, 10))
             if mg_player.rect.y < 0:
@@ -758,9 +765,7 @@ def start_Stranded():
 
             # update the screen
             pygame.display.flip()
-
         # exit
         pygame.quit()
-
 
     main()

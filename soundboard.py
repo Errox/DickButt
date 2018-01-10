@@ -35,8 +35,20 @@ def game_over(score):
 
 #define pause
 def pause():
+    play = pygame.mixer.Sound('resource/soundboard/menu/in.wav')
+    play.play()
     pygame.mixer.music.pause()
 
+def resume():
+    play = pygame.mixer.Sound('resource/soundboard/menu/out.wav')
+    play.play()
+    pygame.mixer.music.unpause()
+
+def st_collect():
+    stcollect = pygame.mixer.Sound('resource/soundboard/jump/collect.wav')
+    stcollect.set_volume(1)
+    stcollect.play()
+    
 def st_jump():
     stjump = pygame.mixer.Sound('resource/soundboard/jump/jump.wav')
     stjump.set_volume(1)
@@ -47,6 +59,11 @@ def ast_main():
     pygame.mixer.music.load('resource/soundboard/music/astrododge/song_1.ogg')
     pygame.mixer.music.queue('resource/soundboard/music/astrododge/song_2.ogg')
     pygame.mixer.music.queue('resource/soundboard/music/astrododge/song_3.ogg')
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play(-1)
+
+def hall_of_fame():
+    pygame.mixer.music.load('resource/soundboard/music/hall_of_fame/song_1.ogg')
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 
