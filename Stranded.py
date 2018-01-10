@@ -16,12 +16,13 @@ def start_Stranded():
     RED = (255, 0, 0)
     BLUE = (0, 0, 255)
     BEIGE = (255,211,155)
-    BROWN = (139,125,107)
+    BROWN = (139,121,94)
     GREY = (128, 128, 128)
 
     # score = 100000
     score = 100000
 
+    startTime = time.time()
     # Screen size
     SCREEN_WIDTH = 900
     SCREEN_HEIGHT = 900
@@ -211,6 +212,7 @@ def start_Stranded():
             self.rect.y += 5
             monster_hit_list = pygame.sprite.spritecollide(self, self.level.monster_list, False)
             self.rect.y -= 5
+            soundboard.st_jump()
 
             # if jump is possible change y speed
             if len(platform_hit_list) > 0 or self.rect.bottom >= SCREEN_HEIGHT:
@@ -247,11 +249,10 @@ def start_Stranded():
 
             # call the parent's constructor
             super().__init__()
-            self.image = pygame.image.load('resource/images/Stranded/cship.png').convert()
+            self.image = pygame.image.load('resource/images/Stranded/cship.png')
             self.image.set_colorkey(BLACK)
             self.rect = self.image.get_rect()
             # self.image.fill(BEIGE)
-            self.rect = self.image.get_rect()
 
     class Skey(pygame.sprite.Sprite):
         # Skey (StrandedKey) the pick up point
@@ -265,7 +266,7 @@ def start_Stranded():
             self.image = pygame.image.load('resource/images/Stranded/Skey.png').convert()
             self.image.set_colorkey(WHITE)
             self.rect = self.image.get_rect()
-            # SHow by default
+            # Show by default
             self.hide_object = False
 
         def hide(self):
@@ -301,6 +302,7 @@ def start_Stranded():
         player = None
 
         level = None
+
 
         def update(self):
             # Move the platform
@@ -432,7 +434,7 @@ def start_Stranded():
 
             # draw the background
             screen.fill(WHITE)
-            screen.blit(self.background,(self.world_shift // 20000000,0))
+            screen.blit(self.background,(self.world_shift // 200000000000000000000000000000000000000000,0))
 
             # draw the sprite lists
             self.platform_list.draw(screen)
@@ -530,7 +532,7 @@ def start_Stranded():
 
             # placing a test ship block
             cship = Cship(290, 200)
-            cship.rect.x = 50
+            cship.rect.x = 0
             cship.rect.y = 237
             cship.MG_player = self.MG_player
             self.cship_list.add(cship)
@@ -681,6 +683,7 @@ def start_Stranded():
         #score = 100000
         # main program loop
         while not done:
+            time_alive = time.time() - startTime
             nonlocal score
             score = score - 1
             for event in pygame.event.get():
@@ -739,12 +742,14 @@ def start_Stranded():
                 game_over.start(score, 5)
 
             scoretext = font.render("Score {0}".format(score), 1, WHITE)
-            screen.blit(scoretext, (5, 10))
+            screen.blit(scoretext, (705, 10))
             if mg_player.rect.y < 0:
                 playermarker = font.render("^^^".format(score), 1, GREEN)
                 screen.blit(playermarker, (462, 10))
             objectivetext = font.render("Collect and retrieve the object!".format(score), 1, WHITE)
-            screen.blit(objectivetext, (595, 10))
+            screen.blit(objectivetext, (295, 855))
+            scoretext = font.render("Time passed {0}".format(round(time_alive)), 1, WHITE)
+            screen.blit(scoretext, (705, 30))
             # timer
             if score <= 0:
                 pygame.quit()
