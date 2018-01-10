@@ -1,7 +1,7 @@
 #This script is for playing and moving around a sprite
 #import all lib's
- 
- 
+
+heart_amount = 3
 def start_astrodoge():
     import pygame
     import random
@@ -20,11 +20,13 @@ def start_astrodoge():
     X       = 500
     Y       = 100
     MOB_AMOUNT = 10
+    global heart_amount
     heart_amount = 3
     spawn_rate = 95
     startTime = time.time()
     start_init = True
     score   = 0
+    health  = 9001
  
     #define colors
     BLACK = (0, 0, 0)
@@ -39,8 +41,6 @@ def start_astrodoge():
     game_folder = os.path.dirname(__file__)
     img_folder  = os.path.join(game_folder, "img")
 
-
-
     #setting up a player class
     class player(pygame.sprite.Sprite):
         #sprite and other properties for the player
@@ -52,9 +52,9 @@ def start_astrodoge():
             self.rect   = self.image.get_rect()
             self.radius = 23
             self.rect.centerx = WIDTH / 2
-            self.rect.bottom = HEIGHT - 10
+            self.rect.bottom = HEIGHT - 30
             self.speedx = 0
- 
+
         #This function is given to update the player itself into the game
         def update(self):
             self.speedx = 0
@@ -104,6 +104,7 @@ def start_astrodoge():
             if self.rect.top > HEIGHT + 10 or self.rect.left < -25 or self.rect.right > WIDTH + 20:
                 self.rect.x = random.randrange(WIDTH - self.rect.width)
                 self.rect.y = random.randrange(-100, -40)
+
  
     #Setting up a bullet
     class Bullet(pygame.sprite.Sprite):
@@ -143,9 +144,7 @@ def start_astrodoge():
      
     #set FTP rate of clock ticks. 
     clock = pygame.time.Clock()
- 
- 
- 
+  
     #Preload images for the background
     background = pygame.image.load('resource/images/astrodoge/backgrounds/background_2.png').convert()
     background_rect = background.get_rect()
@@ -167,6 +166,7 @@ def start_astrodoge():
     #game loop
     running = True
     while running:
+            
             
         time_alive = time.time() - startTime 
  
@@ -198,11 +198,9 @@ def start_astrodoge():
                     player.shoot() 
  
         #update 
-
-        
+    
         all_sprites.update()
-        
-         
+    
         #collision for bullet against mobs
         hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
         if hits:
@@ -226,6 +224,10 @@ def start_astrodoge():
             screen.fill(BLACK)
             start_init = False
         screen.blit(background, background_rect)
+
+        def lose_heart():
+            global heart_amount
+            heart_amount -= 1
         
         #check how many lives the player has, else invoke the game_over scene 
         if heart_amount == 3:

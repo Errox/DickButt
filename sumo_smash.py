@@ -255,11 +255,11 @@ def start_sumo_smash():
 
         hits = pygame.sprite.spritecollide(player, mobs, False)
         if hits:
-            game_over.start(score, 3)
+            game_over.start(score, 4)
             running = False
         if player.alive == False:
             running = False
-            game_over.start(score, 3)
+            game_over.start(score, 4)
 
         levels = "level 1"
         
