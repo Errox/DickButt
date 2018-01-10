@@ -37,6 +37,11 @@ def game_over(score):
 def pause():
     pygame.mixer.music.pause()
 
+def st_jump():
+    stjump = pygame.mixer.Sound('resource/soundboard/jump/jump.wav')
+    stjump.set_volume(1)
+    stjump.play()
+
 #Astrododge main. 
 def ast_main():
     pygame.mixer.music.load('resource/soundboard/music/astrododge/song_1.ogg')
