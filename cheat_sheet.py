@@ -50,27 +50,32 @@ def start(game_id):
     # pygame.mixer.music.play(-1)
  
     #initiate a image loader
-    background = pygame.image.load('resource/images/astrodoge/backgrounds/basic_star_bg.png').convert()
-    background_rect = background.get_rect()
     #beginning of the main loop
     main_loop = True
     
-    counting = 3
-    while main_loop:
 
+    if game_id == 1:
+        background = pygame.image.load('resource/images/cheat_sheet/astrodoge').convert()
+        background_rect = background.get_rect()
+    elif game_id == 2:
+        background = pygame.image.load('resource/images/cheat_sheet').convert()
+        background_rect = background.get_rect()
+    elif game_id == 3:
+        background = pygame.image.load('resource/images/cheat_sheet').convert()
+        background_rect = background.get_rect()
+    elif game_id == 4:
+        background = pygame.image.load('resource/images/cheat_sheet').convert()
+        background_rect = background.get_rect()
+    elif game_id == 5: 
+        background = pygame.image.load('resource/images/cheat_sheet').convert()
+        background_rect = background.get_rect()
+
+    while main_loop:
+    
         #reset the screen and set screen image's
         screen.fill(BLACK)
-        
-        if game_id == 1:
-            print('penis1')
-        elif game_id == 2:
-            print('penis2')
-        elif game_id == 3:
-            print('penis3')
-        elif game_id == 4:
-            print('penis4')
-        elif game_id == 5: 
-            print('penis5')
+
+        screen.blit(background, background_rect)
 
         clock.tick(FPS)
         #check events

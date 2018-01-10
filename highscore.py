@@ -59,7 +59,7 @@ def start():
         astrodogetext = font.render("Astrodoge_score : {0}".format(data['1']), 1, WHITE)
         spacestext = font.render("Spacestrike_score : {0} ".format(data['2']), 1, WHITE)
         spacetext = font.render("Space Bound_score : {0}".format(data['3']), 1, WHITE)
-        sumotext = font.render("Invasion of the unknown_score : {0} ".format(data['4']), 1, WHITE)
+        sumotext = font.render("Invasion_of_the_unknown_score : {0} ".format(data['4']), 1, WHITE)
         strandedtext = font.render("Stranded_score : {0} ".format(data['5']), 1, WHITE)
 
         screen.blit(astrodogetext, (150, 385))
@@ -76,14 +76,13 @@ def start():
     while main_loop:
         #reset the screen and set screen image's
         clock.tick(FPS)
-        print('fasle')
         if init == False:
             screen.fill(BLACK)
-            init = True
-            text_score()
-            background = pygame.image.load('resource/images/select_planet/select_planet_background.png')
+            background = pygame.image.load('resource/images/highscore/highscore.png')
             background_rect = background.get_rect()
             screen.blit(background, background_rect)
+            init = True
+            text_score()
 
         quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
         quit_rect           = quit_button.get_rect()
