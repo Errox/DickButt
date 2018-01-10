@@ -14,8 +14,9 @@ def start_SpaceBound():
     clock = pygame.time.Clock()
     gameDisplay = pygame.display.set_mode((display_width, display_height))
     pygame.display.set_caption('SpaceBound')
+    InEncounter = False
 #   Images
-    Backgroundimg = pygame.image.load('resource/images/SpaceBound/Background_SpaceBound.gif')
+    Backgroundimg = pygame.image.load('resource/images/SpaceBound/background_eva.png')
     Obj_act = pygame.image.load('resource/images/SpaceBound/Objective_active.png')
     Obj_inact = pygame.image.load('resource/images/SpaceBound/Objective_inactive.png')
     Quit_Butt = pygame.image.load('resource/images/select_planet/button_quit_small.png')
@@ -96,7 +97,7 @@ def start_SpaceBound():
 
     AlienDead = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Dead.png')
 
-    Alienboss = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Alien_boss.png')
+    Alienboss = pygame.image.load('resource/images/SpaceBound/Aliens/Alien/Alien_Boss.png')
 #   Colours!
     black = (0,0,0)
     white = (255,255,255)
@@ -489,6 +490,8 @@ def start_SpaceBound():
                 gameDisplay.blit(AlienDead, (self.x,self.y))
 
         def draw_boss(self):
+            self.w = 990
+            self.h = 510
             gameDisplay.blit(Alienboss, (self.x,self.y))
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
 
@@ -746,7 +749,7 @@ def start_SpaceBound():
     SBenemy4 = SBenemy(100, 10, 375, 1763, 3, 1000) #big radius, slow spd. Big robot sprite
     SBenemy5 = SBenemy(150, 15, 1315, 463, 5, 200) #rando
     SBenemy6 = SBenemy(100, 20, -615, 553, 7, 300) #rando
-    SBenemy7 = SBenemy(500, 20, 433, 500, 0, 0) #stationairy, appears after both objectives are found. Sprite with no movement.
+    SBenemy7 = SBenemy(666, 20, 0, 400, 0, 0) #stationairy, appears after both objectives are found. Sprite with no movement.
     
     Aliens = [SBenemy1,SBenemy2,SBenemy3,SBenemy4,SBenemy5,SBenemy6,SBenemy7]
 #   Objectives
@@ -790,42 +793,43 @@ def start_SpaceBound():
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
 
         def Healing(self):
-            if self.healing:
-                if self.timer >= 0 and self.timer < 3:
-                    gameDisplay.blit(Heal1img, (self.x,self.y))
-                    self.timer += 1
-                if self.timer >= 3 and self.timer < 6:
-                    gameDisplay.blit(Heal2img, (self.x,self.y))
-                    self.timer += 1
-                if self.timer >= 6 and self.timer < 9:
-                    gameDisplay.blit(Heal3img, (self.x,self.y))
-                    self.timer += 1
-                if self.timer >= 9 and self.timer < 12:
-                    gameDisplay.blit(Heal4img, (self.x,self.y))
-                    self.timer += 1
-                if self.timer >= 12 and self.timer < 15:
-                    gameDisplay.blit(Heal5img, (self.x,self.y))
-                    self.timer += 1
-                if self.timer >= 15 and self.timer < 18:
-                    gameDisplay.blit(Heal6img, (self.x,self.y))
-                    self.timer += 1
-                if self.timer >= 18 and self.timer < 21:
-                    gameDisplay.blit(Heal7img, (self.x,self.y))
-                    self.timer += 1
-                if self.timer >= 21 and self.timer < 24:
-                    gameDisplay.blit(Heal8img, (self.x,self.y))
-                    self.timer += 1
-                if self.timer >= 24 and self.timer < 27:
-                    gameDisplay.blit(Heal9img, (self.x,self.y))
-                    self.timer += 1
-                if self.timer >= 27 and self.timer < 30:
-                    gameDisplay.blit(Heal10img, (self.x,self.y))
-                    self.timer += 1
-                if self.timer >= 30 and self.timer < 33:
-                    gameDisplay.blit(Heal11img, (self.x,self.y))
-                    self.timer += 1
-                if self.timer == 33:
-                    self.timer = 0
+            if not InEncounter:
+                if self.healing:
+                    if self.timer >= 0 and self.timer < 3:
+                        gameDisplay.blit(Heal1img, (self.x,self.y))
+                        self.timer += 1
+                    if self.timer >= 3 and self.timer < 6:
+                        gameDisplay.blit(Heal2img, (self.x,self.y))
+                        self.timer += 1
+                    if self.timer >= 6 and self.timer < 9:
+                        gameDisplay.blit(Heal3img, (self.x,self.y))
+                        self.timer += 1
+                    if self.timer >= 9 and self.timer < 12:
+                        gameDisplay.blit(Heal4img, (self.x,self.y))
+                        self.timer += 1
+                    if self.timer >= 12 and self.timer < 15:
+                        gameDisplay.blit(Heal5img, (self.x,self.y))
+                        self.timer += 1
+                    if self.timer >= 15 and self.timer < 18:
+                        gameDisplay.blit(Heal6img, (self.x,self.y))
+                        self.timer += 1
+                    if self.timer >= 18 and self.timer < 21:
+                        gameDisplay.blit(Heal7img, (self.x,self.y))
+                        self.timer += 1
+                    if self.timer >= 21 and self.timer < 24:
+                        gameDisplay.blit(Heal8img, (self.x,self.y))
+                        self.timer += 1
+                    if self.timer >= 24 and self.timer < 27:
+                        gameDisplay.blit(Heal9img, (self.x,self.y))
+                        self.timer += 1
+                    if self.timer >= 27 and self.timer < 30:
+                        gameDisplay.blit(Heal10img, (self.x,self.y))
+                        self.timer += 1
+                    if self.timer >= 30 and self.timer < 33:
+                        gameDisplay.blit(Heal11img, (self.x,self.y))
+                        self.timer += 1
+                    if self.timer == 33:
+                        self.timer = 0
 
     Background = Object(-1015, -207, 2700, 2385, Backgroundimg)
     Mountains = Object(-1015, -207, 2700, 357, None)
@@ -1026,13 +1030,12 @@ def start_SpaceBound():
                     alien.y += movey  
         #   Create the world
             CharacterHealth = SBEncounterTextBox(425,700,50,30, "Health: " + str(SBMainChar.health))
-            Score = SBEncounterTextBox(800,700,100,30,"Score: " + str(int(SBMainChar.scoring())))
-            Timer = SBEncounterTextBox(800,5,100,30,"Time: "+str(int(counter/30)))
+            Score = SBEncounterTextBox(800,5,100,30,"Score: " + str(int(SBMainChar.scoring())))
+            Timer = SBEncounterTextBox(800,25,100,30,"Time: "+str(int(counter/30)))
             Gun_Energy = SBEncounterTextBox(550,700,50,30,"Gun energy: " + str(SBMainChar.stam))
             Attacktext = SBEncounterTextBox(300, 700, 50, 30, "Attack: " + str(SBMainChar.attack))
             ObjClear = SBEncounterTextBox(350, SBMainChar.y + 80,100,30,"You deactivated the structure. You feel your power growing stronger...")
-            gameDisplay.fill(black)   
-            Background.draw_Object()
+            gameDisplay.fill(black) 
         #   Draw the things 
             CharacterHealth.EncounterText()
             Score.EncounterText()
@@ -1078,9 +1081,7 @@ def start_SpaceBound():
         #   Other things 2
             counter += 1
             pygame.display.update()
-            clock.tick(FPS)
-            
-            
+            clock.tick(FPS)    
 #   Other things!
     SBgame_loop()
     main()
