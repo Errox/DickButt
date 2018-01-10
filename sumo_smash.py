@@ -31,6 +31,9 @@ def start_sumo_smash():
     clock = pygame.time.Clock()
     soundboard.ast_main()
 
+    Quit_Butt = pygame.image.load('resource/images/select_planet/button_quit_small.png')
+    screen.blit(Quit_Butt, [5, 5])
+
     class Player(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
@@ -55,18 +58,25 @@ def start_sumo_smash():
             #self.speedy = 0
             #self.speedx = 0
             if keystate[pygame.K_LEFT]:
+                    self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
+                    self.image = pygame.transform.rotate(self.image, 270)
                     self.speedx = -10
                     self.speedy = 0
-
             if keystate[pygame.K_RIGHT]:
+                    self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
+                    self.image = pygame.transform.rotate(self.image, 90)                
                     self.speedx = 10
                     self.speedy = 0
             if keystate[pygame.K_UP]:
                     self.speedy = -10
                     self.speedx = 0
+                    self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
+                    self.image = pygame.transform.rotate(self.image, 180)
             if keystate[pygame.K_DOWN]:
                     self.speedy = 10
-                    self.speedx = 0     
+                    self.speedx = 0  
+                    self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
+                    self.image = pygame.transform.rotate(self.image, 360)   
             self.rect.x += self.speedx
             self.rect.y += self.speedy
             if  self.rect.right > self.right:
@@ -196,6 +206,9 @@ def start_sumo_smash():
     background = pygame.image.load('resource/images/sumo_smash/grass_14.png').convert()
     background = pygame.transform.scale(background, (900, 900))
     background_rect = background.get_rect()
+    Quit_Butt = pygame.image.load('resource/images/select_planet/button_quit_small.png')
+    screen.blit(Quit_Butt, [5, 5])
+
 
     # Game loop
     running = True
@@ -275,7 +288,7 @@ def start_sumo_smash():
             game_over.start(score, 4)
 
         levels = "level 1"
-        
+            
         screen.fill(backround)
         screen.blit(background, background_rect)
         pygame.draw.rect(screen, BLACK, [block_1, 0, 500, 900]) # left
@@ -285,7 +298,7 @@ def start_sumo_smash():
         #pygame.draw.ellipse(screen, RED, (75, 75, 750, 750), 10)
         all_sprites.draw(screen)
         scoretext = font.render("Score {0}".format(score), 1, WHITE)
-        screen.blit(scoretext, (5, 10))
+        screen.blit(scoretext, (750, 10))
         objectivetext = font.render(levels , 1, BLUE)
         screen.blit(objectivetext, (595, 10))
         if player.heart_amount == 3:
@@ -301,6 +314,7 @@ def start_sumo_smash():
             player.alive = False
             print('game over')
             game_over.start(score, 4)
+
 
              
         # *after* drawing everything, flip the display
