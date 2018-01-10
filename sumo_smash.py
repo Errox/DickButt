@@ -34,7 +34,7 @@ def start_sumo_smash():
     class Player(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png').convert()
+            self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
             self.image.set_colorkey(WHITE)                             
             self.image = pygame.transform.scale(self.image, (40, 40))  
             self.rect = self.image.get_rect()
@@ -86,9 +86,12 @@ def start_sumo_smash():
 
     class Mob1(pygame.sprite.Sprite):
         def __init__(self):
+            #goed
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.Surface((60, 60))
-            self.image.fill(BLUE)
+            self.image  = pygame.image.load('resource/images/sumo_smash/alien_2.png')
+            self.image = pygame.transform.scale(self.image, (60, 60))
+            self.image = pygame.transform.rotate(self.image, 270)
+            self.image.set_colorkey(BLACK)   
             self.rect = self.image.get_rect()
             self.rect.x = random.randrange(-500, -400)
             self.rect.y = random.randrange(HEIGHT - self.rect.height)
@@ -103,9 +106,13 @@ def start_sumo_smash():
 
     class Mob2(pygame.sprite.Sprite):
         def __init__(self):
+            #top to bottom
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.Surface((60, 60))
-            self.image.fill(BLUE)
+            self.image  = pygame.image.load('resource/images/sumo_smash/alien_2.png')
+            self.image = pygame.transform.scale(self.image, (60, 60))
+            self.image = pygame.transform.rotate(self.image, 180)
+            self.image.set_colorkey(BLACK)  
+            #self.image.set_colorkey(WHITE)  
             self.rect = self.image.get_rect()
             self.rect.x = random.randrange(WIDTH - self.rect.width)
             self.rect.y = random.randrange(-500, -400)
@@ -121,9 +128,10 @@ def start_sumo_smash():
     class Mob3(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image  = pygame.image.load('resource/images/sumo_smash/alien_2.png').convert()
+            self.image  = pygame.image.load('resource/images/sumo_smash/alien_2.png')
             self.image = pygame.transform.scale(self.image, (60, 60))
-            self.image = pygame.transform.rotate(self.image, 270)
+            self.image = pygame.transform.rotate(self.image, 90)
+            self.image.set_colorkey(BLACK)   
             #self.image.fill(BLUE)
             self.rect = self.image.get_rect()
             self.rect.x = 1200
@@ -140,9 +148,9 @@ def start_sumo_smash():
     class Mob4(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image  = pygame.image.load('resource/images/sumo_smash/alien_2.png').convert()
+            self.image  = pygame.image.load('resource/images/sumo_smash/alien_2.png')
             self.image = pygame.transform.scale(self.image, (60, 60))
-            self.image.set_colorkey(WHITE)               
+            self.image.set_colorkey(BLACK)              
             #self.image = pygame.Surface((60, 60))
             #self.image.fill(BLUE)
             self.rect = self.image.get_rect()
@@ -212,7 +220,6 @@ def start_sumo_smash():
             player.bottom = 800 
         level = 3    
         if time == 9300:
-            
             block_1 = -350
             block_2 = 750
             block_3 = 750
@@ -230,7 +237,6 @@ def start_sumo_smash():
             player.bottom = 750 
         level = 4   
         if time == 9000:
-            background = pygame.image.load("resource/images/sumo_smash/platformlevel1.png").convert() 
             block_1 = -450
             block_2 = 850
             block_3 = 850
