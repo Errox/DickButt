@@ -47,12 +47,11 @@ def start_Stranded():
             self.load_images()
             self.image = pygame.image.load('resource/images/Character/Purple/Right/Stance/1.png').convert()
             self.image = pygame.transform.scale(self.image, (50, 75))
-            self.image.set_colorkey(BLACK)
+            #self.image.set_colorkey(BLACK)
             self.rect = self.image.get_rect()
             # self.image = pygame.Surface([width, height])
             # self.image.fill(GREEN)
 
-            self.rect = self.image.get_rect()
 
             # set speed of mg_player
             self.change_x = 0
@@ -248,12 +247,11 @@ def start_Stranded():
 
             # call the parent's constructor
             super().__init__()
-
-            self.image = pygame.Surface([width, height])
-            self.image.fill(BEIGE)
-
+            self.image = pygame.image.load('resource/images/Stranded/cship.png').convert()
+            self.image.set_colorkey(BLACK)
             self.rect = self.image.get_rect()
-
+            # self.image.fill(BEIGE)
+            self.rect = self.image.get_rect()
 
     class Skey(pygame.sprite.Sprite):
         # Skey (StrandedKey) the pick up point
@@ -264,9 +262,8 @@ def start_Stranded():
             # call the parent's constructor
             super().__init__()
 
-            self.image = pygame.Surface([width, height])
-            self.image.fill(GREEN)
-
+            self.image = pygame.image.load('resource/images/Stranded/Skey.png').convert()
+            self.image.set_colorkey(WHITE)
             self.rect = self.image.get_rect()
             # SHow by default
             self.hide_object = False
@@ -524,16 +521,17 @@ def start_Stranded():
                 self.platform_list.add(block)
 
             # placing a Strandedkey block
-            skey = Skey(100, 100)
-            skey.rect.x = 8750
-            skey.rect.y = 710
+            skey = Skey(43, 31)
+            skey.rect.x = 8950
+            skey.rect.y = 810 - 31
             skey.MG_player = self.MG_player
             self.skey_list.add(skey)
 
+
             # placing a test ship block
-            cship = Cship(400, 150)
-            cship.rect.x = 0
-            cship.rect.y = 350
+            cship = Cship(290, 200)
+            cship.rect.x = 50
+            cship.rect.y = 237
             cship.MG_player = self.MG_player
             self.cship_list.add(cship)
 
