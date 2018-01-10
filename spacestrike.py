@@ -23,6 +23,7 @@ def start_spacestrike():
     heart_amount = 3
     start_init = True
     score   = 0
+    pause = False
 
     #define colors
     BLACK = (0, 0, 0)
@@ -239,83 +240,114 @@ def start_spacestrike():
     #de main game loops
     running = True
     while running:
-        # Laat de clock ticken op de fps
-        clock.tick(FPS)
+        while pause == True:
+            clock.tick(FPS)
+            mm_button        = pygame.image.load('resource/images/pause_screen/button_mm.png').convert()
+            resume_button    = pygame.image.load('resource/images/pause_screen/button_resume.png').convert()
+            restart_button   = pygame.image.load('resource/images/pause_screen/button_restart.png').convert()
+            mm_rect          = mm_button.get_rect()
+            resume_rect      = resume_button.get_rect()
+            restart_rect     = restart_button.get_rect()
+            screen.blit(mm_button, (325,550))
+            screen.blit(resume_button, (325,470))
+            screen.blit(restart_button, (325,390))
 
-        #kijk of er een event is 
-        for event in pygame.event.get():
-            print (event)
-            #Check of de exit knop is ingedrukt
-            if event.type == pygame.QUIT:
-                running = False
+            for event in pygame.event.get():
+                print (event)
+                #Check of de exit knop is ingedrukt
+                if event.type == pygame.QUIT:
+                    running = False
 
-            #als spatie word ingedrukt moet er een kogel afgeschoten worden
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    
-                    bullet_sound.play()
-                    player.shoot()
+                #als esc ingedrukt wordt pauseert het spel
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pause = False
 
-                    # pygame.mixer.Sound.play()
-            
-        #update
-        all_sprites.update()
+            #flip the display.
+            pygame.display.flip()
 
-       #collision for bullet against enemy
-        hits = pygame.sprite.groupcollide(enemys, bullets, True, True)
-        if hits:
-            score += 100
-            soundboard.bullet_on_hit_enemy()
-        for hit in hits:
-            m = enemy()
-            all_sprites.add(m)
-            enemys.add(m)
- 
-       #collision if player hits enemys
-        hits = pygame.sprite.spritecollide(player, enemys, True, pygame.sprite.collide_circle)
-        if hits:
-            soundboard.bullet_on_hit_friendly()
-            lose_heart()
-
-     #collision if enemy bullet hits player
-        hits = pygame.sprite.spritecollide(player, en_bullets, True, pygame.sprite.collide_circle)
-        if hits:
-            soundboard.bullet_on_hit_friendly()
-            lose_heart()
+        while pause == False:
         
-        def lose_heart():
-            global heart_amount
-            heart_amount -= 1
+                
+            # Laat de clock ticken op de fps
+            clock.tick(FPS)
 
-        #draw / render
-        if start_init == True:
-            screen.fill(BLACK)
-            start_init = False
-        screen.blit(surface, surface_rect)
-        
-        #check lives, else load game over screen
-        if heart_amount == 3:
-            hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_3.png'), (130,45))
-            screen.blit(hearts, [770, 0])
-        elif heart_amount == 2:
-            hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_2.png'), (130,45))
-            screen.blit(hearts, [770, 0])
-        elif heart_amount == 1:
-            hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_1.png'), (130,45))
-            screen.blit(hearts, [770, 0])
-        else:
-            print('game over')
-            game_over.start(score, 2)
+            #kijk of er een event is 
+            for event in pygame.event.get():
+                print (event)
+                #Check of de exit knop is ingedrukt
+                if event.type == pygame.QUIT:
+                    running = False
+
+                #als spatie word ingedrukt moet er een kogel afgeschoten worden
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        bullet_sound.play()
+                        player.shoot()
+                    if event.key == pygame.K_ESCAPE:
+                        pause = True
+                        
+
+                        # pygame.mixer.Sound.play()
+                
+            #update
+            all_sprites.update()
+
+            #collision for bullet against enemy
+            hits = pygame.sprite.groupcollide(enemys, bullets, True, True)
+            if hits:
+                score += 100
+                soundboard.bullet_on_hit_enemy()
+            for hit in hits:
+                m = enemy()
+                all_sprites.add(m)
+                enemys.add(m)
+
+            #collision if player hits enemys
+            hits = pygame.sprite.spritecollide(player, enemys, True, pygame.sprite.collide_circle)
+            if hits:
+                soundboard.bullet_on_hit_friendly()
+                lose_heart()
+
+            #collision if enemy bullet hits player
+            hits = pygame.sprite.spritecollide(player, en_bullets, True, pygame.sprite.collide_circle)
+            if hits:
+                soundboard.bullet_on_hit_friendly()
+                lose_heart()
             
+            def lose_heart():
+                global heart_amount
+                heart_amount -= 1
 
-        scoretext = font.render("Score {0}".format(score), 1, WHITE)
-        screen.blit(scoretext, (5, 10))
+            #draw / render
+            if start_init == True:
+                screen.fill(BLACK)
+                start_init = False
+            screen.blit(surface, surface_rect)
+            
+            #check lives, else load game over screen
+            if heart_amount == 3:
+                hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_3.png'), (130,45))
+                screen.blit(hearts, [770, 0])
+            elif heart_amount == 2:
+                hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_2.png'), (130,45))
+                screen.blit(hearts, [770, 0])
+            elif heart_amount == 1:
+                hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_1.png'), (130,45))
+                screen.blit(hearts, [770, 0])
+            else:
+                print('game over')
+                game_over.start(score, 2)
+                
 
-        all_sprites.draw(screen)
+            scoretext = font.render("Score {0}".format(score), 1, WHITE)
+            screen.blit(scoretext, (5, 10))
 
-        #flip the display.
-        pygame.display.flip()
+            all_sprites.draw(screen)
+
+            #flip the display.
+            pygame.display.flip()
 
     pygame.quit()
 
-#start_spacestrike()
+    #start_spacestrike()
