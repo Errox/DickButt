@@ -8,9 +8,9 @@ def start_menu():
     import spacestrike
     import SpaceBound
     import Stranded
-    import credits
     import soundboard
     import sumo_smash
+    import credits
     from time import sleep
     
     #All global variables are set here
@@ -61,6 +61,31 @@ def start_menu():
                 self.index = 0
                 count = 0
             self.image = self.images[self.index]
+        
+    class glow_planets(pygame.sprite.Sprite):
+        def __init__(self):
+            super(glow_planets, self).__init__()
+            self.images = []
+            self.images.append(load_image('resource/images/select_planet/planet_glow/glow_0.png'))
+            self.images.append(load_image('resource/images/select_planet/planet_glow/glow_1.png'))
+            self.images.append(load_image('resource/images/select_planet/planet_glow/glow_2.png'))
+            self.images.append(load_image('resource/images/select_planet/planet_glow/glow_3.png'))
+            self.images.append(load_image('resource/images/select_planet/planet_glow/glow_3.png'))
+            self.images.append(load_image('resource/images/select_planet/planet_glow/glow_2.png'))
+            self.images.append(load_image('resource/images/select_planet/planet_glow/glow_1.png'))
+            self.images.append(load_image('resource/images/select_planet/planet_glow/glow_0.png'))
+            self.index = 0
+            self.image = self.images[self.index]
+            self.rect = pygame.Rect(20,0,0,0)
+      
+        #here we update the sprite used for the animated text. 
+        def update(self):
+            self.index += 1
+            sleep(0.1)
+            if self.index >= len(self.images):
+                self.index = 0
+                count = 0
+            self.image = self.images[self.index]
 
     # 1 #
     #start the main menu board.
@@ -79,6 +104,8 @@ def start_menu():
         screen.blit(background, background_rect)
         pygame.display.set_caption("Select Planet")
         #get buttons
+        glow_group.update()
+        glow_group.draw(screen)
         my_group.update()
         my_group.draw(screen)
         buttons_select_planet()
@@ -99,6 +126,9 @@ def start_menu():
     main_loop = True
     my_sprite = animated_select_planet()
     my_group = pygame.sprite.Group(my_sprite)
+
+    my_glow = glow_planets()
+    glow_group = pygame.sprite.Group(my_glow)
 
     #start of the main_loop
     while main_loop:
@@ -147,7 +177,7 @@ def start_menu():
                 #here we check where the story line of the game is and define some button presses to make it more functional.
                 if define_location == "main_menu":
                     if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 380:
-                        if pygame.mouse.get_pos()[0] <= 598 and pygame.mouse.get_pos()[1] <= 445:
+                        if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 445:
                             define_location = "select_planet"
                     if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 520:
                         if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 585:
