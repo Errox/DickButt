@@ -10,13 +10,13 @@ def start_SpaceBound():
 #   things!
     FPS = 30
     display_width = 900 
-    display_height = 800
+    display_height = 750
     clock = pygame.time.Clock()
     gameDisplay = pygame.display.set_mode((display_width, display_height))
     pygame.display.set_caption('SpaceBound')
     InEncounter = False
 #   Images
-    Backgroundimg = pygame.image.load('resource/images/SpaceBound/background_eva.png')
+    Backgroundimg = pygame.image.load('resource/images/SpaceBound/eva_bg.png')
     Obj_act = pygame.image.load('resource/images/SpaceBound/Objective_active.png')
     Obj_inact = pygame.image.load('resource/images/SpaceBound/Objective_inactive.png')
     Quit_Butt = pygame.image.load('resource/images/select_planet/button_quit_small.png')
@@ -232,7 +232,7 @@ def start_SpaceBound():
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
 
         def EncounterText(self):
-            font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 20)
+            font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 30)
             TextSurf = font.render(self.text,True,white)
             text_rect = TextSurf.get_rect()
             text_rect.center = ((self.x + self.w * 0.5), (self.y + self.h * 0.5))
@@ -261,15 +261,15 @@ def start_SpaceBound():
 
     SBEncountertext = SBEncounterTextBox(0,0,700,100,"Encounter!")
    # Encounter blocks
-    SBFight = SBEncounterTextBox(670,475,110,30,"    Fight    ")
-    SBMoves = SBEncounterTextBox(670,525,110,30,"  Gun moves  ")
-    SBItems = SBEncounterTextBox(670,575,110,30,"    Items    ")
-    SBRun = SBEncounterTextBox(670,625,110,30,  "     Run     ")
+    SBFight = SBEncounterTextBox(650,475,155,35,"    Fight    ")
+    SBMoves = SBEncounterTextBox(650,525,155,35,"  Gun moves  ")
+    SBItems = SBEncounterTextBox(650,575,155,35,"    Items    ")
+    SBRun = SBEncounterTextBox  (650,625,155,35,"     Run     ")
    # Gun moves
-    GunPowershot = SBEncounterTextBox(670,475,110,30,"Power Shot")
-    GunHeal = SBEncounterTextBox(670,525,110,30,"Stimpack")
-    GunHealthshot = SBEncounterTextBox(670,575,110,30,"Health Shot")
-    GunBack = SBEncounterTextBox(670,625,110,30,"Back")
+    GunPowershot = SBEncounterTextBox (650,475,155,35,"Power Shot")
+    GunHeal = SBEncounterTextBox      (650,525,155,35,"Stimpack")
+    GunHealthshot = SBEncounterTextBox(650,575,155,35,"Health Shot")
+    GunBack = SBEncounterTextBox      (650,625,155,35,"Back")
 
    # Battle text
     SBAttack = SBEncounterTextBox(0,0,700,100,"You attacked!")
@@ -290,9 +290,9 @@ def start_SpaceBound():
     SBBattlelog8 = SBEncounterTextBox(70,625,500,20,"Click Run to attempt to flee, but be quick, you won't have long")
    # Other
     SBLavaWarning = SBEncounterTextBox(350,650,200,30,"I shouldn't get too close to the lava")
-    Objectivetext1 = SBEncounterTextBox(350,5,200,30,"Objective: Find and deactivate the alien structures")
-    Objectivetext2 = SBEncounterTextBox(350,5,200,30,"Objective: Deactivate the other alien structure")
-    Objectivetext3 = SBEncounterTextBox(350,5,200,30,"Objective: Go back to the ship")
+    Objectivetext1 = SBEncounterTextBox(325,5,200,30,"Objective: Find and deactivate the alien structures")
+    Objectivetext2 = SBEncounterTextBox(325,5,200,30,"Objective: Deactivate the other alien structure")
+    Objectivetext3 = SBEncounterTextBox(325,5,200,30,"Objective: Go back to the ship")
 #   Enemies
     class SBenemy(pygame.sprite.Sprite):
         def __init__(self, health, attack, x, y, move, radius):
@@ -910,7 +910,7 @@ def start_SpaceBound():
                 game_over.start(score, 3)
                 
             if Objective1.touched and Objective2.touched and not SBenemy7.alive:
-                score += int(10000000/counter)
+                score += int(9000-counter)
                 game_over.start(score, 3)
 
             if SBMainChar.health <= 0:
@@ -1030,13 +1030,14 @@ def start_SpaceBound():
                     alien.y += movey  
         #   Create the world
             CharacterHealth = SBEncounterTextBox(425,700,50,30, "Health: " + str(SBMainChar.health))
-            Score = SBEncounterTextBox(800,5,100,30,"Score: " + str(int(SBMainChar.scoring())))
-            Timer = SBEncounterTextBox(800,25,100,30,"Time: "+str(int(counter/30)))
-            Gun_Energy = SBEncounterTextBox(550,700,50,30,"Gun energy: " + str(SBMainChar.stam))
-            Attacktext = SBEncounterTextBox(300, 700, 50, 30, "Attack: " + str(SBMainChar.attack))
-            ObjClear = SBEncounterTextBox(350, SBMainChar.y + 80,100,30,"You deactivated the structure. You feel your power growing stronger...")
+            Score = SBEncounterTextBox(775,5,100,30,"Score: " + str(int(SBMainChar.scoring())))
+            Timer = SBEncounterTextBox(775,35,100,30,"Time: "+str(int(counter/30)))
+            Gun_Energy = SBEncounterTextBox(600,700,50,30,"Gun energy: " + str(SBMainChar.stam))
+            Attacktext = SBEncounterTextBox(275, 700, 50, 30, "Attack: " + str(SBMainChar.attack))
+            ObjClear = SBEncounterTextBox(350, SBMainChar.y + 80,100,30,"Structure deactivated. You feel yourself getting stronger")                                          
             gameDisplay.fill(black) 
         #   Draw the things 
+            Background.draw_Object()
             CharacterHealth.EncounterText()
             Score.EncounterText()
             Timer.EncounterText()
@@ -1046,13 +1047,13 @@ def start_SpaceBound():
                 Objectivetext3.EncounterText()
                 Obj_Cleared = True
                 SBMainChar.attack = 50
-                if times <= 60:
+                if times <= 120:
                     ObjClear.EncounterText()
                     times += 1
             elif Objective1.touched or Objective2.touched:
                 Objectivetext2.EncounterText()
                 SBMainChar.attack = 25
-                if times <= 30:
+                if times <= 120:
                     ObjClear.EncounterText()
                     times += 1
             else:
