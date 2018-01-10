@@ -196,7 +196,7 @@ def start_spacestrike():
     pygame.init() 
 
     #init the sound libs of pygame.
-    soundboard.ast_main()
+    soundboard.spst_main()
 
     #Defineeer de groote en breedte van de game
     screen = pygame.display.set_mode((900, 900))
