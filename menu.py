@@ -70,6 +70,8 @@ def start_menu():
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_1.png'))
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_2.png'))
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_3.png'))
+            self.images.append(load_image('resource/images/select_planet/planet_glow/glow_4.png'))
+            self.images.append(load_image('resource/images/select_planet/planet_glow/glow_4.png'))
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_3.png'))
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_2.png'))
             self.images.append(load_image('resource/images/select_planet/planet_glow/glow_1.png'))
