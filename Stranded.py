@@ -4,6 +4,7 @@ def start_Stranded():
     import menu
     import game_over
     import soundboard
+    import pygame.locals
     import time
 
     # Global constants
@@ -24,8 +25,10 @@ def start_Stranded():
 
     startTime = time.time()
     # Screen size
-    SCREEN_WIDTH = 900
-    SCREEN_HEIGHT = 900
+    display_width = 900
+    display_height = 900
+
+    gameDisplay = pygame.display.set_mode((display_width,display_height))
 
     done = False
 
@@ -199,9 +202,9 @@ def start_Stranded():
                 self.change_y += .50
 
             # check if ground bellow player
-            if self.rect.y >= SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
+            if self.rect.y >= display_height - self.rect.height and self.change_y >= 0:
                 self.change_y = 0
-                self.rect.y = SCREEN_HEIGHT - self.rect.height
+                self.rect.y = display_height - self.rect.height
 
         def jump(self):
             # check if there is ground bellow so that the MG_Player can jump
@@ -215,7 +218,7 @@ def start_Stranded():
             soundboard.st_jump()
 
             # if jump is possible change y speed
-            if len(platform_hit_list) > 0 or self.rect.bottom >= SCREEN_HEIGHT:
+            if len(platform_hit_list) > 0 or self.rect.bottom >= display_height:
                 self.change_y = -12
 
         # player movement speed
@@ -644,7 +647,7 @@ def start_Stranded():
         pygame.init()
 
         # set height and width of screen
-        size = [SCREEN_WIDTH, SCREEN_HEIGHT]
+        size = [display_width, display_height]
         screen = pygame.display.set_mode(size)
 
         pygame.display.set_caption("Stranded")
@@ -683,6 +686,11 @@ def start_Stranded():
             nonlocal score
             score = score - 1
             for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
+                        if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
+                           score = 0
+                           game_over.start(score, 5)
                 if event.type == pygame.QUIT:
                     done = True
 
@@ -730,8 +738,10 @@ def start_Stranded():
             current_level.draw(screen)
             active_sprite_list.draw(screen)
 
-
-
+            quit_button = pygame.transform.scale(
+                pygame.image.load('resource/images/select_planet/button_quit_small.png'), (42, 40))
+            quit_rect = quit_button.get_rect()
+            screen.blit(quit_button, (5, 5))
             #Game over screen
             if done:
                 print('game over')
@@ -754,9 +764,7 @@ def start_Stranded():
 
             # update the screen
             pygame.display.flip()
-
         # exit
         pygame.quit()
-
 
     main()
