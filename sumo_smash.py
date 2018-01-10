@@ -31,8 +31,9 @@ def start_sumo_smash():
     clock = pygame.time.Clock()
     soundboard.ast_main()
 
-    Quit_Butt = pygame.image.load('resource/images/select_planet/button_quit_small.png')
-    screen.blit(Quit_Butt, [5, 5])
+    #Quit_Butt = pygame.image.load('resource/images/select_planet/button_quit_small.png')
+    #screen.blit(Quit_Butt, [5, 5])
+
 
     class Player(pygame.sprite.Sprite):
         def __init__(self):
@@ -274,7 +275,10 @@ def start_sumo_smash():
             # check for closing window
             if event.type == pygame.QUIT:
                 running = False
-        
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
+                    if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
+                           menu.start_menu()
         count += 5
         score = int(count)
 
@@ -296,7 +300,12 @@ def start_sumo_smash():
         pygame.draw.rect(screen, BLACK, [0, block_3, 900, 500]) # bottom
         pygame.draw.rect(screen, BLACK, [0, block_4, 900, 500]) # top
         #pygame.draw.ellipse(screen, RED, (75, 75, 750, 750), 10)
+
         all_sprites.draw(screen)
+        quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
+        quit_rect           = quit_button.get_rect()
+        screen.blit(quit_button, (5,5))    
+
         scoretext = font.render("Score {0}".format(score), 1, WHITE)
         screen.blit(scoretext, (750, 10))
         objectivetext = font.render(levels , 1, BLUE)
