@@ -20,7 +20,7 @@ def start_Stranded():
     GREY = (128, 128, 128)
 
     # score = 100000
-    score = 100000
+    score = 10000
 
     startTime = time.time()
     # Screen size
@@ -235,8 +235,12 @@ def start_Stranded():
         def __init__(self, width, height):
             # monster constructor
             super().__init__()
-            self.image = pygame.Surface([width, height])
-            self.image.fill(RED)
+
+            self.image = pygame.image.load('resource/images/Stranded/lava.png').convert()
+            self.image.set_colorkey(BLACK)
+            self.rect = self.image.get_rect()
+            #self.image = pygame.Surface([width, height])
+            #self.image.fill(RED)
 
             self.rect = self.image.get_rect()
 
@@ -509,9 +513,6 @@ def start_Stranded():
                      [500, 50, 8100, 180],
                      [50, 520, 8350, 380],
                      [50, 300, 8550, -100],
-                     [400, 20, 8600, 380],
-                     [20, 220, 8600, 380],
-                     [400, 20, 8600, 810]
                      ]
 
             # go through the array above and add platforms
@@ -525,24 +526,19 @@ def start_Stranded():
             # placing a Strandedkey block
             skey = Skey(43, 31)
             skey.rect.x = 8950
-            skey.rect.y = 810 - 31
+            skey.rect.y = 810 - 51
             skey.MG_player = self.MG_player
             self.skey_list.add(skey)
 
 
-            # placing a test ship block
+            # placing a ship block
             cship = Cship(290, 200)
             cship.rect.x = 0
             cship.rect.y = 237
             cship.MG_player = self.MG_player
             self.cship_list.add(cship)
 
-            # placing a kill block
-            monster = Monster(200, 70)
-            monster.rect.x = 8400
-            monster.rect.y = 830
-            monster.MG_player = self.MG_player
-            self.monster_list.add(monster)
+            
 
             # placing the kill blocks beneath the pits
             monster = Monster(400, 50)
@@ -566,7 +562,7 @@ def start_Stranded():
             #Kill block right of map
             monster = Monster(700, 100)
             monster.rect.x = 9000
-            monster.rect.y = 000
+            monster.rect.y = -100
             monster.MG_player = self.MG_player
             self.monster_list.add(monster)
 
@@ -632,11 +628,11 @@ def start_Stranded():
             self.platform_list.add(block)
 
             # another one
-            block = MovingPlatform(200, 20)
+            block = MovingPlatform(250, 20)
             block.rect.x = 8400
             block.rect.y = 600
             block.boundary_top = 370
-            block.boundary_bottom = 830
+            block.boundary_bottom = 800
             block.change_y = 4
             block.player = self.MG_player
             block.level = self
@@ -740,7 +736,7 @@ def start_Stranded():
             if done:
                 print('game over')
                 game_over.start(score, 5)
-
+            font = pygame.font.Font("resource/fonts/Arcadepix.ttf", 30)
             scoretext = font.render("Score {0}".format(score), 1, WHITE)
             screen.blit(scoretext, (705, 10))
             if mg_player.rect.y < 0:
