@@ -10,7 +10,7 @@ def start_SpaceBound():
 #   things!
     FPS = 30
     display_width = 900 
-    display_height = 900
+    display_height = 800
     clock = pygame.time.Clock()
     gameDisplay = pygame.display.set_mode((display_width, display_height))
     pygame.display.set_caption('SpaceBound')
@@ -504,9 +504,9 @@ def start_SpaceBound():
 
         def Encounter(self):
             if SBMainChar.escaped:
-                if SBMainChar.timer <= 60 and self.SBEncountering == False:
+                if SBMainChar.timer <= 90 and self.SBEncountering == False:
                     SBMainChar.timer += 1
-                if SBMainChar.timer >= 60 and self.SBEncountering == False:
+                if SBMainChar.timer >= 90 and self.SBEncountering == False:
                     SBMainChar.escaped = False
                     SBMainChar.timer = 0
          #           Collision
@@ -1079,6 +1079,8 @@ def start_SpaceBound():
             counter += 1
             pygame.display.update()
             clock.tick(FPS)
+            
+            
 #   Other things!
     SBgame_loop()
     main()
