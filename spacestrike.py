@@ -217,7 +217,7 @@ def start_spacestrike():
     print (surface_rect)
 
     #load in font
-    font = pygame.font.SysFont('Arcadepix.ttf', 30)
+    font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 30)
 
     #load in all sprites
     all_sprites = pygame.sprite.Group()
