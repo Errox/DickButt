@@ -8,6 +8,7 @@ def start_menu():
     import spacestrike
     import SpaceBound
     import Stranded
+    import credits
     import soundboard
     import sumo_smash
     from time import sleep
@@ -148,6 +149,9 @@ def start_menu():
                     if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 380:
                         if pygame.mouse.get_pos()[0] <= 598 and pygame.mouse.get_pos()[1] <= 445:
                             define_location = "select_planet"
+                    if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 520:
+                        if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 585:
+                            credits.start()
                     if pygame.mouse.get_pos()[0] >= 330 and pygame.mouse.get_pos()[1] >= 600:
                         if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 665:
                             main_loop = False

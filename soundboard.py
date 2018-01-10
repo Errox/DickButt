@@ -75,3 +75,9 @@ def bullet_on_hit_friendly():
         bullet = pygame.mixer.Sound('resource/soundboard/onhit/friendly/hit_3.wav')
     bullet.play()
 
+def credits_theme():
+    pygame.mixer.music.load('resource/music/credits/song_1.ogg')
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play(-1)
+    
+

@@ -217,7 +217,7 @@ def start_astrodoge():
             soundboard.bullet_on_hit_friendly()
             # menu.start_menu()
             # running = False
-            heart_amount -= 1
+            lose_heart()
 
         #draw / render
         if start_init == True:
