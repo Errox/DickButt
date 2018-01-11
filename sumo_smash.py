@@ -205,6 +205,7 @@ def start_sumo_smash():
     block_3 = 850
     block_4 = -450
 
+    
     backround = YELLOW
     background = pygame.image.load('resource/images/sumo_smash/grass_14.png').convert()
     background = pygame.transform.scale(background, (900, 900))
@@ -221,46 +222,7 @@ def start_sumo_smash():
     running = True
     while running:
         
-        while pause == True:
-            clock.tick(FPS)
-            mm_button        = pygame.image.load('resource/images/pause_screen/button_mm.png').convert()
-            resume_button    = pygame.image.load('resource/images/pause_screen/button_resume.png').convert()
-            restart_button   = pygame.image.load('resource/images/pause_screen/button_restart.png').convert()
-            mm_rect          = mm_button.get_rect()
-            resume_rect      = resume_button.get_rect()
-            restart_rect     = restart_button.get_rect()
-            screen.blit(mm_button, (325,550))
-            screen.blit(resume_button, (325,470))
-            screen.blit(restart_button, (325,390))
-
-            for event in pygame.event.get():
-                print (event)
-                #Check of de exit knop is ingedrukt
-                if event.type == pygame.QUIT:
-                    running = False
-                    pygame.quit()
-                    quit()                    
-
-                #als esc ingedrukt wordt pauseert het spel
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        pause = False
-                        soundboard.resume()
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 550:
-                        if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 615:
-                            menu.start_menu()
-                    if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 470:
-                        if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 535:
-                            pause = False
-                            soundboard.resume()
-                    if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
-                        if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
-                            print('goes to cheet sheet.')
-            #flip the display.
-            pygame.display.flip()                            
-        
-        while pause == False:                    
+        while pause == False:                  
             time = time - 1
             level = 2
             if time == 9700:
@@ -309,12 +271,62 @@ def start_sumo_smash():
                     m4 = Mob4()
                     all_sprites.add(m1, m2, m3, m4)
                     mobs.add(m1, m2, m3, m4)
-                player.right = 850
-                player.left = 50
-                player.top = 50
-                player.bottom = 850 
+            level = 5
+            if time == 8700:
+                block_1 = -400
+                block_2 = 800
+                block_3 = 800
+                block_4 = -400
+                for i in range(0):
+                    m1 = Mob1()
+                    m2 = Mob2()
+                    m3 = Mob3()
+                    m4 = Mob4()
+                    all_sprites.add(m1, m2, m3, m4)
+                    mobs.add(m1, m2, m3, m4)
+                player.right = 800
+                player.left = 100
+                player.top = 100
+                player.bottom = 800      
 
-                
+        while pause == True:
+            clock.tick(FPS)
+            mm_button        = pygame.image.load('resource/images/pause_screen/button_mm.png')
+            resume_button    = pygame.image.load('resource/images/pause_screen/button_resume.png')
+            restart_button   = pygame.image.load('resource/images/pause_screen/button_restart.png')
+            mm_rect          = mm_button.get_rect()
+            resume_rect      = resume_button.get_rect()
+            restart_rect     = restart_button.get_rect()
+            screen.blit(mm_button, (325,550))
+            screen.blit(resume_button, (325,470))
+            screen.blit(restart_button, (325,390))
+
+            for event in pygame.event.get():
+                print (event)
+                #Check of de exit knop is ingedrukt
+                if event.type == pygame.QUIT:
+                    running = False
+                    pygame.quit()
+                    quit()
+                #als esc ingedrukt wordt pauseert het spel
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pause = False
+                        soundboard.resume()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 550:
+                        if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 615:
+                            menu.start_menu()
+                    if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 470:
+                        if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 535:
+                            pause = False
+                            soundboard.resume()
+                    if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
+                        if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
+                            print('goes to cheet sheet.')
+            #flip the display.
+            pygame.display.flip()
+
             print (time)
             # keep loop running at the right speed
             clock.tick(FPS)
@@ -327,6 +339,7 @@ def start_sumo_smash():
                     if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
                         if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
                             menu.start_menu()
+                            
             count += 5
             score = int(count)
 
