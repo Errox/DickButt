@@ -47,7 +47,7 @@ nosetests.xml
 coverage.xml
 *.cover
 .hypothesis/
-
+highscores.json
 # Translations
 *.mo
 *.pot
