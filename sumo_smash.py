@@ -210,13 +210,18 @@ def start_sumo_smash():
     Quit_Butt = pygame.image.load('resource/images/select_planet/button_quit_small.png')
     screen.blit(Quit_Butt, [5, 5])
 
+    stars_1 = pygame.transform.scale(pygame.image.load('resource/images/sumo_smash/stars_bg.png'),(500, 900))
+    stars_2 = pygame.transform.scale(pygame.image.load('resource/images/sumo_smash/stars_bg.png'),(500, 900))
+    stars_3 = pygame.transform.scale(pygame.image.load('resource/images/sumo_smash/stars_bg.png'),(900, 500))
+    stars_4 = pygame.transform.scale(pygame.image.load('resource/images/sumo_smash/stars_bg.png'),(900, 500))
 
     # Game loop
     running = True
     while running:
         time = time - 1
         level = 2
-        if time == 9700:
+        if time == 9900:
+            levels == "level 2"
             block_1 = -400
             block_2 = 800
             block_3 = 800
@@ -266,7 +271,8 @@ def start_sumo_smash():
             player.left = 50
             player.top = 50
             player.bottom = 850 
-        
+
+            
         print (time)
         # keep loop running at the right speed
         clock.tick(FPS)
@@ -292,13 +298,19 @@ def start_sumo_smash():
             game_over.start(score, 4)
 
         levels = "level 1"
+
             
         screen.fill(backround)
         screen.blit(background, background_rect)
-        pygame.draw.rect(screen, BLACK, [block_1, 0, 500, 900]) # left
-        pygame.draw.rect(screen, BLACK, [block_2, 0, 500, 900]) # Richt
-        pygame.draw.rect(screen, BLACK, [0, block_3, 900, 500]) # bottom
-        pygame.draw.rect(screen, BLACK, [0, block_4, 900, 500]) # top
+        screen.blit(stars_1, [block_1, 0])
+        screen.blit(stars_2, [block_2, 0])
+        screen.blit(stars_3, [0, block_3])
+        screen.blit(stars_4, [0, block_4])
+
+        #pygame.draw.rect(screen, BLACK, [block_1, 0, 500, 900]) # left
+        #pygame.draw.rect(screen, BLACK, [block_2, 0, 500, 900]) # Richt
+        #pygame.draw.rect(screen, BLACK, [0, block_3, 900, 500]) # bottom
+        #pygame.draw.rect(screen, BLACK, [0, block_4, 900, 500]) # top
         #pygame.draw.ellipse(screen, RED, (75, 75, 750, 750), 10)
 
         all_sprites.draw(screen)
