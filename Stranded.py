@@ -22,15 +22,15 @@ def start_Stranded():
 
     # score = 100000
     score = 10000
-
+    pause = False
+    running = True
     startTime = time.time()
+    FPS = 30
     # Screen size
     display_width = 900
     display_height = 900
 
     gameDisplay = pygame.display.set_mode((display_width,display_height))
-
-    done = False
 
     # player controlled class
     class MG_Player(pygame.sprite.Sprite):
@@ -112,8 +112,8 @@ def start_Stranded():
             for block in monster_hit_list:
                 nonlocal score
                 score = 0
-                global done
-                done = True
+                global running
+                running = False
                 # if moving right
                 # set right side to left if object is hit
                 if self.change_x > 0:
@@ -143,7 +143,7 @@ def start_Stranded():
             for block in monster_hit_list:
 
                 score = 0
-                done = True
+                running = False
                 # reset position based on objects
                 if self.change_y > 0:
                     self.rect.bottom = block.rect.top
@@ -156,16 +156,18 @@ def start_Stranded():
             # Check if MG_Player hits cship
             cship_hit_list = pygame.sprite.spritecollide(self, self.level.cship_list, False)
             for block in cship_hit_list:
-                done = False
+                running = True
                 if self.inventory:
-                    done = True
+
+                    score += 10000
+                    running = False
                 else:
-                    done = False
+                    running = True
 
             # Check if MG_Player hits strandedKey (Skey)
             skey_hit_list = pygame.sprite.spritecollide(self, self.level.skey_list, False)
             for block in skey_hit_list:
-                done = False
+                running = True
                 soundboard.st_collect()
                 self.inventory = True
                 block.hide()
@@ -231,7 +233,6 @@ def start_Stranded():
 
         def stop(self):
             self.change_x = 0
-
 
     class Monster(pygame.sprite.Sprite):
         # monster a sprite that kills
@@ -475,6 +476,7 @@ def start_Stranded():
             self.background.set_colorkey(WHITE)
             self.level_limit = -1000
 
+
             # width, height, x, and y of platform
             level = [[210, 70, 700, 700],
                      [600, 70, 000, 500],
@@ -677,97 +679,140 @@ def start_Stranded():
         active_sprite_list.add(mg_player)
 
         # loop until closed
-        global done
-        done = False
+        global running
+        running = True
 
         # how fast it updates
         clock = pygame.time.Clock()
         #score = 100000
         # main program loop
-        while not done:
-            time_alive = time.time() - startTime
-            nonlocal score
-            score = score - 1
-            for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
-                        if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
-                           score = 0
-                           game_over.start(score, 5)
-                if event.type == pygame.QUIT:
-                    done = True
+        while running:
+            nonlocal pause
+            while pause == True:
+                clock.tick(FPS)
+                mm_button = pygame.image.load('resource/images/pause_screen/button_mm.png')
+                resume_button = pygame.image.load('resource/images/pause_screen/button_resume.png')
+                restart_button = pygame.image.load('resource/images/pause_screen/button_restart.png')
+                mm_rect = mm_button.get_rect()
+                resume_rect = resume_button.get_rect()
+                restart_rect = restart_button.get_rect()
+                screen.blit(mm_button, (325, 550))
+                screen.blit(resume_button, (325, 470))
+                screen.blit(restart_button, (325, 390))
+
+                for event in pygame.event.get():
+                    print(event)
+                    # Check of de exit knop is ingedrukt
+                    if event.type == pygame.QUIT:
+                        running = False
+                    # als esc ingedrukt wordt pauseert het spel
+                    elif event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_ESCAPE:
+                            pause = False
+                            soundboard.resume()
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 550:
+                            if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 615:
+                                menu.start_menu()
+                        if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 470:
+                            if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 535:
+                                pause = False
+                                soundboard.resume()
+                        if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
+                            if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
+                                start_Stranded()
+                # flip the display.
+                pygame.display.flip()
+
+            while pause == False:
+                time_alive = time.time() - startTime
+                nonlocal score
+                score = score - 1
+                for event in pygame.event.get():
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
+                            if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
+                               score = 0
+                               game_over.start(score, 5)
+                    if event.type == pygame.QUIT:
+                        running = False
+
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_LEFT:
+                            mg_player.go_left()
+                        if event.key == pygame.K_RIGHT:
+                            mg_player.go_right()
+                        if event.key == pygame.K_UP:
+                            mg_player.jump()
+                    if event.type == pygame.KEYUP:
+                        if event.key == pygame.K_LEFT and mg_player.change_x < 0:
+                            mg_player.stop()
+                        if event.key == pygame.K_RIGHT and mg_player.change_x > 0:
+                            mg_player.stop()
+                # update the player
+                active_sprite_list.update()
+
+                # check collision
+
+                # update items in the level
+                current_level.update()
+
+                # if the player goes near the right side move the world left
+                if mg_player.rect.x >= 450:
+                    diff = mg_player.rect.x - 450
+                    mg_player.rect.x = 450
+                    current_level.shift_world(-diff)
+
+                # if the player goes near the left side move world right
+                if mg_player.rect.x <= 450:
+                    diff = 450 - mg_player.rect.x
+                    mg_player.rect.x = 450
+                    current_level.shift_world(diff)
+
+                current_position = mg_player.rect.x + current_level.world_shift
+                if current_position < current_level.level_limit:
+                    mg_player.rect.x = 450
+                    if current_level_no < len(level_list)-1:
+                        current_level_no += 1
+                        current_level = level_list[current_level_no]
+                        MG_Player.level = current_level
+
+                # level and sprite draw
+                current_level.draw(screen)
+                active_sprite_list.draw(screen)
+
+                quit_button = pygame.transform.scale(
+                    pygame.image.load('resource/images/select_planet/button_quit_small.png'), (42, 40))
+                quit_rect = quit_button.get_rect()
+                screen.blit(quit_button, (5, 5))
 
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        mg_player.go_left()
-                    if event.key == pygame.K_RIGHT:
-                        mg_player.go_right()
-                    if event.key == pygame.K_UP:
-                        mg_player.jump()
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_LEFT and mg_player.change_x < 0:
-                        mg_player.stop()
-                    if event.key == pygame.K_RIGHT and mg_player.change_x > 0:
-                        mg_player.stop()
-            # update the player
-            active_sprite_list.update()
+                    if event.key == pygame.K_ESCAPE:
+                        pause = True
+                        soundboard.pause()
 
-            # check collision
+                if not running:
+                    print('game over')
+                    game_over.start(score, 5)
+                font = pygame.font.Font("resource/fonts/Arcadepix.ttf", 30)
+                scoretext = font.render("Score {0}".format(score), 1, WHITE)
+                screen.blit(scoretext, (705, 10))
+                if mg_player.rect.y < 0:
+                    playermarker = font.render("^^^".format(score), 1, GREEN)
+                    screen.blit(playermarker, (462, 10))
+                objectivetext = font.render("Collect and retrieve the object!".format(score), 1, WHITE)
+                screen.blit(objectivetext, (295, 855))
+                scoretext = font.render("Time passed {0}".format(round(time_alive)), 1, WHITE)
+                screen.blit(scoretext, (705, 30))
+                # timer
+                if score <= 0:
+                    pygame.quit()
+                # limit to 30 frames per second
+                clock.tick(FPS)
 
-            # update items in the level
-            current_level.update()
-
-            # if the player goes near the right side move the world left
-            if mg_player.rect.x >= 450:
-                diff = mg_player.rect.x - 450
-                mg_player.rect.x = 450
-                current_level.shift_world(-diff)
-
-            # if the player goes near the left side move world right
-            if mg_player.rect.x <= 450:
-                diff = 450 - mg_player.rect.x
-                mg_player.rect.x = 450
-                current_level.shift_world(diff)
-
-            current_position = mg_player.rect.x + current_level.world_shift
-            if current_position < current_level.level_limit:
-                mg_player.rect.x = 450
-                if current_level_no < len(level_list)-1:
-                    current_level_no += 1
-                    current_level = level_list[current_level_no]
-                    MG_Player.level = current_level
-
-            # level and sprite draw
-            current_level.draw(screen)
-            active_sprite_list.draw(screen)
-
-            quit_button = pygame.transform.scale(
-                pygame.image.load('resource/images/select_planet/button_quit_small.png'), (42, 40))
-            quit_rect = quit_button.get_rect()
-            screen.blit(quit_button, (5, 5))
-            #Game over screen
-            if done:
-                print('game over')
-                game_over.start(score, 5)
-            font = pygame.font.Font("resource/fonts/Arcadepix.ttf", 30)
-            scoretext = font.render("Score {0}".format(score), 1, WHITE)
-            screen.blit(scoretext, (705, 10))
-            if mg_player.rect.y < 0:
-                playermarker = font.render("^^^".format(score), 1, GREEN)
-                screen.blit(playermarker, (462, 10))
-            objectivetext = font.render("Collect and retrieve the object!".format(score), 1, WHITE)
-            screen.blit(objectivetext, (295, 855))
-            scoretext = font.render("Time passed {0}".format(round(time_alive)), 1, WHITE)
-            screen.blit(scoretext, (705, 30))
-            # timer
-            if score <= 0:
-                pygame.quit()
-            # limit to 30 frames per second
-            clock.tick(30)
-
-            # update the screen
-            pygame.display.flip()
-        # exit
+                # update the screen
+                pygame.display.flip()
+            # exit
         pygame.quit()
 
     main()
