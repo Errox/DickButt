@@ -112,6 +112,44 @@ def bullet_on_hit_friendly():
         bullet = pygame.mixer.Sound('resource/soundboard/onhit/friendly/hit_3.wav')
     bullet.play()
 
+#   SpaceBound sound SpaceSound
+def Fight():
+    shot = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_wpn_laser6.wav')
+    shot.play()
+def Powershot():
+    Pshot = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_wpn_laser5.wav')
+    Pshot.play()
+def Healthshot(): 
+    Hshot = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_wpn_laser9.wav')
+    Hshot.play()
+def Hit(): 
+    hit = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_deathscream_robot1.wav')
+    hit.play()
+def Heals():
+    heal = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_sound_mechanicalnoise3.wav')
+    heal.set_volume(0.5)
+    heal.play()
+def Death():
+    die = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_deathscream_robot2.wav')
+    die.play()
+def Button():
+    Butt = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_menu_move4.wav')
+    Butt.play()
+def Objective(): 
+    obj = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_sound_shutdown1.wav')
+    obj.play()
+def Walking():
+    walk = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_movement_footstepsloop4_slow.wav')
+    walk.play()
+def Running():
+    run = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_movement_footstepsloop4_fast.wav')
+    run.play()
+def Backgroundmusic():
+    pygame.mixer.music.load('resource/soundboard/music/SpaceBound/Background_music.mp3')
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play(-1)
+
+
 def credits_theme():
     pygame.mixer.music.load('resource/music/credits/song_1.ogg')
     pygame.mixer.music.set_volume(0.5)

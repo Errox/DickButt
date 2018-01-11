@@ -6,11 +6,12 @@ def start_SpaceBound():
     import random
     import pygame.locals
     import game_over
+    import soundboard
     pygame.init()
 #   things!
     FPS = 30
     display_width = 900 
-    display_height = 750
+    display_height = 900
     clock = pygame.time.Clock()
     gameDisplay = pygame.display.set_mode((display_width, display_height))
     pygame.display.set_caption('SpaceBound')
@@ -296,20 +297,30 @@ def start_SpaceBound():
 #   Enemies
     class SBenemy(pygame.sprite.Sprite):
         def __init__(self, health, attack, x, y, move, radius):
+        #   Main things
             self.health = health
             self.attack = attack
             self.x = x
             self.y = y
             self.w = 50
             self.h = 75
-            self.move = move
-            self.radius = radius
             self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
-            self.timer = 0
-            self.timer2 = 0
+        #   Encounter things
             self.alive = True
             self.Your_Turn = True
             self.SBEncountering = False
+        #   timers
+            self.timer = 0
+            self.timer2 = 0
+        #   sounds
+            self.healsound = False
+            self.hitsound = False
+            self.buttsound = False
+            self.fightsound = False
+            self.powershotsound = False
+            self.healthshotsound = False
+            self.runsound = False
+        #   clicks
             self.attackclicked = False
             self.gunclicked = False
             self.itemsclicked = False
@@ -317,6 +328,9 @@ def start_SpaceBound():
             self.runclickedfailed = False
             self.clicked = ""
             self.enemyattacked = False
+        #   movement
+            self.move = move
+            self.radius = radius
             self.direw = 0
             self.dirns = 0
             self.run = 0
@@ -554,11 +568,19 @@ def start_SpaceBound():
                     #                       Click the things
                                             if SBFight.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                                                 self.attackclicked = True
+                                                self.buttsound = True
+                                                time.sleep(0.2)
                                             if SBMoves.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                                                 self.gunclicked = True
+                                                self.buttsound = True
+                                                time.sleep(0.2)
                                             if SBItems.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                                                 self.itemsclicked = True
+                                                self.buttsound = True
+                                                time.sleep(0.2)
                                             if SBRun.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                                                self.buttsound = True
+                                                time.sleep(0.2)
                                                 if random.randint(0,100) < 75:
                                                     self.runclicked = True
                                                 else:
@@ -574,6 +596,8 @@ def start_SpaceBound():
                                             SBRun.addbox()
                                             SBRun.EncounterText()
                                         if self.attackclicked:
+                                            if self.timer2 == 1:
+                                                self.fightsound = True
                                             if self.timer2 <= FPS:
                                                 SBAttack.bigmessage_display()
                                                 self.timer2 += 1
@@ -583,6 +607,8 @@ def start_SpaceBound():
                                                 self.attackclicked = False
                                                 self.timer2 = 0
                                         if self.gunclicked:
+                                            if self.timer2 == 0:
+                                                self.buttsound = True
                                             if self.timer2 == 1:
                                                 self.battlelogupdate("")
                                             if self.timer2 == 4:
@@ -604,21 +630,30 @@ def start_SpaceBound():
                                             if self.timer2 > 16:
                                                 if SBFight.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                                                     self.clicked = "Powershot"
+                                                    self.buttsound = True
+                                                    time.sleep(0.2)
                                                 if SBMoves.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                                                     self.clicked = "Healing"
+                                                    self.buttsound = True
                                                 if SBItems.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                                                     self.clicked = "Health shot"
+                                                    self.buttsound = True
                                                 if SBRun.addbox().collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                                                     self.clicked = "Back"
+                                                    self.buttsound = True
                                                 GunPowershot.EncounterText()
                                                 GunHeal.EncounterText()
                                                 GunHealthshot.EncounterText()
                                                 GunBack.EncounterText()
                                         if self.clicked == "Powershot":
                                             if SBMainChar.stam >= 20:
+                                                if self.timer2 == 17:
+                                                    self.powershotsound = True
                                                 if self.timer2 <= 45:
                                                     SBGunPowershot.bigmessage_display()
                                                     self.timer2 += 1
+                                                if self.timer2 == 17:
+                                                    self.powershotsound = True
                                                 if self.timer2 > 45:
                                                     self.attacked(1.5, 20, 0)
                                                     self.Your_Turn = False
@@ -631,6 +666,8 @@ def start_SpaceBound():
                                                 time.sleep(0.2)
                                         if self.clicked == "Healing":
                                             if SBMainChar.stam >= 25 and SBMainChar.health <= 750:
+                                                if self.timer2 == 17:
+                                                    self.healsound = True
                                                 if self.timer2 <= 45:
                                                     SBGunHeal.bigmessage_display()
                                                     self.timer2 += 1
@@ -649,6 +686,8 @@ def start_SpaceBound():
                                                 self.clicked = ""
                                                 time.sleep(0.2)
                                         if self.clicked == "Health shot":
+                                            if self.timer2 == 17:
+                                                self.healthshotsound = True
                                             if self.timer2 <= 45:
                                                 SBGunHealthshot.bigmessage_display()
                                                 self.timer2 += 1
@@ -676,11 +715,16 @@ def start_SpaceBound():
                                                 self.timer2 = 0
                                                 self.clicked = ""
                                         if self.itemsclicked:
+                                            self.battlelogupdate('You have no items')
                                             self.itemsclicked = False
+                                            self.buttsound = True
+                                            time.sleep(0.2)
                                         if self.runclicked:
                                             if self.timer2 <= FPS:
                                                 SBEscape.bigmessage_display()
                                                 self.timer2 += 1
+                                            if self.timer2 == FPS:
+                                                self.runsound = True
                                             if self.timer2 > FPS:
                                                 self.SBEncountering = False
                                                 self.runclicked = False
@@ -704,7 +748,10 @@ def start_SpaceBound():
                                         if self.timer2 <= FPS:
                                             SBAttacked.bigmessage_display()
                                             self.timer2 += 1
+                                        if self.timer2 == 1:
+                                            self.hitsound = True
                                         if self.timer2 >= FPS:
+                                            self.hit = False
                                             self.attacking()
                                             self.Your_Turn = True
                                             self.timer2 = 0
@@ -773,6 +820,8 @@ def start_SpaceBound():
             
     Objective1 = objective(1235, 1653, 50, 30)
     Objective2 = objective(-825, 1813, 50, 30)
+
+    objectives = [Objective1, Objective2]
 #   Objects
     class Object(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h, image):
@@ -795,6 +844,7 @@ def start_SpaceBound():
         def Healing(self):
             if not InEncounter:
                 if self.healing:
+                    soundboard.Heals()
                     if self.timer >= 0 and self.timer < 3:
                         gameDisplay.blit(Heal1img, (self.x,self.y))
                         self.timer += 1
@@ -884,205 +934,282 @@ def start_SpaceBound():
 #   Game loop!
     def SBgame_loop():
         
+        objectivesound = False
         SpaceBound_Exit = False
         counter = 0
         times = 0
+        pause = False
         Obj_Cleared = False
+        InEncounter = False
+        soundboard.Backgroundmusic()
         while not SpaceBound_Exit:
-        #   Other things 1
-            score = SBMainChar.scoring()
-            if SBenemy1.Encountering() or SBenemy2.Encountering() or SBenemy3.Encountering() or SBenemy4.Encountering() or SBenemy5.Encountering() or SBenemy6.Encountering() or SBenemy7.Encountering():
-                InEncounter = True
-            else:
-                InEncounter = False
-            if not InEncounter:
-                if pygame.sprite.collide_rect(Healing_ship, SBMainChar):
-                    if SBMainChar.health < 500:
-                        SBMainChar.health += 1
-                        Healing_ship.healing = True
+        #   paused
+            while pause:
+                clock.tick(FPS)
+                resume_button    = pygame.image.load('resource/images/pause_screen/button_resume.png')
+                restart_button   = pygame.image.load('resource/images/pause_screen/button_restart.png')
+                mm_button        = pygame.image.load('resource/images/pause_screen/button_mm.png')
+                resume_rect      = resume_button.get_rect()
+                restart_rect     = restart_button.get_rect()
+                mm_rect          = mm_button.get_rect()
+                gameDisplay.blit(resume_button, (325,390))
+                gameDisplay.blit(restart_button, (325,470))
+                gameDisplay.blit(mm_button, (325,550))
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        SpaceBound_Exit = True
+                    elif event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_ESCAPE:
+                            pause = False
+                            soundboard.resume()
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
+                            if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
+                                pause = False
+                                soundboard.resume()
+                        if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 470:
+                            if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 535:
+                                start_SpaceBound()
+                        if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 550:
+                            if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 615:
+                                menu.start_menu()
+                    if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
+                        if pygame.mouse.get_pos()[0] <= 72 and pygame.mouse.get_pos()[1] <= 70:
+                            if pygame.mouse.get_pressed()[0]:
+                                game_over.start(score, 3)
+                pygame.display.update()
+        #   not paused
+            while not pause:
+                pygame.event.pump()
+                score = SBMainChar.scoring()
+                if SBenemy1.Encountering() or SBenemy2.Encountering() or SBenemy3.Encountering() or SBenemy4.Encountering() or SBenemy5.Encountering() or SBenemy6.Encountering() or SBenemy7.Encountering():
+                    InEncounter = True
+                else:
+                    InEncounter = False
+                if not InEncounter:
+                    if pygame.sprite.collide_rect(Healing_ship, SBMainChar):
+                        if SBMainChar.health < 500:
+                            SBMainChar.health += 1
+                            Healing_ship.healing = True
+                        else:
+                            Healing_ship.healing = False
                     else:
                         Healing_ship.healing = False
-                else:
-                    Healing_ship.healing = False
-        #   When the game is over        
-            pygame.event.pump()
-            if pygame.event.peek(pygame.QUIT): 
-                game_over.start(score, 3)
-                
-            if Objective1.touched and Objective2.touched and not SBenemy7.alive:
-                score += int(9000-counter)
-                game_over.start(score, 3)
-
-            if SBMainChar.health <= 0:
-                game_over.start(score, 3)
-
-            if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
-                if pygame.mouse.get_pos()[0] <= 72 and pygame.mouse.get_pos()[1] <= 70:
-                    if pygame.mouse.get_pressed()[0]:
+        #   When the game is over & pausing       
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
                         game_over.start(score, 3)
+               
+                    elif event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_ESCAPE:
+                            pause = True
+                            soundboard.pause()
 
-            if not InEncounter:
+                if Objective1.touched and Objective2.touched and not SBenemy7.alive:
+                    score += int(10000-counter)
+                    game_over.start(score, 3)
+
+                if SBMainChar.health <= 0:
+                    game_over.start(score, 3)
+
+                if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
+                    if pygame.mouse.get_pos()[0] <= 72 and pygame.mouse.get_pos()[1] <= 70:
+                        if pygame.mouse.get_pressed()[0]:
+                            game_over.start(score, 3)
+
+                if not InEncounter:
         #   Character movement
-            #   Move left
-                if pygame.key.get_pressed()[pygame.K_LEFT]:
-                    SBleft = -10 
-                    if SBMainChar.x < 0:
-                        SBleft = 0 
-                    if SBMainChar.x < SBMainChar.w + 300:
-                        if Background.x < -5:
-                            moveworld("left", 10)
-                    SBMainChar.x += SBleft
-                    SBMainChar.direction = "left"
-                else:
-                    SBleft = 0
-            #   Move right
-                if pygame.key.get_pressed()[pygame.K_RIGHT]:
-                    SBright = 10 
-                    if SBMainChar.x > display_width - SBMainChar.w:
+                #   Move left
+                    if pygame.key.get_pressed()[pygame.K_LEFT]:
+                        SBleft = -10 
+                        if SBMainChar.x < 0:
+                            SBleft = 0 
+                        if SBMainChar.x < SBMainChar.w + 300:
+                            if Background.x < -5:
+                                moveworld("left", 10)
+                        SBMainChar.x += SBleft
+                        SBMainChar.direction = "left"
+                    else:
+                        SBleft = 0
+                #   Move right
+                    if pygame.key.get_pressed()[pygame.K_RIGHT]:
+                        SBright = 10 
+                        if SBMainChar.x > display_width - SBMainChar.w:
+                            SBright = 0
+                        if SBMainChar.x > display_width - SBMainChar.w - 300:
+                            if Background.x > -1795:
+                                moveworld("right", 10)
+                        SBMainChar.x += SBright
+                        SBMainChar.direction = "right"
+                    else:
                         SBright = 0
-                    if SBMainChar.x > display_width - SBMainChar.w - 300:
-                        if Background.x > -1795:
-                            moveworld("right", 10)
-                    SBMainChar.x += SBright
-                    SBMainChar.direction = "right"
-                else:
-                    SBright = 0
-            #   Move up
-                if pygame.key.get_pressed()[pygame.K_UP]:
-                    SBup = -10 
-                    if SBMainChar.y < 0:
+                #   Move up
+                    if pygame.key.get_pressed()[pygame.K_UP]:
+                        SBup = -10 
+                        if SBMainChar.y < 0:
+                            SBup = 0
+                        if SBMainChar.y <= Mountains.y + Mountains.h :
+                            SBup = 0
+                        if SBMainChar.y < SBMainChar.h + 300:
+                            if Background.y < -10:
+                                moveworld("up", 10)
+                        SBMainChar.y += SBup
+                    else:
                         SBup = 0
-                    if SBMainChar.y <= Mountains.y + Mountains.h :
-                        SBup = 0
-                    if SBMainChar.y < SBMainChar.h + 300:
-                        if Background.y < -10:
-                            moveworld("up", 10)
-                    SBMainChar.y += SBup
-                else:
-                    SBup = 0
-            #   Move Down
-                if pygame.key.get_pressed()[pygame.K_DOWN]:
-                    SBdown = 10 
-                    if SBMainChar.y > display_height - SBMainChar.h:
+                #   Move Down
+                    if pygame.key.get_pressed()[pygame.K_DOWN]:
+                        SBdown = 10 
+                        if SBMainChar.y > display_height - SBMainChar.h:
+                            SBdown = 0
+                        if SBMainChar.y + SBMainChar.h >= LavaLake.y:
+                            SBdown = 0
+                        if SBMainChar.y > display_height - SBMainChar.h - 300:
+                            if Background.y > -1480:
+                                moveworld("down", 10)
+                        SBMainChar.y += SBdown
+                    else: 
                         SBdown = 0
-                    if SBMainChar.y + SBMainChar.h >= LavaLake.y:
-                        SBdown = 0
-                    if SBMainChar.y > display_height - SBMainChar.h - 300:
-                        if Background.y > -1480:
-                            moveworld("down", 10)
-                    SBMainChar.y += SBdown
-                else: 
-                    SBdown = 0
-            #   Are you walking?
-                if SBup != 0 or SBdown != 0 or SBright != 0 or SBleft != 0:
-                    SBMainChar.running = True
-                else:
-                    SBMainChar.running = False
-            #   Enemy Movement
+                #   Are you walking?
+                    if SBup != 0 or SBdown != 0 or SBright != 0 or SBleft != 0:
+                        SBMainChar.running = True
+                    else:
+                        SBMainChar.running = False
+                #   Enemy Movement
+                    for alien in Aliens:
+                        if alien.alive:
+                            if pygame.sprite.collide_circle(alien, SBMainChar):
+                            #   Right
+                                if alien.x < SBMainChar.x:
+                                    if SBMainChar.x - alien.x < alien.move:
+                                        movex = SBMainChar.x - alien.x
+                                    else:
+                                        movex = alien.move
+                            #   Left
+                                if alien.x > SBMainChar.x:
+                                    if alien.x - SBMainChar.x < alien.move:
+                                        movex = SBMainChar.x - alien.x
+                                    else:
+                                        movex = -alien.move
+                            #   Down
+                                if alien.y < SBMainChar.y:
+                                    if SBMainChar.y - alien.y < alien.move:
+                                        movey = SBMainChar.y - alien.y
+                                    else:
+                                        movey = alien.move
+                            #   Up
+                                if alien.y > SBMainChar.y:
+                                    if alien.y - SBMainChar.y < alien.move:
+                                        movey = SBMainChar.y - alien.y
+                                    else:
+                                        movey = -alien.move
+                            else:
+                                movex = 0
+                                movey = 0
+                        #   Directions
+                            if movex > 0:
+                                alien.direw = 1
+                            if movex == 0:
+                                alien.direw = 0
+                            if movex < 0:
+                                alien.direw = -1
+                            if movey > 0:
+                                alien.dirns = -1
+                            if movey == 0:
+                                alien.dirns = 0
+                            if movey < 0:
+                                alien.dirns = 1
+                            if movey == 0 and movex == 0:
+                                alien.running = False
+                            else: 
+                                alien.running = True
+                        alien.x += movex
+                        alien.y += movey  
+        #   Sounds
+            #   Sound effects
                 for alien in Aliens:
-                    if alien.alive:
-                        if pygame.sprite.collide_circle(alien, SBMainChar):
-                        #   Right
-                            if alien.x < SBMainChar.x:
-                                if SBMainChar.x - alien.x < alien.move:
-                                    movex = SBMainChar.x - alien.x
-                                else:
-                                    movex = alien.move
-                        #   Left
-                            if alien.x > SBMainChar.x:
-                                if alien.x - SBMainChar.x < alien.move:
-                                    movex = SBMainChar.x - alien.x
-                                else:
-                                    movex = -alien.move
-                        #   Down
-                            if alien.y < SBMainChar.y:
-                                if SBMainChar.y - alien.y < alien.move:
-                                    movey = SBMainChar.y - alien.y
-                                else:
-                                    movey = alien.move
-                        #   Up
-                            if alien.y > SBMainChar.y:
-                                if alien.y - SBMainChar.y < alien.move:
-                                    movey = SBMainChar.y - alien.y
-                                else:
-                                    movey = -alien.move
-                        else:
-                            movex = 0
-                            movey = 0
-                    #   Directions
-                        if movex > 0:
-                            alien.direw = 1
-                        if movex == 0:
-                            alien.direw = 0
-                        if movex < 0:
-                            alien.direw = -1
-                        if movey > 0:
-                            alien.dirns = -1
-                        if movey == 0:
-                            alien.dirns = 0
-                        if movey < 0:
-                            alien.dirns = 1
-                        if movey == 0 and movex == 0:
-                            alien.running = False
-                        else: 
-                            alien.running = True
-                    alien.x += movex
-                    alien.y += movey  
+                    if alien.hitsound:
+                        soundboard.Hit()
+                        alien.hitsound = False
+                    if alien.healsound:
+                        soundboard.Heals()
+                        alien.healsound = False
+                    if alien.buttsound:
+                        soundboard.Button()
+                        alien.buttsound = False
+                    if alien.powershotsound:
+                        soundboard.Powershot()
+                        alien.powershotsound = False
+                    if alien.healthshotsound:
+                        soundboard.Healthshot()
+                        alien.healthshotsound = False
+                    if alien.fightsound:
+                        soundboard.Fight()
+                        alien.fightsound = False
+                    if alien.runsound:
+                        soundboard.Running()
+                        alien.runsound = False
+                if objectivesound:
+                    soundboard.Objective()
+                    objectivesound = False
         #   Create the world
-            CharacterHealth = SBEncounterTextBox(425,700,50,30, "Health: " + str(SBMainChar.health))
-            Score = SBEncounterTextBox(775,5,100,30,"Score: " + str(int(SBMainChar.scoring())))
-            Timer = SBEncounterTextBox(775,35,100,30,"Time: "+str(int(counter/30)))
-            Gun_Energy = SBEncounterTextBox(600,700,50,30,"Gun energy: " + str(SBMainChar.stam))
-            Attacktext = SBEncounterTextBox(275, 700, 50, 30, "Attack: " + str(SBMainChar.attack))
-            ObjClear = SBEncounterTextBox(350, SBMainChar.y + 80,100,30,"Structure deactivated. You feel yourself getting stronger")                                          
-            gameDisplay.fill(black) 
+                CharacterHealth = SBEncounterTextBox(425,700,50,30, "Health: " + str(SBMainChar.health))
+                Score = SBEncounterTextBox(775,5,100,30,"Score: " + str(int(SBMainChar.scoring())))
+                Timer = SBEncounterTextBox(775,35,100,30,"Time: "+str(int(counter/30)))
+                Gun_Energy = SBEncounterTextBox(600,700,50,30,"Gun energy: " + str(SBMainChar.stam))
+                Attacktext = SBEncounterTextBox(275, 700, 50, 30, "Attack: " + str(SBMainChar.attack))
+                ObjClear = SBEncounterTextBox(350, SBMainChar.y + 80,100,30,"Structure deactivated. You feel yourself getting stronger")                                          
+                gameDisplay.fill(black) 
         #   Draw the things 
-            Background.draw_Object()
-            CharacterHealth.EncounterText()
-            Score.EncounterText()
-            Timer.EncounterText()
-            Gun_Energy.EncounterText()
-            Attacktext.EncounterText()
-            if Objective1.touched and Objective2.touched:
-                Objectivetext3.EncounterText()
-                Obj_Cleared = True
-                SBMainChar.attack = 50
-                if times <= 120:
-                    ObjClear.EncounterText()
-                    times += 1
-            elif Objective1.touched or Objective2.touched:
-                Objectivetext2.EncounterText()
-                SBMainChar.attack = 25
-                if times <= 120:
-                    ObjClear.EncounterText()
-                    times += 1
-            else:
-                Objectivetext1.EncounterText()
-            if SBMainChar.y + SBMainChar.h >= LavaLake.y:
-                SBLavaWarning.EncounterText()
-            Quit_Button.draw_Object()
-            Healing_ship.draw_Object()
-            Objective1.draw_obj() 
-            Objective2.draw_obj()
-            for alien in Aliens:
-                if alien != SBenemy7:
-                    alien.draw_enemy()
-                if alien == SBenemy7:
-                    if Obj_Cleared:
-                        alien.draw_boss()
-            SBMainChar.draw_char()
+                Background.draw_Object()
+                CharacterHealth.EncounterText()
+                Score.EncounterText()
+                Timer.EncounterText()
+                Gun_Energy.EncounterText()
+                Attacktext.EncounterText()
+                if Objective1.touched and Objective2.touched:
+                    Objectivetext3.EncounterText()
+                    Obj_Cleared = True
+                    SBMainChar.attack = 50
+                    if times == 1:
+                        objectivesound = True
+                    if times <= 120:
+                        ObjClear.EncounterText()
+                        times += 1
+                elif Objective1.touched or Objective2.touched:
+                    Objectivetext2.EncounterText()
+                    SBMainChar.attack = 25
+                    if times == 1:
+                        objectivesound = True
+                    if times <= 120:
+                        ObjClear.EncounterText()
+                        times += 1
+                else:
+                    Objectivetext1.EncounterText()
+                if SBMainChar.y + SBMainChar.h >= LavaLake.y:
+                    SBLavaWarning.EncounterText()
+                Quit_Button.draw_Object()
+                Healing_ship.draw_Object()
+                Objective1.draw_obj() 
+                Objective2.draw_obj()
+                for alien in Aliens:
+                    if alien != SBenemy7:
+                        alien.draw_enemy()
+                    if alien == SBenemy7:
+                        if Obj_Cleared:
+                            alien.draw_boss()
+                SBMainChar.draw_char()
         #   Allow things to happen
-            for alien in Aliens:
-                if alien != SBenemy7:
-                    alien.Encounter()
-                elif Obj_Cleared:
-                    alien.Encounter()
-            Healing_ship.Healing()
-            SBMainChar.scoring()
+                for alien in Aliens:
+                    if alien != SBenemy7:
+                        alien.Encounter()
+                    elif Obj_Cleared:
+                        alien.Encounter()
+                Healing_ship.Healing()
+                SBMainChar.scoring()
         #   Other things 2
-            counter += 1
-            pygame.display.update()
-            clock.tick(FPS)    
+                counter += 1
+                pygame.display.update()
+                clock.tick(FPS)    
 #   Other things!
     SBgame_loop()
     main()
