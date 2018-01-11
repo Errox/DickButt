@@ -25,7 +25,7 @@ def start():
     Ryan Groenewold -> Astrododge
     Laura Young -> SpaceStrike
     Eva Wegman -> Spacebound
-    Kimberly Akerman -> Invasion of the Unkown. 
+    Kimberly Schoenaker -> Invasion of the Unkown. 
     Davin Essenius -> Stranded
 
     All sounds, images and mechanics are used for personal use.

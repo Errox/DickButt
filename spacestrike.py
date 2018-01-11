@@ -3,6 +3,7 @@
 heart_amount = 3
 def start_spacestrike():
     import pygame
+    import time
     import random
     import os
     import menu
@@ -16,11 +17,13 @@ def start_spacestrike():
     FPS     = 30
     X       = 500
     Y       = 100
-    MOB_AMOUNT = 10
+    MOB_AMOUNT = random.randrange(7,17)
     global heart_amount
     heart_amount = 3
     start_init = True
     score   = 0
+    global planet_hp
+    planet_hp = 9001
     pause = False
 
     #define colors
@@ -123,6 +126,8 @@ def start_spacestrike():
         #kill if off screen
             if self.rect.y > 810:
                 self.kill()
+                global planet_hp
+                planet_hp -= 125
                 m = enemy()
                 all_sprites.add(m)
                 enemys.add(m)     
@@ -236,6 +241,9 @@ def start_spacestrike():
 
     bullet_sound = pygame.mixer.Sound('resource/music/splaceholder/sounds/sfx_wpn_laser10.wav')
 
+    startTime = time.time()
+    count = 5
+
     #de main game loops
     running = True
     while running:
@@ -277,7 +285,16 @@ def start_spacestrike():
             pygame.display.flip()
 
         while pause == False:
-          
+            
+            time_alive = time.time() - startTime
+            print (time_alive)
+            
+            if time_alive == count:
+                count += 5
+                m = enemy()
+                all_sprites.add(m)
+                enemys.add(m)
+    
             # Laat de clock ticken op de fps
             clock.tick(FPS)
 
@@ -335,11 +352,11 @@ def start_spacestrike():
             if start_init == True:
                 screen.fill(BLACK)
                 start_init = False
+                quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
+                quit_rect           = quit_button.get_rect()
+                screen.blit(quit_button, (5,5))    
             screen.blit(surface, surface_rect)
             
-            quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
-            quit_rect           = quit_button.get_rect()
-            screen.blit(quit_button, (5,5))    
             
             #check lives, else load game over screen
             if heart_amount == 3:
@@ -354,10 +371,15 @@ def start_spacestrike():
             else:
                 print('game over')
                 game_over.start(score, 2)
-                
+            if planet_hp <= 0:
+                print('game over')                
+                game_over.start(score, 2)
 
             scoretext = font.render("Score :  {0}".format(score), 1, WHITE)
-            screen.blit(scoretext, (720, 10))
+            screen.blit(scoretext, (720, 5))
+
+            planethealth = font.render("Veilea :  {0}".format(planet_hp), 1, WHITE)
+            screen.blit(planethealth, (720, 25))
             
 
             all_sprites.draw(screen)
