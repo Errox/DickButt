@@ -20,7 +20,7 @@ def start_SpaceBound():
     Backgroundimg = pygame.image.load('resource/images/SpaceBound/eva_bg.png')
     Obj_act = pygame.image.load('resource/images/SpaceBound/Objective_active.png')
     Obj_inact = pygame.image.load('resource/images/SpaceBound/Objective_inactive.png')
-    Quit_Butt = pygame.image.load('resource/images/select_planet/button_quit_small.png')
+    Quit_Butt = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
 #   Healimg
     Healsimg = pygame.image.load('resource/images/SpaceBound/Heals/Heals.png')
     Heal1img = pygame.image.load('resource/images/SpaceBound/Heals/Heal1.png')
@@ -1013,7 +1013,7 @@ def start_SpaceBound():
                     game_over.start(score, 3)
 
                 if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
-                    if pygame.mouse.get_pos()[0] <= 72 and pygame.mouse.get_pos()[1] <= 70:
+                    if pygame.mouse.get_pos()[0] <= 42 and pygame.mouse.get_pos()[1] <= 40:
                         if pygame.mouse.get_pressed()[0]:
                             game_over.start(score, 3)
 
