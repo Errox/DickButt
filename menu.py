@@ -113,7 +113,7 @@ def start_menu():
         buttons_select_planet()
     #here we define the button used in the select_planet scene
     def buttons_select_planet():
-        quit_button         = pygame.image.load('resource/images/select_planet/button_quit_small.png').convert()
+        quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
         quit_rect           = quit_button.get_rect()
         screen.blit(quit_button, (5,5))
 
