@@ -69,7 +69,7 @@ def start():
             for text, rect in self.text:
                 surf.blit(text, rect)
 
-    quit_button         = pygame.image.load('resource/images/select_planet/button_quit_small.png').convert()
+    quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
     quit_rect           = quit_button.get_rect()
     background = pygame.image.load('resource/images/game_over/game_overbg.png').convert()
     background_rect = background.get_rect()
