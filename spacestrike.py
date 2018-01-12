@@ -304,6 +304,8 @@ def start_spacestrike():
                 #Check of de exit knop is ingedrukt
                 if event.type == pygame.QUIT:
                     running = False
+                    pygame.quit()
+                    quit()
                 #Catch mouse position and if it's pressed on the button
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
