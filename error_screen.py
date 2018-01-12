@@ -45,11 +45,12 @@ def start(error, game_id):
         elif game_id == 3:
             game_name = 'Space_Bound'
         elif game_id == 4:
-            game_name = 'sumo_smash'
-        elif game_id == 5:
             game_name = 'Stranded'
+        elif game_id == 5:
+            game_name = 'sumo_smash'
         else:
             game_name = 'Unkown'
+        
         scorehigh = font.render("Game {0} has crashed ".format(game_name), 1, WHITE)
         screen.blit(scorehigh, (0, 30))
 

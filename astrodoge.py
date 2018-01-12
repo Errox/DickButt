@@ -15,7 +15,6 @@ def start_astrodoge():
     WIDTH   = 900
     HEIGHT  = 900
     FPS     = 30
-    d
     pause   = False
     seconds = 5
     X       = 500
@@ -23,6 +22,7 @@ def start_astrodoge():
     MOB_AMOUNT = 10
     global heart_amount
     heart_amount = 3
+    w
     spawn_rate = 95
     startTime = time.time()
     start_init = True
@@ -289,7 +289,6 @@ def start_astrodoge():
                 hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_1.png'), (130,45))
                 screen.blit(hearts, [365, 0])
             if heart_amount == 0:
-                print('game over')
                 game_over.start(score, 1)
                 
 
@@ -303,4 +302,3 @@ def start_astrodoge():
             #After drawing everything, flip the display.
             pygame.display.flip()
     
-    pygame.quit()

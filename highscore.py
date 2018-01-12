@@ -14,9 +14,7 @@ def read_all():
 def save(score, game_id):
     import json
     import os
-    import ast
     data = json.load(open('highscores.json'))
-    data = ast.literal_eval(data)
     idtje = str(game_id)
 
     if score > data[idtje]:

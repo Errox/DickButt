@@ -9,6 +9,7 @@ def start(score, game_id):
     import SpaceBound
     import Stranded
     import sumo_smash
+    import cheat_sheet
     import soundboard
     import highscore
     from time import sleep
@@ -123,18 +124,7 @@ def start(score, game_id):
                         menu.start_menu()
                 if pygame.mouse.get_pos()[0] >= 315 and pygame.mouse.get_pos()[1] >= 470:
                     if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 535:
-                        if game_id == 1:
-                            astrodoge.start_astrodoge()
-                        elif game_id == 2:
-                            spacestrike.start_spacestrike()
-                        elif game_id == 3:
-                            SpaceBound.start_SpaceBound()
-                        elif game_id == 4:
-                            sumo_smash.start_sumo_smash()
-                        elif game_id == 5:
-                            Stranded.start_Stranded()
-                        else:
-                            print('well done, you fucked up. Idunno how but congratulations.')
-
+                        cheat_sheet.start(game_id)
+                        
     pygame.quit()
     quit()

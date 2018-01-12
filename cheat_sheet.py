@@ -8,9 +8,9 @@ def start(game_id):
     import spacestrike
     import SpaceBound
     import Stranded
+    import error_screen
     import sumo_smash
     import soundboard
-    import error_screen
     from time import sleep
  
     #setting variables
@@ -25,21 +25,21 @@ def start(game_id):
  
     #setting the settings of pygame itself
     screen = pygame.display.set_mode((900,900))
-    pygame.display.set_caption("Are you prepared?")
+    pygame.display.set_caption("cheat_sheet")
     font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 40)
     clock = pygame.time.Clock()
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)
     define_location = "main_menu"
-        
 
-    def introduction_id(game_id):
+    def introduction_id_bleeding_edge(game_id):
         if game_id == 1:
             try:
                 astrodoge.start_astrodoge()
                 pass
             except Exception as e:
-                error_screen.start(e, game_id)                
-                pass
+                print(e)
+                error_screen.start(e, game_id)    
+                pass            
         elif game_id == 2:
             try:
                 spacestrike.start_spacestrike()
@@ -68,6 +68,19 @@ def start(game_id):
             except Exception as e:
                 error_screen.start(e, game_id)                
                 pass
+        
+
+    def introduction_id(game_id):
+        if game_id == 1:
+            astrodoge.start_astrodoge()          
+        elif game_id == 2:
+            spacestrike.start_spacestrike()
+        elif game_id == 3:
+            SpaceBound.start_SpaceBound()
+        elif game_id == 5:
+            Stranded.start_Stranded()
+        elif game_id == 4:
+            sumo_smash.start_sumo_smash()
 
 
     #initializing pygame's mixer
@@ -111,7 +124,7 @@ def start(game_id):
                 pygame.quit()
                 quit()
             elif evento.type == pygame.KEYDOWN:
-                introduction_id(game_id)
+                introduction_id_bleeding_edge(game_id)
 
         pygame.display.flip()
  
