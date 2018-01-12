@@ -8,6 +8,7 @@ def start(game_id):
     import spacestrike
     import SpaceBound
     import Stranded
+    import error_screen
     import sumo_smash
     import soundboard
     from time import sleep
@@ -29,6 +30,44 @@ def start(game_id):
     clock = pygame.time.Clock()
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)
     define_location = "main_menu"
+
+    def introduction_id_bleeding_edge(game_id):
+        if game_id == 1:
+            try:
+                astrodoge.start_astrodoge()
+                pass
+            except Exception as e:
+                print(e)
+                error_screen.start(e, game_id)    
+                pass            
+        elif game_id == 2:
+            try:
+                spacestrike.start_spacestrike()
+                pass
+            except Exception as e:
+                error_screen.start(e, game_id)                
+                pass
+        elif game_id == 3:
+            try:
+                SpaceBound.start_SpaceBound()
+                pass
+            except Exception as e:
+                error_screen.start(e, game_id)                
+                pass            
+        elif game_id == 4:
+            try:
+                sumo_smash.start_sumo_smash()
+                pass
+            except Exception as e:
+                error_screen.start(e, game_id)                
+                pass
+        elif game_id == 5:
+            try:
+                Stranded.start_Stranded()
+                pass
+            except Exception as e:
+                error_screen.start(e, game_id)                
+                pass
         
 
     def introduction_id(game_id):
@@ -38,11 +77,11 @@ def start(game_id):
             spacestrike.start_spacestrike()
         elif game_id == 3:
             SpaceBound.start_SpaceBound()
-        elif game_id == 5:
-            Stranded.start_Stranded()
         elif game_id == 4:
             sumo_smash.start_sumo_smash()
-
+        elif game_id == 5:
+            Stranded.start_Stranded()
+        
 
     #initializing pygame's mixer
     # pygame.mixer.init()
@@ -85,7 +124,7 @@ def start(game_id):
                 pygame.quit()
                 quit()
             elif evento.type == pygame.KEYDOWN:
-                introduction_id(game_id)
+                introduction_id_bleeding_edge(game_id)
 
         pygame.display.flip()
  

@@ -47,7 +47,7 @@ nosetests.xml
 coverage.xml
 *.cover
 .hypothesis/
-
+highscores.json
 # Translations
 *.mo
 *.pot
@@ -406,3 +406,5 @@ paket-files/
 # should be stored in the .pubxml.user file.
 
 # End of https://www.gitignore.io/api/python,visualstudio,visualstudiocode
+*.json
+*.json

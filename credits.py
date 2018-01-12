@@ -16,20 +16,20 @@ def start():
     pygame.init()
     #setting the settings of pygame itself
     screen = pygame.display.set_mode((900,900))
-    pygame.display.set_caption("Credits")
+    pygame.display.set_caption("Jup, those people made it")
     clock = pygame.time.Clock()
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)
     define_location = "main_menu"
     soundboard.credits_theme()
     text_list = '''This game is made by:
-    Ryan Groenewold -> Astrododge
-    Laura Young -> SpaceStrike
+    Ryan Groenewold -> Astrododge, intergration of all games, highscores, sounds, Health bar mechanics, "cheat sheets / explaination screen" mechanic
+    Laura Young -> SpaceStrike, credits, All sprites in game, Intergration, Documentation, score in individiual games
     Eva Wegman -> Spacebound
     Kimberly Schoenaker -> Invasion of the Unkown. 
     Davin Essenius -> Stranded
 
     All sounds, images and mechanics are used for personal use.
-    We don't own any of the coprights of any of these objects 
+    We don't own any of the coprights of any of these objects
     '''.split('\n')
 
 
@@ -69,7 +69,7 @@ def start():
             for text, rect in self.text:
                 surf.blit(text, rect)
 
-    quit_button         = pygame.image.load('resource/images/select_planet/button_quit_small.png').convert()
+    quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
     quit_rect           = quit_button.get_rect()
     background = pygame.image.load('resource/images/game_over/game_overbg.png').convert()
     background_rect = background.get_rect()

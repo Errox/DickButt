@@ -21,7 +21,7 @@ def start(score):
 
     #setting the settings of pygame itself
     screen = pygame.display.set_mode((900,900))
-    pygame.display.set_caption("game_over")
+    pygame.display.set_caption("Key_binds")
     font = pygame.font.SysFont('resource/fonts/Arcadepix.ttf', 40)
     clock = pygame.time.Clock()
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)

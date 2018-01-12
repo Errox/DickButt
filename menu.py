@@ -151,12 +151,12 @@ def start_menu():
         elif define_location == "planet_SpaceBound":
             pygame.mixer.music.stop()
             cheat_sheet.start(3)
-        elif define_location == "planet_Stranded":
-            pygame.mixer.music.stop()
-            cheat_sheet.start(5)
         elif define_location == "planet_sumo_smash":
             pygame.mixer.music.stop() 
             cheat_sheet.start(4)
+        elif define_location == "planet_Stranded":
+            pygame.mixer.music.stop()
+            cheat_sheet.start(5)
         else:
             print('under construction')
 
