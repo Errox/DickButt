@@ -408,3 +408,5 @@ paket-files/
 # End of https://www.gitignore.io/api/python,visualstudio,visualstudiocode
 *.json
 *.json
+*.json
+*.json

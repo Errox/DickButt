@@ -334,9 +334,11 @@ def start_Stranded():
 
             # call the parent's constructor
             super().__init__()
-
-            self.image = pygame.Surface([width, height])
-            self.image.fill(BROWN)
+            self.image = pygame.image.load('resource/images/Stranded/Spritesheet.png').convert()
+            self.image = pygame.transform.scale(self.image, (width, height))
+            self.image.set_colorkey(WHITE)
+            #self.image = pygame.Surface([width, height])
+           # self.image.fill(BROWN)
 
             self.rect = self.image.get_rect()
 
@@ -358,7 +360,16 @@ def start_Stranded():
 
         def update(self):
             # Move the platform
-            self.image.fill(RED)
+            self.moving = False
+            if self.change_x <= 0:
+                self.image = pygame.image.load('resource/images/Stranded/Strandedenemy3.png').convert()
+                self.image = pygame.transform.scale(self.image, (50, 75))
+                self.image.set_colorkey(BLACK)
+            else:
+                self.image = pygame.image.load('resource/images/Stranded/Strandedenemy4.png').convert()
+                self.image = pygame.transform.scale(self.image, (50, 75))
+                self.image.set_colorkey(BLACK)
+            #self.image.fill(RED)
 
             # Move left/right
             self.rect.x += self.change_x
@@ -413,7 +424,9 @@ def start_Stranded():
 
         def update(self):
             # Move the platform
-            self.image.fill(BLUE)
+            self.image = pygame.image.load('resource/images/Stranded/Mplatform.png').convert()
+            self.image = pygame.transform.scale(self.image, (400, 20))
+            #self.image.fill(BROWN)
 
             # Move left/right
             self.rect.x += self.change_x

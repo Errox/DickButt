@@ -1,5 +1,4 @@
-#This script is for playing and moving around a sprite
-#import all lib's + intergratie
+#import all libraries + intergratie
 heart_amount = 3
 def start_spacestrike():
     import pygame
@@ -11,13 +10,13 @@ def start_spacestrike():
     import game_over
     import soundboard
 
-    #define pygame core
+    #define core
     WIDTH   = 900
     HEIGHT  = 900
     FPS     = 30
     X       = 500
     Y       = 100
-    MOB_AMOUNT = random.randrange(7,17)
+    enemy_amount = random.randrange(7,17)
     global heart_amount
     heart_amount = 3
     start_init = True
@@ -25,6 +24,8 @@ def start_spacestrike():
     global planet_hp
     planet_hp = 9001
     pause = False
+    startTime = time.time()
+    count = 5
 
     #define colors
     BLACK = (0, 0, 0)
@@ -39,10 +40,9 @@ def start_spacestrike():
     game_folder = os.path.dirname(__file__)
     img_folder  = os.path.join(game_folder, "img")
 
-
-    #setting up a player class
+    #player class
     class player(pygame.sprite.Sprite):
-        #sprite and other properties for the player
+        #sprite and properties
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
             self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple.png')
@@ -55,7 +55,7 @@ def start_spacestrike():
             self.speedx = 0
             self.speedy = 0
 
-        #This function is given to update the player in the game
+        #update function in-game
         def update(self):
             self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple.png')
             self.image = pygame.transform.scale(self.image, (100, 70))
@@ -94,15 +94,15 @@ def start_spacestrike():
             if self.rect.top < 0:
                 self.rect.top = 0
 
-        #This is a function to shoot a bullet from the player itself. 
+        #function to shoot friendly bullet 
         def shoot(self):
             bullet = Bullet(self.rect.centerx, self.rect.top)
             all_sprites.add(bullet)
             bullets.add(bullet)
 
-    #setting up a enemy class
+    #enemy class
     class enemy(pygame.sprite.Sprite):
-        #sprite and other properties for the enemy
+        #sprite and properties for enemy
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
             self.image  = pygame.image.load('resource/images/spacestrike/enemy/enemy.png').convert()
@@ -116,14 +116,14 @@ def start_spacestrike():
             self.speedy = random.randrange(3,7)
             self.speedrand = random.choice([True, False])
 
-        #This function is given to update the player in the game
+        #update player
         def update(self): 
             self.rect.y += self.speedy
             if self.speedrand == True:
                 self.rect.x += self.speedx
             else:
                 self.rect.x += self.speedx * -1
-        #kill if off screen
+        #kill if off the screen
             if self.rect.y > 810:
                 self.kill()
                 global planet_hp
@@ -138,18 +138,15 @@ def start_spacestrike():
             if random.randrange(1,100) < 3:
                 enemy.shoot_AI(self,self.rect.centerx,self.rect.bottom)
 
-
-        #This is a function to shoot a bullet from enemy at random
+        #function for random enemy shooting
         def shoot_AI(self,x,y):
             en_bullet = AI_Bullet(x,y)
             all_sprites.add(en_bullet)
             en_bullet.add()
 
-
-
-    #Setting up a bullet
+    #friendly bullet
     class Bullet(pygame.sprite.Sprite):
-        #give properties to the bullet itself
+        #image and properties for bullet
         def __init__(self, x, y):
             pygame.sprite.Sprite.__init__(self)
             self.image = pygame.image.load('resource/images/spacestrike/projectiles/bullet.png').convert()
@@ -158,17 +155,17 @@ def start_spacestrike():
             self.rect.bottom = y
             self.rect.centerx = x
             self.speedy = -10
-        #function to define the functions inside an update
+        #function to define the functions inside update
         def update(self):
             self.rect.y += self.speedy
 
-            #kill if off top screen
+            #kill if off the top screen
             if self.rect.bottom < 0:
                 self.kill()
 
-   #Setting up a AI_bullet
+   #AI_bullet
     class AI_Bullet(pygame.sprite.Sprite):
-        #give properties to the bullet itself
+        #properties and image for AI bullet
         def __init__(self, x, y):
             pygame.sprite.Sprite.__init__(self)
             self.image = pygame.image.load('resource/images/spacestrike/projectiles/en_bullet.png').convert()
@@ -190,41 +187,30 @@ def start_spacestrike():
             if self.rect.y > 900:
                 self.kill()
 
-
-
-    #set x and y of the window on screen. (EXPIRIMENTAL)
-    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)
-
-
-    #Start Pygame
+    #start Pygame
     pygame.init() 
 
-    #init the sound libs of pygame.
+    #initiate library sonuds
     soundboard.spst_main()
 
-    #Defineeer de groote en breedte van de game
+    #set size of screen
     screen = pygame.display.set_mode((900, 900))
 
-
-    #Verander titel
+    #change title in window
     pygame.display.set_caption("SPACESTRIKE")
 
-
-    #Setup voor de fps 
+    #set up fps
     clock = pygame.time.Clock()
 
-
-    # images for the background
+    #images for the background
     surface = pygame.image.load('resource/images/spacestrike/background/background_splaceholder.png').convert()
     surface_rect = surface.get_rect()
 
     print (surface)
     print (surface_rect)
 
-    #load in font
+    #load in font and sprites
     font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 30)
-
-    #load in all sprites
     all_sprites = pygame.sprite.Group()
     bullets = pygame.sprite.Group()
     player = player()
@@ -232,19 +218,15 @@ def start_spacestrike():
     enemys = pygame.sprite.Group()
     en_bullets = pygame.sprite.Group()
 
-
-    for i in range(MOB_AMOUNT):
+    # add mobs
+    for i in range(enemy_amount):
         m = enemy()
         all_sprites.add(m)
         enemys.add(m)
-        
 
-    bullet_sound = pygame.mixer.Sound('resource/music/splaceholder/sounds/sfx_wpn_laser10.wav')
-
-    startTime = time.time()
-    count = 5
-
-    #de main game loops
+    startTime = time.time() 
+    count = 5 
+    #main game loop
     running = True
     while running:
         while pause == True:
@@ -261,12 +243,9 @@ def start_spacestrike():
 
             for event in pygame.event.get():
                 print (event)
-                #Check of de exit knop is ingedrukt
-                if event.type == pygame.QUIT:
-                    running = False
-
-                #als esc ingedrukt wordt pauseert het spel
-                elif event.type == pygame.KEYDOWN:
+                
+                #press esc for pause
+                if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         pause = False
                         soundboard.resume()
@@ -281,7 +260,7 @@ def start_spacestrike():
                     if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
                         if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
                             print('goes to cheet sheet.')
-            #flip the display.
+            #flip display.
             pygame.display.flip()
 
         while pause == False:
@@ -289,18 +268,19 @@ def start_spacestrike():
             time_alive = time.time() - startTime
             print (time_alive)
             
+            #enemy increase
             if time_alive == count:
                 count += 5
                 m = enemy()
                 all_sprites.add(m)
                 enemys.add(m)
     
-            # Laat de clock ticken op de fps
+            #run loop at correct fps
             clock.tick(FPS)
 
-            #kijk of er een event is 
+            #check for events
             for event in pygame.event.get():
-                #Catch mouse position and if it's pressed on the button
+                #catch mouse pos if pressed on button
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
                         if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
@@ -312,19 +292,19 @@ def start_spacestrike():
                     pygame.quit()
                     quit()
 
-                #als spatie word ingedrukt moet er een kogel afgeschoten worden
+                #shoot bullet with spacebar
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
-                        bullet_sound.play()
+                        soundboard.bullet_shoot_friendly()
                         player.shoot()
                     if event.key == pygame.K_ESCAPE:
                         pause = True
                         soundboard.pause()
-                        # pygame.mixer.Sound.play()
+            
             #update
             all_sprites.update()
 
-            #collision for bullet against enemy
+            #collision friendly bullet against enemy
             hits = pygame.sprite.groupcollide(enemys, bullets, True, True)
             if hits:
                 score += 100
@@ -334,33 +314,35 @@ def start_spacestrike():
                 all_sprites.add(m)
                 enemys.add(m)
 
-            #collision if player hits enemys
+            #collision player with enemy
             hits = pygame.sprite.spritecollide(player, enemys, True, pygame.sprite.collide_circle)
             if hits:
                 soundboard.bullet_on_hit_friendly()
                 lose_heart()
 
-            #collision if enemy bullet hits player
+            #collision AI bullet with player
             hits = pygame.sprite.spritecollide(player, en_bullets, True, pygame.sprite.collide_circle)
             if hits:
                 soundboard.bullet_on_hit_friendly()
                 lose_heart()
             
+            #function for hearts
             def lose_heart():
                 global heart_amount
                 heart_amount -= 1
 
-            #draw / render
+            #draw/render and quit button
             if start_init == True:
                 screen.fill(BLACK)
                 start_init = False
-                quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
-                quit_rect           = quit_button.get_rect()
-                screen.blit(quit_button, (5,5))    
             screen.blit(surface, surface_rect)
             
+            quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
+            quit_rect           = quit_button.get_rect()
+            screen.blit(quit_button, (5,5))    
+         
             
-            #check lives, else load game over screen
+            #check lives, else load game_over screen
             if heart_amount == 3:
                 hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_3.png'), (130,45))
                 screen.blit(hearts, [365, 0])
@@ -377,18 +359,17 @@ def start_spacestrike():
                 print('game over')                
                 game_over.start(score, 2)
 
+            #add score
             scoretext = font.render("Score :  {0}".format(score), 1, WHITE)
             screen.blit(scoretext, (720, 5))
 
             planethealth = font.render("Veilea :  {0}".format(planet_hp), 1, WHITE)
             screen.blit(planethealth, (720, 25))
             
-
+            #draw
             all_sprites.draw(screen)
 
-            #flip the display.
+            #flip display.
             pygame.display.flip()
 
     pygame.quit()
-
-    #start_spacestrike()
