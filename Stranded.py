@@ -46,6 +46,8 @@ def start_Stranded():
             width = 50
             height = 75
             self.walking = False
+            self.jumping_r = False
+            self.jumping_l = False
             self.current_frame = 0
             self.last_update = 0
             self.load_images()
@@ -83,6 +85,22 @@ def start_Stranded():
             for frame in self.walk_frames_r:
                 frame.set_colorkey(BLACK)
                 self.walk_frames_l.append(pygame.transform.flip(frame, True, False))
+            self.jump_frames_r = [pygame.image.load('resource/images/Stranded/player purple/jump/1.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/jump/2.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/jump/3.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/jump/4.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/jump/5.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/jump/6.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/jump/7.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/jump/8.png').convert(),
+                                   pygame.image.load('resource/images/Stranded/player purple/jump/9.png').convert()]
+            for frame in self.jump_frames_r:
+                frame.set_colorkey(BLACK)
+
+            self.jump_frames_l = []
+            for frame in self.jump_frames_r:
+                frame.set_colorkey(BLACK)
+                self.jump_frames_l.append(pygame.transform.flip(frame, True, False))
 
         def update(self):
             # move the player
@@ -173,7 +191,7 @@ def start_Stranded():
                 block.hide()
         def animate(self):
             now = pygame.time.get_ticks()
-            if self.change_x != 0:
+            if self.change_x != 0 and self.change_y == 0:
                 self.walking = True
             else:
                 self.walking = False
@@ -188,13 +206,37 @@ def start_Stranded():
                         self.image = self.walk_frames_l[self.current_frame]
 
 
-            if not self.walking:
+            if not self.walking and self.change_y == 0:
                 if now - self.last_update > 400:
                     self.last_update = now
                     self.current_frame = (self.current_frame + 1) % len(self.standing_frames)
                     bottom = self.rect.bottom
                     self.image = self.standing_frames[self.current_frame]
                     self.rect.bottom = bottom
+
+            if self.change_y != 0 and self.change_x >= 0:
+                self.jumping_r = True
+            if self.change_y == 0 and self.change_x <= 0:
+                self.jumping_r = False
+            if self.jumping_r:
+                if now - self.last_update > 20:
+                    self.last_update = now
+                    self.current_frame = (self.current_frame + 1) % len(self.jump_frames_r)
+                    bottom = self.rect.bottom
+                    if self.change_y > 1:
+                        self.image = self.jump_frames_r[self.current_frame]
+
+            if self.change_y != 0 and self.change_x <= 0:
+                self.jumping_l = True
+            if self.change_y == 0 and self.change_x >= 0:
+                self.jumping_l = False
+            if self.jumping_l:
+                if now - self.last_update > 20:
+                    self.last_update = now
+                    self.current_frame = (self.current_frame + 1) % len(self.jump_frames_l)
+                    bottom = self.rect.bottom
+                    if self.change_y > 1:
+                        self.image = self.jump_frames_l[self.current_frame]
 
         # calculating gravity
         def calc_grav(self):
@@ -208,6 +250,7 @@ def start_Stranded():
             if self.rect.y >= display_height - self.rect.height and self.change_y >= 0:
                 self.change_y = 0
                 self.rect.y = display_height - self.rect.height
+
 
         def jump(self):
             # check if there is ground bellow so that the MG_Player can jump
@@ -616,7 +659,7 @@ def start_Stranded():
             block.rect.x = 1100
             block.rect.y = 310
             block.boundary_top = 310
-            block.boundary_bottom = 830
+            block.boundary_bottom = 810
             block.change_y = 4
             block.player = self.MG_player
             block.level = self
