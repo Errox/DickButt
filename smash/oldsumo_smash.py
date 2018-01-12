@@ -1,172 +1,338 @@
-import pygame
-import time
-import random
+def start_sumo_smash():
+    import pygame
+    import random
+    import menu
+    import soundboard
+    import game_over
 
-pygame.init()
+    WIDTH = 900
+    HEIGHT = 900
+    FPS = 30
 
-#Color coding 
-BLACK = (0, 0, 0)
-WHITE = (225, 225, 225)
-RED = (225, 0, 0)
-BLUE = (0, 0, 255 )
-GREEN = (0, 128, 0)
-PURPLE = (128, 0, 128)
+    # define colors
+    WHITE = (255, 255, 255)
+    BLACK = (0, 0, 0)
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
+    BLUE = (0, 0, 255)
+    YELLOW = (255, 255, 0)
 
-#difine game core
-WIDTH = 900
-HIGHT = 900
+    time = 10_000
+    count = 0 
 
-pygameScreen = pygame.display.set_mode((WIDTH, HIGHT))
-pygame.display.set_caption('SUMO SMASH')
+    font = pygame.font.SysFont('resource/fonts/Arcadepix.ttf', 30)
+    level = 1
 
-#differnt blocks
-block_size = 10
-block_player = 30
+    # initialize pygame and create window
+    pygame.init()
+    pygame.mixer.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("INVATION OF THE UNKNOWN")
+    clock = pygame.time.Clock()
+    soundboard.ast_main()
+    start_init = True
+    pause = False
 
-# FPS Clock
-clock= pygame.time.Clock()
-FPS = 30
-
-# adding text
-font = pygame.font.SysFont(None, 30)
-
-#img
-playerimg = pygame.image.load('player2.png')
-sumo_ring = pygame.image.load('img/sumo_ring.png')
-
-
-def enemy(thingx, thingy, thingw, thingh, color):
-    pygame.draw.rect(pygameScreen, color, [thingx, thingy, thingw, thingh])
-
-def massage_to_screen(msg,color):
-    screen_text = font.render(msg, True, color)
-    pygameScreen.blit(screen_text, [200, HIGHT/2])
-
-def player2(sumo_x, sumo_y):
-    pygameScreen.blit(playerimg, (sumo_x, sumo_y))
-    pygame.display.update()
-
-def sumo_ring(backroundx, backroundy):
-    pygameScreen.blit(playerimg, (900, 900))
-    pygame.display.update()
+    #Quit_Butt = pygame.image.load('resource/images/select_planet/button_quit_small.png')
+    #screen.blit(Quit_Butt, [5, 5])
 
 
+    class Player(pygame.sprite.Sprite):
+        def __init__(self):
+            pygame.sprite.Sprite.__init__(self)
+            self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
+            self.image.set_colorkey(WHITE)                             
+            self.image = pygame.transform.scale(self.image, (40, 40))  
+            self.rect = self.image.get_rect()
+            self.rect.centerx = WIDTH / 2
+            self.rect.centery = HEIGHT / 2
+            self.speedx = 0
+            self.speedy = 0
+            self.alive = True
+            self.right = 850
+            self.left = 50
+            self.top = 50
+            self.bottom = 850 
+            self.heart_amount = 3
+            self.is_hit = False
 
-def gameLoop():
-    gameExit = False
-    gameOver = False
+        def update(self):
+            keystate = pygame.key.get_pressed()
+            #self.speedy = 0
+            #self.speedx = 0
+            if keystate[pygame.K_LEFT]:
+                    self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
+                    self.image = pygame.transform.rotate(self.image, 270)
+                    self.speedx = -10
+                    self.speedy = 0
+            if keystate[pygame.K_RIGHT]:
+                    self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
+                    self.image = pygame.transform.rotate(self.image, 90)                
+                    self.speedx = 10
+                    self.speedy = 0
+            if keystate[pygame.K_UP]:
+                    self.speedy = -10
+                    self.speedx = 0
+                    self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
+                    self.image = pygame.transform.rotate(self.image, 180)
+            if keystate[pygame.K_DOWN]:
+                    self.speedy = 10
+                    self.speedx = 0  
+                    self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
+                    self.image = pygame.transform.rotate(self.image, 360)   
+            self.rect.x += self.speedx
+            self.rect.y += self.speedy
+            if  self.rect.right > self.right:
+                self.rect.right = 850
+                self.alive = False
+            if self.rect.left < self.left:
+                self.rect.left = 50
+                self.alive = False
+            if self.rect.top < self.top:
+                self.rect.top = 50
+                self.alive = False
+            if self.rect.bottom > self.bottom:
+                self.rect.bottom = 850
+                self.alive = False
 
-    #objects  player 
-    sumo_x = WIDTH/2   
-    sumo_y = 500
 
-    sumo_x_change = 0
-    sumo_y_change = 0  
 
-    #enemy player
-    #enemy_x = round(random.randrange(0, WIDTH-block_size)/10.0)*10.0 
-    #enemy_y = round(random.randrange(0, HIGHT-block_size)/10.0)*10.0 
+    class Mob1(pygame.sprite.Sprite):
+        def __init__(self):
+            #goed
+            pygame.sprite.Sprite.__init__(self)
+            self.image  = pygame.image.load('resource/images/sumo_smash/alien_2.png')
+            self.image = pygame.transform.scale(self.image, (60, 60))
+            self.image = pygame.transform.rotate(self.image, 270)
+            self.image.set_colorkey(BLACK)   
+            self.rect = self.image.get_rect()
+            self.rect.x = random.randrange(-500, -400)
+            self.rect.y = random.randrange(HEIGHT - self.rect.height)
+            self.speedx = random.randrange(10, 15)
 
-    thing_startx = random.randrange(0, WIDTH)
-    thing_starty = -600
-    thing_speed = 15
-    thing_width = 30
-    thing_height = 30
+        def update(self):
+            self.rect.x += self.speedx
+            if self.rect.right > 950:
+                self.rect.x = random.randrange(-100, -40)
+                self.rect.y = random.randrange(HEIGHT - self.rect.height)
+                self.speedx = random.randrange(10, 15)
 
-    while not gameExit:
-        
-        while gameOver == True:
-            pygameScreen.fill(WHITE)
-            massage_to_screen("GAME OVER, C = replay  Q = quit", BLUE)
-            pygame.display.update()
+    class Mob2(pygame.sprite.Sprite):
+        def __init__(self):
+            #top to bottom
+            pygame.sprite.Sprite.__init__(self)
+            self.image  = pygame.image.load('resource/images/sumo_smash/alien_2.png')
+            self.image = pygame.transform.scale(self.image, (60, 60))
+            self.image = pygame.transform.rotate(self.image, 180)
+            self.image.set_colorkey(BLACK)  
+            #self.image.set_colorkey(WHITE)  
+            self.rect = self.image.get_rect()
+            self.rect.x = random.randrange(WIDTH - self.rect.width)
+            self.rect.y = random.randrange(-500, -400)
+            self.speedy = random.randrange(10, 15)
+
+        def update(self):
+            self.rect.y += self.speedy
+            if self.rect.top > HEIGHT + 50:
+                self.rect.x = random.randrange(WIDTH - self.rect.width)
+                self.rect.y = random.randrange(-100, -40)
+                self.speedy = random.randrange(10, 15)
+
+    class Mob3(pygame.sprite.Sprite):
+        def __init__(self):
+            pygame.sprite.Sprite.__init__(self)
+            self.image  = pygame.image.load('resource/images/sumo_smash/alien_2.png')
+            self.image = pygame.transform.scale(self.image, (60, 60))
+            self.image = pygame.transform.rotate(self.image, 90)
+            self.image.set_colorkey(BLACK)   
+            #self.image.fill(BLUE)
+            self.rect = self.image.get_rect()
+            self.rect.x = 1200
+            self.rect.y = random.randrange(50, 850)
+            self.speedy = random.randrange(10, 15)
+
+        def update(self):
+            self.rect.x -= self.speedy
+            if self.rect.left < -50:
+                self.rect.x = 950
+                self.rect.y = random.randrange(50, 850)
+                self.speedx = random.randrange(10, 15)
+
+    class Mob4(pygame.sprite.Sprite):
+        def __init__(self):
+            pygame.sprite.Sprite.__init__(self)
+            self.image  = pygame.image.load('resource/images/sumo_smash/alien_2.png')
+            self.image = pygame.transform.scale(self.image, (60, 60))
+            self.image.set_colorkey(BLACK)              
+            #self.image = pygame.Surface((60, 60))
+            #self.image.fill(BLUE)
+            self.rect = self.image.get_rect()
+            self.rect.x = 450
+            self.rect.y = 1200
+            self.speedy = random.randrange(10, 15)
+
+        def update(self):
+            self.rect.y -= self.speedy
+            if self.rect.top < -50:
+                self.rect.x = random.randrange(50, 850)
+                self.rect.y = 1000
+                self.speedy = random.randrange(10, 15)
+
+    all_sprites = pygame.sprite.Group()
+    mobs = pygame.sprite.Group()
+    player = Player()
+    walls = pygame.sprite.Group()
+    all_sprites.add(player)
+    for i in range(1):
+        m1 = Mob1()
+        m2 = Mob2()
+        m3 = Mob3()
+        m4 = Mob4()
+        all_sprites.add(m1, m2, m3, m4)
+        mobs.add(m1, m2, m3, m4)
+    if time == 9800:
+        for i in range(2):
+            m1 = Mob1()
+            m2 = Mob2()
+            m3 = Mob3()
+            m4 = Mob4()
+            all_sprites.add(m1, m2, m3, m4)
+            mobs.add(m1, m2, m3, m4)
+
+    #blocks = good
+    block_1 = -450
+    block_2 = 850
+    block_3 = 850
+    block_4 = -450
+
+    backround = YELLOW
+    background = pygame.image.load('resource/images/sumo_smash/grass_14.png').convert()
+    background = pygame.transform.scale(background, (900, 900))
+    background_rect = background.get_rect()
+    Quit_Butt = pygame.image.load('resource/images/select_planet/button_quit_small.png')
+    screen.blit(Quit_Butt, [5, 5])
+
+    stars_1 = pygame.transform.scale(pygame.image.load('resource/images/sumo_smash/stars_bg.png'),(500, 900))
+    stars_2 = pygame.transform.scale(pygame.image.load('resource/images/sumo_smash/stars_bg.png'),(500, 900))
+    stars_3 = pygame.transform.scale(pygame.image.load('resource/images/sumo_smash/stars_bg.png'),(900, 500))
+    stars_4 = pygame.transform.scale(pygame.image.load('resource/images/sumo_smash/stars_bg.png'),(900, 500))
+
+    # Game loop
+    running = True
+    while running:
+        while pause == True:
+            clock.tick(FPS)
+            mm_button        = pygame.image.load('resource/images/pause_screen/button_mm.png')
+            resume_button    = pygame.image.load('resource/images/pause_screen/button_resume.png')
+            restart_button   = pygame.image.load('resource/images/pause_screen/button_restart.png')
+            mm_rect          = mm_button.get_rect()
+            resume_rect      = resume_button.get_rect()
+            restart_rect     = restart_button.get_rect()
+            screen.blit(mm_button, (325,550))
+            screen.blit(resume_button, (325,470))
+            screen.blit(restart_button, (325,390))
 
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN: 
-                    if event.key == pygame.K_q:
-                        gameExit = True
-                        gameOver = False
-                    if event.key == pygame.K_c:
-                        gameLoop()
+                print (event)
+                #Check of de exit knop is ingedrukt
+                if event.type == pygame.QUIT:
+                    running = False
+
+                #als esc ingedrukt wordt pauseert het spel
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 550:
+                        if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 615:
+                            menu.start_menu()
+                    if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 470:
+                        if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 535:
+                            pause = False
+                            soundboard.resume()
+                    if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
+                        if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
+                            print('goes to cheet sheet.')
+            #flip the display.
+            pygame.display.flip()         
+
+        while pause == False:
+            
+            time_alive = time.time() - startTime
+            print (time_alive)    
+            # keep loop running at the right speed
+            clock.tick(FPS)
+            # Process input (events)
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pause = True
+                        soundboard.pause()
+                # check for closing window
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
+                        if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
+                            menu.start_menu()
+            count += 5
+            score = int(count)
+
+            # Update
+            all_sprites.update()
+
+            hits = pygame.sprite.spritecollide(player, mobs, False)
+            
+            if player.alive == False:
+                running = False
+                game_over.start(score, 4)
+
                 
+            screen.fill(backround)
+            screen.blit(background, background_rect)
+            screen.blit(stars_1, [block_1, 0])
+            screen.blit(stars_2, [block_2, 0])
+            screen.blit(stars_3, [0, block_3])
+            screen.blit(stars_4, [0, block_4])
+
+            #pygame.draw.rect(screen, BLACK, [block_1, 0, 500, 900]) # left
+            #pygame.draw.rect(screen, BLACK, [block_2, 0, 500, 900]) # Richt
+            #pygame.draw.rect(screen, BLACK, [0, block_3, 900, 500]) # bottom
+            #pygame.draw.rect(screen, BLACK, [0, block_4, 900, 500]) # top
+            #pygame.draw.ellipse(screen, RED, (75, 75, 750, 750), 10)
+
+            all_sprites.draw(screen)
+            quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
+            quit_rect           = quit_button.get_rect()
+            screen.blit(quit_button, (5,5))    
+
+            scoretext = font.render("Score {0}".format(score), 1, WHITE)
+            screen.blit(scoretext, (750, 10))
+            if player.heart_amount == 3:
+                hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_3.png'), (130,45))
+                screen.blit(hearts, [350, 0])
+            if player.heart_amount == 2:
+                hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_2.png'), (130,45))
+                screen.blit(hearts, [350, 0])
+            if player.heart_amount == 1:
+                hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_1.png'), (130,45))
+                screen.blit(hearts, [350, 0])
+            if player.heart_amount == 0:
+                player.alive = False
+                print('game over')
+                game_over.start(score, 4)
 
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                gameExit = True
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    sumo_x_change = -block_size
-                    sumo_y_change = 0
-                if event.key == pygame.K_RIGHT:   
-                    sumo_x_change = block_size  
-                    sumo_y_change = 0
-                if event.key == pygame.K_UP:
-                    sumo_y_change = -block_size
-                    sumo_x_change = 0
-                if event.key == pygame.K_DOWN:   
-                    sumo_y_change = block_size  
-                    sumo_x_change = 0
-
-           
-            #if sumo_x == enemy_x or sumo_y == enemy_y:
-                    #gameOver = True  
-
-            #if event.type == pygame.KEYUP:
-                #if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                    #sumo_x_change = 0          
-            
-
-            # dit moet gebeuren met Y want als je ervan af valt is het game over
-            if sumo_x >= 900 or sumo_x <= 0 or sumo_y >= 900 or sumo_y <= 0:
-                gameOver = True 
                 
-            
-            
-            
-        sumo_x += sumo_x_change  
-        sumo_y += sumo_y_change  
-        pygameScreen.fill(WHITE)
-        #pygame.draw.rect(pygameScreen, GREEN,[enemy_x, enemy_y, 30, 30])
-        
-        
-        enemy(thing_startx, thing_starty, thing_width, thing_height, GREEN)
-        thing_starty += thing_speed
-        player2(sumo_x, sumo_y)
+            # *after* drawing everything, flip the display
+            pygame.display.flip()
 
+            hits = pygame.sprite.spritecollide(player, mobs, False)
+            if hits:
+                if not player.is_hit:
+                    player.heart_amount -= 1
+                    player.is_hit = True
+                    soundboard.bullet_on_hit_friendly()
+            else:
+                player.is_hit = False
 
-        if thing_starty > HIGHT:
-            thing_starty = 0 - thing_height
-            thing_startx = random.randrange(0,WIDTH)
+        pygame.quit()
+        quit()
 
-
-        pygame.display.update()
-
-        clock.tick(FPS)
-
-
-    
-    pygame.quit()
-    quit()
-
-gameLoop()
-
-
-
-
-
-class Wall1(pygame.sprite.Sprite):
-    def __init__(self):
-    pygame.sprite.Sprite.__init__(self)
-
-class Wall1(pygame.sprite.Sprite):
-    def __init__(self):
-    pygame.sprite.Sprite.__init__(self)
-
-class Wall1(pygame.sprite.Sprite):
-    def __init__(self):
-    pygame.sprite.Sprite.__init__(self)
-
-
-    w2 = Mob2()
-    w3 = Mob3()
-    w4 = Mob4()

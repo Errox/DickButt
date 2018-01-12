@@ -243,7 +243,7 @@ def start_sumo_smash():
                 #als esc ingedrukt wordt pauseert het spel
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        pause = False
+                        pause = True
                         soundboard.resume()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 550:
@@ -332,6 +332,10 @@ def start_sumo_smash():
             clock.tick(FPS)
             # Process input (events)
             for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pause = True
+                        soundboard.pause()
                 # check for closing window
                 if event.type == pygame.QUIT:
                     running = False
@@ -396,6 +400,7 @@ def start_sumo_smash():
                 if not player.is_hit:
                     player.heart_amount -= 1
                     player.is_hit = True
+                    soundboard.bullet_on_hit_friendly()
             else:
                 player.is_hit = False
 
