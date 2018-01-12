@@ -49,9 +49,7 @@ def resume():
     pygame.mixer.music.unpause()
 
 def stranded_main():
-    pygame.mixer.music.load('resource/soundboard/music/astrododge/song_3.ogg')
-    pygame.mixer.music.queue('resource/soundboard/music/astrododge/song_3.ogg')
-    pygame.mixer.music.queue('resource/soundboard/music/astrododge/song_3.ogg')
+    pygame.mixer.music.load('resource/soundboard/music/stranded/song_1.ogg')
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 
