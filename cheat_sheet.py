@@ -56,14 +56,14 @@ def start(game_id):
                 pass            
         elif game_id == 4:
             try:
-                Stranded.start_Stranded()
+                sumo_smash.start_sumo_smash()
                 pass
             except Exception as e:
                 error_screen.start(e, game_id)                
                 pass
         elif game_id == 5:
             try:
-                sumo_smash.start_sumo_smash()
+                Stranded.start_Stranded()
                 pass
             except Exception as e:
                 error_screen.start(e, game_id)                
@@ -77,11 +77,11 @@ def start(game_id):
             spacestrike.start_spacestrike()
         elif game_id == 3:
             SpaceBound.start_SpaceBound()
-        elif game_id == 5:
-            Stranded.start_Stranded()
         elif game_id == 4:
             sumo_smash.start_sumo_smash()
-
+        elif game_id == 5:
+            Stranded.start_Stranded()
+        
 
     #initializing pygame's mixer
     # pygame.mixer.init()

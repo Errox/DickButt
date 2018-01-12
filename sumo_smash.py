@@ -335,6 +335,8 @@ def start_sumo_smash():
                 # check for closing window
                 if event.type == pygame.QUIT:
                     running = False
+                    pygame.quit()
+                    quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
                         if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
