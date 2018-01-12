@@ -15,6 +15,7 @@ def start_astrodoge():
     WIDTH   = 900
     HEIGHT  = 900
     FPS     = 30
+    d
     pause   = False
     seconds = 5
     X       = 500

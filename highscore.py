@@ -14,7 +14,9 @@ def read_all():
 def save(score, game_id):
     import json
     import os
+    import ast
     data = json.load(open('highscores.json'))
+    data = ast.literal_eval(data)
     idtje = str(game_id)
 
     if score > data[idtje]:
@@ -47,7 +49,7 @@ def start():
 
     #setting the settings of pygame itself
     screen = pygame.display.set_mode((900,900))
-    pygame.display.set_caption("Highscore")
+    pygame.display.set_caption("Look at those scores!")
     font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 40)
     clock = pygame.time.Clock()
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)

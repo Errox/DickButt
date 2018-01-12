@@ -16,6 +16,10 @@ def main_menu():
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 
+def error_music():
+    pygame.mixer.music.load('resource/soundboard/music/error/song_1.ogg')
+    pygame.mixer.music.play(-1)
+       
 #sequence when game_over scene is triggered
 def game_over(score):
     print(score)

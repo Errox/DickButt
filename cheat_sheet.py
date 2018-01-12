@@ -10,6 +10,7 @@ def start(game_id):
     import Stranded
     import sumo_smash
     import soundboard
+    import error_screen
     from time import sleep
  
     #setting variables
@@ -24,7 +25,7 @@ def start(game_id):
  
     #setting the settings of pygame itself
     screen = pygame.display.set_mode((900,900))
-    pygame.display.set_caption("cheat_sheet")
+    pygame.display.set_caption("Are you prepared?")
     font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 40)
     clock = pygame.time.Clock()
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)
@@ -33,15 +34,40 @@ def start(game_id):
 
     def introduction_id(game_id):
         if game_id == 1:
-            astrodoge.start_astrodoge()          
+            try:
+                astrodoge.start_astrodoge()
+                pass
+            except Exception as e:
+                error_screen.start(e, game_id)                
+                pass
         elif game_id == 2:
-            spacestrike.start_spacestrike()
+            try:
+                spacestrike.start_spacestrike()
+                pass
+            except Exception as e:
+                error_screen.start(e, game_id)                
+                pass
         elif game_id == 3:
-            SpaceBound.start_SpaceBound()
-        elif game_id == 5:
-            Stranded.start_Stranded()
+            try:
+                SpaceBound.start_SpaceBound()
+                pass
+            except Exception as e:
+                error_screen.start(e, game_id)                
+                pass            
         elif game_id == 4:
-            sumo_smash.start_sumo_smash()
+            try:
+                Stranded.start_Stranded()
+                pass
+            except Exception as e:
+                error_screen.start(e, game_id)                
+                pass
+        elif game_id == 5:
+            try:
+                sumo_smash.start_sumo_smash()
+                pass
+            except Exception as e:
+                error_screen.start(e, game_id)                
+                pass
 
 
     #initializing pygame's mixer
