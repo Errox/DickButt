@@ -22,7 +22,6 @@ def start_astrodoge():
     MOB_AMOUNT = 10
     global heart_amount
     heart_amount = 3
-    w
     spawn_rate = 95
     startTime = time.time()
     start_init = True
