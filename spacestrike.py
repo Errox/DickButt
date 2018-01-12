@@ -300,15 +300,17 @@ def start_spacestrike():
 
             #kijk of er een event is 
             for event in pygame.event.get():
-                print (event)
-                #Check of de exit knop is ingedrukt
-                if event.type == pygame.QUIT:
-                    running = False
                 #Catch mouse position and if it's pressed on the button
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
                         if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
                            menu.start_menu()
+                 #check and close window
+                if event.type == pygame.QUIT:
+                    #closing window
+                    running = False
+                    pygame.quit()
+                    quit()
 
                 #als spatie word ingedrukt moet er een kogel afgeschoten worden
                 elif event.type == pygame.KEYDOWN:
