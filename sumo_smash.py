@@ -20,14 +20,14 @@ def start_sumo_smash():
     time = 10_000
     count = 0 
 
-    font = pygame.font.SysFont('resource/fonts/Arcadepix.ttf', 30)
+    font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 30)
     level = 1
 
     # initialize pygame and create window
     pygame.init()
     pygame.mixer.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("INVATION OF THE UNKNOWN")
+    pygame.display.set_caption("INVASION OF THE UNKNOWN")
     clock = pygame.time.Clock()
     soundboard.ast_main()
     start_init = True
