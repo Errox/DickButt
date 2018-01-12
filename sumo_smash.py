@@ -255,6 +255,7 @@ def start_sumo_smash():
                             soundboard.resume()
                     if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
                         if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
+                            start_Sumo_smash()
                             print('goes to cheet sheet.')
             #flip the display.
             pygame.display.flip()
@@ -406,6 +407,5 @@ def start_sumo_smash():
             else:
                 player.is_hit = False
 
-        pygame.quit()
-        quit()
-
+    pygame.quit()
+    quit()
