@@ -40,6 +40,7 @@ def start_spacestrike():
     game_folder = os.path.dirname(__file__)
     img_folder  = os.path.join(game_folder, "img")
 
+
     #player class
     class player(pygame.sprite.Sprite):
         #sprite and properties
@@ -58,29 +59,29 @@ def start_spacestrike():
         #update function in-game
         def update(self):
             self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple.png')
-            self.image = pygame.transform.scale(self.image, (100, 70))
+            self.image = pygame.transform.scale(self.image, (134, 75))
             self.image.set_colorkey(BLACK)
             self.speedx = 0
             self.speedy = 0
             keystate = pygame.key.get_pressed()
             if keystate[pygame.K_LEFT]:
                 self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple_booster.png')
-                self.image = pygame.transform.scale(self.image, (100, 70))
+                self.image = pygame.transform.scale(self.image, (134, 75))
                 self.image.set_colorkey(BLACK)
                 self.speedx = -10
             if keystate[pygame.K_RIGHT]:
                 self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple_booster.png')
-                self.image = pygame.transform.scale(self.image, (100, 70))
+                self.image = pygame.transform.scale(self.image, (134, 75))
                 self.image.set_colorkey(BLACK)
                 self.speedx = 10
             if keystate[pygame.K_UP]:
                 self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple_booster.png')
-                self.image = pygame.transform.scale(self.image, (100, 70))
+                self.image = pygame.transform.scale(self.image, (134, 75))
                 self.image.set_colorkey(BLACK)
                 self.speedy = -10
             if keystate[pygame.K_DOWN]:
                 self.image  = pygame.image.load('resource/images/spacestrike/spaceship/Ship_big_purple_booster.png')
-                self.image = pygame.transform.scale(self.image, (100, 70))
+                self.image = pygame.transform.scale(self.image, (134, 75))
                 self.image.set_colorkey(BLACK)
                 self.speedy = 10
             self.rect.x += self.speedx
@@ -135,7 +136,7 @@ def start_spacestrike():
                 self.speedx = self.speedx * -1
             if self.rect.x < 0:
                 self.speedx = self.speedx * -1
-            if random.randrange(1,100) < 3:
+            if random.randrange(1,100) < 2:
                 enemy.shoot_AI(self,self.rect.centerx,self.rect.bottom)
 
         #function for random enemy shooting
@@ -203,7 +204,7 @@ def start_spacestrike():
     clock = pygame.time.Clock()
 
     #images for the background
-    surface = pygame.image.load('resource/images/spacestrike/background/background_splaceholder.png').convert()
+    surface = pygame.image.load('resource/images/spacestrike/background/background_base.png').convert()
     surface_rect = surface.get_rect()
 
     print (surface)
@@ -360,7 +361,7 @@ def start_spacestrike():
                 game_over.start(score, 2)
 
             #add score
-            scoretext = font.render("Score :  {0}".format(score), 1, WHITE)
+            scoretext = font.render("Score  :  {0}".format(score), 1, WHITE)
             screen.blit(scoretext, (720, 5))
 
             planethealth = font.render("Veilea :  {0}".format(planet_hp), 1, WHITE)
