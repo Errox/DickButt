@@ -25,7 +25,7 @@ def start(game_id):
  
     #setting the settings of pygame itself
     screen = pygame.display.set_mode((900,900))
-    pygame.display.set_caption("cheat_sheet")
+    pygame.display.set_caption("Look at the controls")
     font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 40)
     clock = pygame.time.Clock()
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)
@@ -124,7 +124,7 @@ def start(game_id):
                 pygame.quit()
                 quit()
             elif evento.type == pygame.KEYDOWN:
-                introduction_id_bleeding_edge(game_id)
+                introduction_id(game_id)
 
         pygame.display.flip()
  

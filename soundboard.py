@@ -19,6 +19,10 @@ def main_menu():
 def error_music():
     pygame.mixer.music.load('resource/soundboard/music/error/song_1.ogg')
     pygame.mixer.music.play(-1)
+
+def upgrade():
+    play = pygame.mixer.Sound('resource/soundboard/upgrade/sound_1.wav')
+    play.play()
        
 #sequence when game_over scene is triggered
 def game_over(score):

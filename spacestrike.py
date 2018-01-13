@@ -40,6 +40,21 @@ def start_spacestrike():
     game_folder = os.path.dirname(__file__)
     img_folder  = os.path.join(game_folder, "img")
 
+    explosion_ship = []
+    for i in range(17):
+        filename = 'resource/images/spacestrike/explosions_ship/ship_expl_{}.png'.format(i)
+        img = pygame.image.load(filename).convert()
+        img.set_colorkey(BLACK)
+        #img = pygame.transform.scale(img, (45, 45))
+        explosion_ship.append(img)
+
+    explosion_base = []
+    for i in range(25):
+        filename = 'resource/images/spacestrike/explosions_base/expl_{}.png'.format(i)
+        img = pygame.image.load(filename).convert()
+        img.set_colorkey(BLACK)
+        img = pygame.transform.scale(img, (120, 120))
+        explosion_base.append(img)    
 
     #player class
     class player(pygame.sprite.Sprite):
@@ -112,6 +127,7 @@ def start_spacestrike():
             self.rect   = self.image.get_rect()
             self.radius = 23
             self.rect.x = random.randrange(0,830)
+            self.lastx = 0
             self.rect.y = 0
             self.speedx = random.randrange(3,7)
             self.speedy = random.randrange(3,7)
@@ -124,14 +140,21 @@ def start_spacestrike():
                 self.rect.x += self.speedx
             else:
                 self.rect.x += self.speedx * -1
-        #kill if off the screen
+            
+            self.lastx = self.rect.x
+            #kill if off the screen
+            bloep = random.randrange(800,900)
             if self.rect.y > 810:
                 self.kill()
                 global planet_hp
                 planet_hp -= 125
+                expl = base_explosion(self.lastx, bloep)
+                all_sprites.add(expl)
+
                 m = enemy()
                 all_sprites.add(m)
                 enemys.add(m)     
+
             if self.rect.x > 830:
                 self.speedx = self.speedx * -1
             if self.rect.x < 0:
@@ -145,13 +168,24 @@ def start_spacestrike():
             all_sprites.add(en_bullet)
             en_bullet.add()
 
+    #initiate a image loader
+    def load_image(name):
+        image = pygame.image.load(name)
+        return image
+
     #friendly bullet
     class Bullet(pygame.sprite.Sprite):
         #image and properties for bullet
         def __init__(self, x, y):
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.image.load('resource/images/spacestrike/projectiles/bullet.png').convert()
-            self.image.set_colorkey(BLACK)
+            self.images = []
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_1.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_2.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_3.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_4.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_5.png'))
+            self.index = 0
+            self.image = self.images[self.index]
             self.rect = self.image.get_rect()
             self.rect.bottom = y
             self.rect.centerx = x
@@ -159,6 +193,11 @@ def start_spacestrike():
         #function to define the functions inside update
         def update(self):
             self.rect.y += self.speedy
+            self.index += 1
+            if self.index >= len(self.images):
+                self.index = 0
+                count = 0
+            self.image = self.images[self.index]
 
             #kill if off the top screen
             if self.rect.bottom < 0:
@@ -187,6 +226,57 @@ def start_spacestrike():
             #kill if off top screen
             if self.rect.y > 900:
                 self.kill()
+
+    #explosion for ship
+    class ship_explosion(pygame.sprite.Sprite):
+        def __init__(self, center):
+            pygame.sprite.Sprite.__init__(self)
+            self.image = explosion_ship[0]
+            self.rect = self.image.get_rect()
+            self.rect.center = center
+            self.frame = 0
+            self.last_update = pygame.time.get_ticks()
+            self.frame_rate = 50
+
+        def update(self):
+            now = pygame.time.get_ticks()
+            if now - self.last_update > self.frame_rate:
+                self.last_update = now
+                self.frame += 1
+                if self.frame == len(explosion_ship):
+                    self.kill()
+                else:
+                    center = self.rect.center
+                    self.image = explosion_ship[self.frame]
+                    self.rect = self.image.get_rect()
+                    self.rect.center = center
+
+    #explosion for base
+    class base_explosion(pygame.sprite.Sprite):
+        def __init__(self, x, y):
+            pygame.sprite.Sprite.__init__(self)
+            self.image = explosion_base[0]
+            self.rect = self.image.get_rect()
+            self.rect.x = x
+            self.rect.y = y -7
+            self.frame = 0
+            self.last_update = pygame.time.get_ticks()
+            self.frame_rate = 50
+
+        def update(self):
+            now = pygame.time.get_ticks()
+            if now - self.last_update > self.frame_rate:
+                self.last_update = now
+                self.frame += 1
+                if self.frame == len(explosion_base):
+                    self.kill()
+                else:
+                    center = self.rect.center
+                    self.image = explosion_base[self.frame]
+                    self.rect = self.image.get_rect()
+                    self.rect.center = center
+
+
 
     #start Pygame
     pygame.init() 
@@ -311,6 +401,8 @@ def start_spacestrike():
                 score += 100
                 soundboard.bullet_on_hit_enemy()
             for hit in hits:
+                expl = ship_explosion(hit.rect.center)
+                all_sprites.add(expl)
                 m = enemy()
                 all_sprites.add(m)
                 enemys.add(m)

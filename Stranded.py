@@ -377,6 +377,10 @@ def start_Stranded():
             # check if it hits the player
             hit = pygame.sprite.collide_rect(self, self.player)
             if hit:
+                nonlocal score
+                score = 0
+                global running
+                running = False
 
                 # if moving right, set right side to the left side of the object it's moving towards
                 if self.change_x < 0:
@@ -391,7 +395,8 @@ def start_Stranded():
             # check if the mg_player stands on the platform
             hit = pygame.sprite.collide_rect(self, self.player)
             if hit:
-                # MG_player is hit, move the player.
+                score = 0
+                running = False
 
                 # reset position based on the top and/or bottom of the object
                 if self.change_y < 0:
@@ -636,9 +641,9 @@ def start_Stranded():
 
             # Add a custom moving enemy 1
             monster = MovingMonster(50, 75)
-            monster.rect.x = 1500
+            monster.rect.x = 1510
             monster.rect.y = 225
-            monster.boundary_left = 1500
+            monster.boundary_left = 1510
             monster.boundary_right = 2050
             monster.change_x = 10
             monster.player = self.MG_player
@@ -647,11 +652,11 @@ def start_Stranded():
 
             # Add a custom moving enemy 2
             monster = MovingMonster(50, 75)
-            monster.rect.x = 1600
+            monster.rect.x = 1670
             monster.rect.y = 755
-            monster.boundary_left = 1600
-            monster.boundary_right = 2650
-            monster.change_x = 5
+            monster.boundary_left = 1620
+            monster.boundary_right = 2630
+            monster.change_x = 10
             monster.player = self.MG_player
             monster.level = self
             self.monster_list.add(monster)
@@ -660,8 +665,8 @@ def start_Stranded():
             monster = MovingMonster(50, 75)
             monster.rect.x = 5300
             monster.rect.y = 755
-            monster.boundary_left = 5200
-            monster.boundary_right = 6450
+            monster.boundary_left = 5250
+            monster.boundary_right = 6430
             monster.change_x = 15
             monster.player = self.MG_player
             monster.level = self
@@ -682,9 +687,9 @@ def start_Stranded():
             block = MovingPlatform(400, 20)
             block.rect.x = 5300
             block.rect.y = 650
-            block.boundary_left = 5200
-            block.boundary_right = 5800
-            block.change_x = 15
+            block.boundary_left = 5300
+            block.boundary_right = 5720
+            block.change_x = 14
             block.player = self.MG_player
             block.level = self
             self.platform_list.add(block)
@@ -789,8 +794,9 @@ def start_Stranded():
                         if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
                             if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
                                score = 0
-                               game_over.start(score, 5)
+                               menu.start_menu()
                     if event.type == pygame.QUIT:
+                        score = 0
                         running = False
 
                     if event.type == pygame.KEYDOWN:

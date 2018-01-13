@@ -22,11 +22,20 @@ def start():
     define_location = "main_menu"
     soundboard.credits_theme()
     text_list = '''This game is made by:
-    Ryan Groenewold -> Astrododge, intergration of all games, highscores, sounds, Health bar mechanics, "cheat sheets / explaination screen" mechanic
-    Laura Young -> SpaceStrike, credits, All sprites in game, Intergration, Documentation, score in individiual games
+    Ryan Groenewold -> Astrododge, intergration of all games, 
+    highscores, sounds, Health bar mechanics, 
+    "cheat sheets / explaination screen" mechanic
+    _______________________________
+    Laura Young -> SpaceStrike, credits, All sprites in game,
+    Intergration, Documentation, 
+    score in individiual games
+    _______________________________
     Eva Wegman -> Spacebound
-    Kimberly Schoenaker -> Invasion of the Unkown. 
+    _______________________________
+    Kimberly Schoenaker -> Invasion of the Unkown.
+    _______________________________ 
     Davin Essenius -> Stranded
+    _______________________________
 
     All sounds, images and mechanics are used for personal use.
     We don't own any of the coprights of any of these objects
