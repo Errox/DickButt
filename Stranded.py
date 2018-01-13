@@ -46,7 +46,8 @@ def start_Stranded():
             width = 50
             height = 75
             self.walking = False
-            self.jumping = False
+            self.jumping_r = False
+            self.jumping_l = False
             self.current_frame = 0
             self.last_update = 0
             self.load_images()
@@ -213,20 +214,29 @@ def start_Stranded():
                     self.image = self.standing_frames[self.current_frame]
                     self.rect.bottom = bottom
 
-            if  self.change_y != 0:
-                self.jumping = True
-            else:
-                self.jumping = False
-            if self.jumping:
-                if now - self.last_update > 50:
+            if self.change_y != 0 and self.change_x >= 0:
+                self.jumping_r = True
+            if self.change_y == 0 and self.change_x <= 0:
+                self.jumping_r = False
+            if self.jumping_r:
+                if now - self.last_update > 20:
                     self.last_update = now
                     self.current_frame = (self.current_frame + 1) % len(self.jump_frames_r)
                     bottom = self.rect.bottom
-                    if self.change_y != 0 and self.change_x >= 0:
+                    if self.change_y > 1:
                         self.image = self.jump_frames_r[self.current_frame]
-                    elif self.change_y != 0 and self.change_x <= 0:
-                        self.image = self.jump_frames_l[self.current_frame]
 
+            if self.change_y != 0 and self.change_x <= 0:
+                self.jumping_l = True
+            if self.change_y == 0 and self.change_x >= 0:
+                self.jumping_l = False
+            if self.jumping_l:
+                if now - self.last_update > 20:
+                    self.last_update = now
+                    self.current_frame = (self.current_frame + 1) % len(self.jump_frames_l)
+                    bottom = self.rect.bottom
+                    if self.change_y > 1:
+                        self.image = self.jump_frames_l[self.current_frame]
 
         # calculating gravity
         def calc_grav(self):
@@ -247,7 +257,6 @@ def start_Stranded():
             self.rect.y += 5
             platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
             self.rect.y -= 5
-            self.jumping_r = True
             soundboard.st_jump()
             self.rect.y += 5
             monster_hit_list = pygame.sprite.spritecollide(self, self.level.monster_list, False)
@@ -797,7 +806,6 @@ def start_Stranded():
                             mg_player.go_right()
                         if event.key == pygame.K_UP:
                             mg_player.jump()
-                            mg_player.jumping_r = True
                     if event.type == pygame.KEYUP:
                         if event.key == pygame.K_LEFT and mg_player.change_x < 0:
                             mg_player.stop()
