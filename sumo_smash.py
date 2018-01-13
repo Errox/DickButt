@@ -207,7 +207,7 @@ def start_sumo_smash():
             self.rect = self.image.get_rect()
             self.rect.x = 450
             self.rect.y = 1200
-            self.speedy = random.randrange(10, 15)
+            self.speedy = random.randrange(10, 16)
 
         def update(self):
             self.rect.y -= self.speedy
