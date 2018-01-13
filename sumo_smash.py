@@ -24,14 +24,14 @@ def start_sumo_smash():
     font = pygame.font.SysFont('resource/fonts/Arcadepix.ttf', 30)
     level = 1
 
-    walk_1 = pygame.image.load('smash/walk_1.png')
-    walk_2 = pygame.image.load('smash/walk_2.png')
-    walk_3 = pygame.image.load('smash/walk_3.png')
-    walk_4 = pygame.image.load('smash/walk_4.png')
-    walk_5 = pygame.image.load('smash/walk_5.png')
-    walk_6 = pygame.image.load('smash/walk_6.png')
-    walk_7 = pygame.image.load('smash/walk_7.png')
-    walk_8 = pygame.image.load('smash/walk_8.png')
+    walk_1 = pygame.image.load('resource/images/sumo_smash/moving/walk_1.png')
+    walk_2 = pygame.image.load('resource/images/sumo_smash/moving/walk_2.png')
+    walk_3 = pygame.image.load('resource/images/sumo_smash/moving/walk_3.png')
+    walk_4 = pygame.image.load('resource/images/sumo_smash/moving/walk_4.png')
+    walk_5 = pygame.image.load('resource/images/sumo_smash/moving/walk_5.png')
+    walk_6 = pygame.image.load('resource/images/sumo_smash/moving/walk_6.png')
+    walk_7 = pygame.image.load('resource/images/sumo_smash/moving/walk_7.png')
+    walk_8 = pygame.image.load('resource/images/sumo_smash/moving/walk_8.png')
 
     # initialize pygame and create window
     pygame.init()

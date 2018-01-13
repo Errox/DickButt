@@ -20,8 +20,17 @@ def start_sumo_smash():
     time = 10_000
     count = 0 
 
-    font = pygame.font.SysFont('resource/fonts/Arcadepix.ttf', 30)
+    font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 30)
     level = 1
+
+    walk_1 = pygame.image.load('smash/walk_1.png')
+    walk_2 = pygame.image.load('smash/walk_2.png')
+    walk_3 = pygame.image.load('smash/walk_3.png')
+    walk_4 = pygame.image.load('smash/walk_4.png')
+    walk_5 = pygame.image.load('smash/walk_5.png')
+    walk_6 = pygame.image.load('smash/walk_6.png')
+    walk_7 = pygame.image.load('smash/walk_7.png')
+    walk_8 = pygame.image.load('smash/walk_8.png')
 
     # initialize pygame and create window
     pygame.init()
@@ -40,7 +49,7 @@ def start_sumo_smash():
     class Player(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
+            self.image = walk_1
             self.image.set_colorkey(WHITE)                             
             self.image = pygame.transform.scale(self.image, (40, 40))  
             self.rect = self.image.get_rect()
@@ -48,6 +57,8 @@ def start_sumo_smash():
             self.rect.centery = HEIGHT / 2
             self.speedx = 0
             self.speedy = 0
+            self.current_frame = 0
+            self.last_update = 0
             self.alive = True
             self.right = 850
             self.left = 50
@@ -55,31 +66,58 @@ def start_sumo_smash():
             self.bottom = 850 
             self.heart_amount = 3
             self.is_hit = False
+            self.direction = 0
+            self.timer = 0
 
+        
         def update(self):
+            self.timer += 1
+            if self.timer <= 3:
+                self.image = walk_1
+                self.image = pygame.transform.rotate(self.image, self.direction)
+            elif self.timer <= 6:
+                self.image = walk_2
+                self.image = pygame.transform.rotate(self.image, self.direction)
+            elif self.timer <= 9:
+                self.image = walk_3  
+                self.image = pygame.transform.rotate(self.image, self.direction)
+            elif self.timer <= 12:
+                self.image = walk_4
+                self.image = pygame.transform.rotate(self.image, self.direction) 
+            elif self.timer <= 15:
+                self.image = walk_5
+                self.image = pygame.transform.rotate(self.image, self.direction)
+            elif self.timer <= 18:
+                self.image = walk_6
+                self.image = pygame.transform.rotate(self.image, self.direction)
+            elif self.timer <= 21:
+                self.image = walk_7
+                self.image = pygame.transform.rotate(self.image, self.direction)
+            elif self.timer <= 24:
+                self.image = walk_8
+                self.image = pygame.transform.rotate(self.image, self.direction)
+            elif self.image == walk_8:
+                self.timer = 0
+
             keystate = pygame.key.get_pressed()
             #self.speedy = 0
             #self.speedx = 0
             if keystate[pygame.K_LEFT]:
-                    self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
-                    self.image = pygame.transform.rotate(self.image, 270)
-                    self.speedx = -10
-                    self.speedy = 0
+                self.direction = 270
+                self.speedx = -10
+                self.speedy = 0
             if keystate[pygame.K_RIGHT]:
-                    self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
-                    self.image = pygame.transform.rotate(self.image, 90)                
-                    self.speedx = 10
-                    self.speedy = 0
+                self.direction = 90         
+                self.speedx = 10
+                self.speedy = 0
             if keystate[pygame.K_UP]:
-                    self.speedy = -10
-                    self.speedx = 0
-                    self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
-                    self.image = pygame.transform.rotate(self.image, 180)
-            if keystate[pygame.K_DOWN]:
-                    self.speedy = 10
-                    self.speedx = 0  
-                    self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
-                    self.image = pygame.transform.rotate(self.image, 360)   
+                self.direction = 180
+                self.speedy = -10
+                self.speedx = 0
+            if keystate[pygame.K_DOWN]: 
+                self.direction = 360
+                self.speedy = 10
+                self.speedx = 0  
             self.rect.x += self.speedx
             self.rect.y += self.speedy
             if  self.rect.right > self.right:
@@ -220,6 +258,7 @@ def start_sumo_smash():
     # Game loop
     running = True
     while running:
+        
         while pause == True:
             clock.tick(FPS)
             mm_button        = pygame.image.load('resource/images/pause_screen/button_mm.png')
@@ -237,8 +276,13 @@ def start_sumo_smash():
                 #Check of de exit knop is ingedrukt
                 if event.type == pygame.QUIT:
                     running = False
-
+                    pygame.quit()
+                    quit()
                 #als esc ingedrukt wordt pauseert het spel
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pause = True
+                        soundboard.resume()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 550:
                         if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 615:
@@ -249,14 +293,81 @@ def start_sumo_smash():
                             soundboard.resume()
                     if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
                         if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
+                            start_Sumo_smash()
                             print('goes to cheet sheet.')
             #flip the display.
-            pygame.display.flip()         
+            pygame.display.flip()
+        
+        while pause == False:                  
+            time = time - 1
+            level = 2
+            if time == 9700:
+                block_1 = -400
+                block_2 = 800
+                block_3 = 800
+                block_4 = -400
+                for i in range(1):
+                    m1 = Mob1()
+                    m2 = Mob2()
+                    m3 = Mob3()
+                    m4 = Mob4()
+                    all_sprites.add(m1, m2, m3, m4)
+                    mobs.add(m1, m2, m3, m4)
+                player.right = 800
+                player.left = 100
+                player.top = 100
+                player.bottom = 800 
+            level = 3    
+            if time == 9300:
+                block_1 = -350
+                block_2 = 750
+                block_3 = 750
+                block_4 = -350
+                for i in range(0):
+                    m1 = Mob1()
+                    m2 = Mob2()
+                    m3 = Mob3()
+                    m4 = Mob4()
+                    all_sprites.add(m1, m2, m3, m4)
+                    mobs.add(m1, m2, m3, m4)
+                player.right = 750
+                player.left = 150
+                player.top = 150
+                player.bottom = 750 
+            level = 4   
+            if time == 9000:
+                block_1 = -450
+                block_2 = 850
+                block_3 = 850
+                block_4 = -450
+                for i in range(1):
+                    m1 = Mob1()
+                    m2 = Mob2()
+                    m3 = Mob3()
+                    m4 = Mob4()
+                    all_sprites.add(m1, m2, m3, m4)
+                    mobs.add(m1, m2, m3, m4)
+            level = 5
+            if time == 8700:
+                block_1 = -400
+                block_2 = 800
+                block_3 = 800
+                block_4 = -400
+                for i in range(0):
+                    m1 = Mob1()
+                    m2 = Mob2()
+                    m3 = Mob3()
+                    m4 = Mob4()
+                    all_sprites.add(m1, m2, m3, m4)
+                    mobs.add(m1, m2, m3, m4)
+                player.right = 800
+                player.left = 100
+                player.top = 100
+                player.bottom = 800      
+               
 
-        while pause == False:
-            
-            time_alive = time.time() - startTime
-            print (time_alive)    
+                
+            print (time)
             # keep loop running at the right speed
             clock.tick(FPS)
             # Process input (events)
@@ -264,10 +375,13 @@ def start_sumo_smash():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         pause = True
+
                         soundboard.pause()
                 # check for closing window
                 if event.type == pygame.QUIT:
                     running = False
+                    pygame.quit()
+                    quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
                         if pygame.mouse.get_pos()[0] <= 155 and pygame.mouse.get_pos()[1] <= 53:
@@ -333,6 +447,5 @@ def start_sumo_smash():
             else:
                 player.is_hit = False
 
-        pygame.quit()
-        quit()
-
+    pygame.quit()
+    quit()
