@@ -21,7 +21,7 @@ def start_astrodoge():
     level_gun = 1
     pause   = False
     seconds = 5
-    delay_gun   = 1
+    delay_gun   = 500
     X       = 500
     spawnertje = 2
     Y       = 100
@@ -47,6 +47,15 @@ def start_astrodoge():
     game_folder = os.path.dirname(__file__)
     img_folder  = os.path.join(game_folder, "img")
 
+
+    explosion_anim = []
+    for i in range(17):
+        filename = 'resource/images/astrodoge/explosions/ship_expl_{}.png'.format(i)
+        img = pygame.image.load(filename).convert()
+        img.set_colorkey(BLACK)
+        img = pygame.transform.scale(img, (75, 75))
+        explosion_anim.append(img)
+
     #setting up a player class
     class player(pygame.sprite.Sprite):
         #sprite and other properties for the player
@@ -56,6 +65,8 @@ def start_astrodoge():
             self.image = pygame.transform.scale(self.image, (90, 70))
             self.image.set_colorkey(BLACK)
             self.rect   = self.image.get_rect()
+            self.shoot_delay = delay_gun
+            self.last_shot = pygame.time.get_ticks()
             self.radius = 23
             self.rect.centerx = WIDTH / 2
             self.rect.bottom = HEIGHT - 30
@@ -83,13 +94,37 @@ def start_astrodoge():
                 self.rect.right = WIDTH
             if self.rect.left < 0:
                 self.rect.left = 0
-        
-        #this is a function to add a bullet from the player itself. 
+            if keystate[pygame.K_SPACE]:
+                self.shoot()
+
         def shoot(self):
-            bullet = Bullet(self.rect.centerx, self.rect.top)
-            all_sprites.add(bullet)
-            bullets.add(bullet)
-            soundboard.bullet_shoot_friendly()
+            now = pygame.time.get_ticks()
+            if now - self.last_shot > self.shoot_delay:
+                soundboard.bullet_shoot_friendly()
+                self.shoot_delay = delay_gun
+                self.last_shot = now
+                if level_gun == 4:
+                    bullet_l = Bullet(self.rect.left, self.rect.top)
+                    all_sprites.add(bullet_l)
+                    bullets.add(bullet_l)
+                    bullet_r = Bullet(self.rect.right, self.rect.top)
+                    all_sprites.add(bullet_r)
+                    bullets.add(bullet_r)
+                elif level_gun > 4:
+                    bullet_l = Bullet(self.rect.left, self.rect.top)
+                    all_sprites.add(bullet_l)
+                    bullets.add(bullet_l)
+                    bullet_r = Bullet(self.rect.right, self.rect.top)
+                    all_sprites.add(bullet_r)
+                    bullets.add(bullet_r)
+                    bullet = Bullet(self.rect.centerx, self.rect.top)
+                    all_sprites.add(bullet)
+                    bullets.add(bullet)
+                else:
+                    bullet = Bullet(self.rect.centerx, self.rect.top)
+                    all_sprites.add(bullet)
+                    bullets.add(bullet)
+            
  
     #Setting up a mob ( in this case a astroid )
     class Mob(pygame.sprite.Sprite):
@@ -114,6 +149,7 @@ def start_astrodoge():
             self.rect.x = random.randrange(WIDTH - self.rect.width)
             self.rect.y = random.randrange(-100, -40)
             self.speedy = random.randrange(1, 8)
+            self.health = random.randrange(1,3)
  
         #given instructions what to do on a update
         def update(self):
@@ -121,7 +157,41 @@ def start_astrodoge():
             if self.rect.top > HEIGHT + 10 or self.rect.left < -25 or self.rect.right > WIDTH + 20:
                 self.rect.x = random.randrange(WIDTH - self.rect.width)
                 self.rect.y = random.randrange(-100, -40)
-    
+            # if self.rect.colliderect(bullets.rect):
+            #     if health <= 0:
+            #         self.kill()
+            #     else:
+            #         health -= 1
+                
+    class Mob_heavy(pygame.sprite.Sprite):
+            #defining itself with properties
+        def __init__(self):
+            pygame.sprite.Sprite.__init__(self)
+            randomizer = random.randrange(1,5)
+            if randomizer == 1:
+                self.image = pygame.image.load('resource/images/astrodoge/mobs/big_rocks/blue_rock_big_1.png')
+            elif randomizer == 2:
+                self.image = pygame.image.load('resource/images/astrodoge/mobs/big_rocks/ice_rock_big_1.png')
+            elif randomizer == 3:
+                self.image = pygame.image.load('resource/images/astrodoge/mobs/big_rocks/lightblue_rock_big_1.png')
+            elif randomizer == 4:
+                self.image = pygame.image.load('resource/images/astrodoge/mobs/big_rocks/rock_big_1.png')
+            elif randomizer == 5: 
+                self.image = pygame.image.load('resource/images/astrodoge/mobs/big_rocks/vein_rock_big_1.png')
+            
+            self.image.set_colorkey(BLACK)
+            self.rect = self.image.get_rect()
+            self.radius = int(self.rect.width * .8 / 2)
+            self.rect.x = random.randrange(WIDTH - self.rect.width)
+            self.rect.y = random.randrange(-100, -40)
+            self.speedy = random.randrange(1, 8)
+ 
+        #given instructions what to do on a update
+        def update(self):
+            self.rect.y += self.speedy
+            if self.rect.top > HEIGHT + 10 or self.rect.left < -25 or self.rect.right > WIDTH + 20:
+                self.rect.x = random.randrange(WIDTH - self.rect.width)
+                self.rect.y = random.randrange(-100, -40)
     
     class power_up(pygame.sprite.Sprite):
         #defining itself with properties
@@ -142,7 +212,31 @@ def start_astrodoge():
                 self.rect.x = random.randrange(WIDTH - self.rect.width)
                 self.rect.y = random.randrange(-100, -40)
 
- 
+    class Explosion(pygame.sprite.Sprite):
+        def __init__(self, center):
+            pygame.sprite.Sprite.__init__(self)
+            self.size = size
+            self.image = explosion_anim[0]
+            self.rect = self.image.get_rect()
+            self.rect.center = center
+            self.frame = 0
+            self.last_update = pygame.time.get_ticks()
+            self.frame_rate = 50
+
+        def update(self):
+            now = pygame.time.get_ticks()
+            if now - self.last_update > self.frame_rate:
+                self.last_update = now
+                self.frame += 1
+                if self.frame == len(explosion_anim):
+                    self.kill()
+                else:
+                    center = self.rect.center
+                    self.image = explosion_anim[self.frame]
+                    self.rect = self.image.get_rect()
+                    self.rect.center = center
+
+                
     #Setting up a bullet
     class Bullet(pygame.sprite.Sprite):
         #give properties to the bullet itself
@@ -196,6 +290,8 @@ def start_astrodoge():
     player = player()
     all_sprites.add(player)
 
+    newtime=pygame.time.get_ticks()
+    oldtime=newtime
  
     for i in range(MOB_AMOUNT):
         m = Mob()
@@ -285,34 +381,25 @@ def start_astrodoge():
                     if event.key == pygame.K_ESCAPE:
                         pause = True
                         soundboard.pause()
-        
-                keys = pygame.key.get_pressed()  #checking pressed keys
-                if keys[pygame.K_SPACE]:
-                    newtime=pygame.time.get_ticks()
 
-                    # when you fire, inside while loop
-                    # should be ideally inside update method
-                    oldtime=newtime
-                    newtime=pygame.time.get_ticks()
-                    if newtime-oldtime<500: #in milliseconds 
-                        player.shoot()
-            #update 
-        
             all_sprites.update()
         
             #collision for bullet against mobs
             hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
             if hits:
+
                 score += 100
                 soundboard.bullet_on_hit_enemy()
             for hit in hits:
                 m = Mob()
                 all_sprites.add(m)
+                expl = Explosion(hit.rect.center)
+                all_sprites.add(expl)
                 mobs.add(m)
 
             hits = pygame.sprite.spritecollide(player, powerups, True, pygame.sprite.collide_circle)
             if hits:
-                delay_gun += 10
+                delay_gun -= 100
                 level_gun += 1
                 soundboard.upgrade()
 
@@ -320,6 +407,8 @@ def start_astrodoge():
             hits = pygame.sprite.spritecollide(player, mobs, True, pygame.sprite.collide_circle)
             if hits:
                 soundboard.bullet_on_hit_friendly()
+                expl = Explosion(hit.rect.center)
+                all_sprites.add(expl)
                 lose_heart()
 
             #draw / render
