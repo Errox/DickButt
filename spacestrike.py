@@ -143,11 +143,11 @@ def start_spacestrike():
             
             self.lastx = self.rect.x
             #kill if off the screen
-            bloep = random.randrange(800,900)
-            if self.rect.y > 810:
+            bloep = random.randrange(775,875)
+            if self.rect.y > 750:
                 self.kill()
                 global planet_hp
-                planet_hp -= 125
+                planet_hp -= random.randrange(125,250)
                 expl = base_explosion(self.lastx, bloep)
                 all_sprites.add(expl)
 
@@ -258,7 +258,7 @@ def start_spacestrike():
             self.image = explosion_base[0]
             self.rect = self.image.get_rect()
             self.rect.x = x
-            self.rect.y = y -7
+            self.rect.y = y - 10
             self.frame = 0
             self.last_update = pygame.time.get_ticks()
             self.frame_rate = 50
