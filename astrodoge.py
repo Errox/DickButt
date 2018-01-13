@@ -8,6 +8,7 @@ def start_astrodoge():
     import menu
     import time
     import highscore
+    import cheat_sheet
     import game_over
     import soundboard
  
@@ -15,9 +16,12 @@ def start_astrodoge():
     WIDTH   = 900
     HEIGHT  = 900
     FPS     = 30
+    level_gun = 1
     pause   = False
     seconds = 5
+    delay_gun   = 1
     X       = 500
+    spawnertje = 2
     Y       = 100
     MOB_AMOUNT = 10
     global heart_amount
@@ -90,13 +94,44 @@ def start_astrodoge():
         #defining itself with properties
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.image.load('resource/images/astrodoge/mobs/Projectile_426.png').convert()
+            randomizer = random.randrange(1,5)
+            if randomizer == 1:
+                self.image = pygame.image.load('resource/images/astrodoge/mobs/smol_rocks/blue_rock_1.png')
+            elif randomizer == 2:
+                self.image = pygame.image.load('resource/images/astrodoge/mobs/smol_rocks/ice_rock_1.png')
+            elif randomizer == 3:
+                self.image = pygame.image.load('resource/images/astrodoge/mobs/smol_rocks/lightblue_rock_1.png')
+            elif randomizer == 4:
+                self.image = pygame.image.load('resource/images/astrodoge/mobs/smol_rocks/rock_1.png')
+            elif randomizer == 5: 
+                self.image = pygame.image.load('resource/images/astrodoge/mobs/smol_rocks/vein_rock_1.png')
+            
             self.image.set_colorkey(BLACK)
             self.rect = self.image.get_rect()
             self.radius = int(self.rect.width * .8 / 2)
             self.rect.x = random.randrange(WIDTH - self.rect.width)
             self.rect.y = random.randrange(-100, -40)
             self.speedy = random.randrange(1, 8)
+ 
+        #given instructions what to do on a update
+        def update(self):
+            self.rect.y += self.speedy
+            if self.rect.top > HEIGHT + 10 or self.rect.left < -25 or self.rect.right > WIDTH + 20:
+                self.rect.x = random.randrange(WIDTH - self.rect.width)
+                self.rect.y = random.randrange(-100, -40)
+    
+    
+    class power_up(pygame.sprite.Sprite):
+        #defining itself with properties
+        def __init__(self):
+            pygame.sprite.Sprite.__init__(self)
+            self.image = pygame.image.load('resource/images/astrodoge/powerups/power_up.png').convert()
+            self.image.set_colorkey(BLACK)
+            self.rect = self.image.get_rect()
+            self.radius = int(self.rect.width * .8 / 2)
+            self.rect.x = random.randrange(WIDTH - self.rect.width)
+            self.rect.y = random.randrange(-100, -40)
+            self.speedy = (2)
  
         #given instructions what to do on a update
         def update(self):
@@ -154,15 +189,18 @@ def start_astrodoge():
  
     all_sprites = pygame.sprite.Group()
     mobs = pygame.sprite.Group()
+    powerups = pygame.sprite.Group()
     bullets = pygame.sprite.Group()
     player = player()
     all_sprites.add(player)
+
  
     for i in range(MOB_AMOUNT):
         m = Mob()
         all_sprites.add(m)
         mobs.add(m)
-        
+
+    time_now = time.time()
     #game loop
     running = True
     while running:
@@ -201,7 +239,7 @@ def start_astrodoge():
                             soundboard.resume()
                     if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
                         if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
-                            print('goes to cheet sheet.')
+                            cheat_sheet.start(1)
             #flip the display.
             pygame.display.flip()
         
@@ -211,6 +249,13 @@ def start_astrodoge():
                 seconds += random.randrange(1,7)
                 spawn_rate = 30 
     
+            if round(time_alive) == spawnertje:           
+                power = power_up()
+                all_sprites.add(power)
+                powerups.add(power)
+                spawnertje += random.randrange(15,30)
+
+            
             spawn_random = random.randrange(1, 100) 
     
             if spawn_random > spawn_rate: 
@@ -234,13 +279,23 @@ def start_astrodoge():
                     running = False
                     pygame.quit()
                     quit()
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        player.shoot() 
-                    elif event.key == pygame.K_ESCAPE:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
                         pause = True
                         soundboard.pause()
-    
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_SPACE:
+                        time_now = 0
+                        
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_SPACE]:
+                # time_check = time.time() - time_now
+                # if time_check == delay_gun:
+                    # print('check')
+                player.shoot()
+                    # time_now = time.time()
+                    # time_check = time.time()
+                    # check_delay += delay
             #update 
         
             all_sprites.update()
@@ -254,13 +309,17 @@ def start_astrodoge():
                 m = Mob()
                 all_sprites.add(m)
                 mobs.add(m)
-    
+
+            hits = pygame.sprite.spritecollide(player, powerups, True, pygame.sprite.collide_circle)
+            if hits:
+                delay_gun += 10
+                level_gun += 1
+                soundboard.upgrade()
+
             #collision if player hit mobs
             hits = pygame.sprite.spritecollide(player, mobs, True, pygame.sprite.collide_circle)
             if hits:
                 soundboard.bullet_on_hit_friendly()
-                # menu.start_menu()
-                # running = False
                 lose_heart()
 
             #draw / render
@@ -296,6 +355,9 @@ def start_astrodoge():
             
             scoretext = font.render("Time    :  {0}".format(round(time_alive)), 1, WHITE) 
             screen.blit(scoretext, (720, 25)) 
+
+            scoretext = font.render("Gun level :  {0}".format(level_gun), 1, WHITE) 
+            screen.blit(scoretext, (720, 45)) 
 
             all_sprites.draw(screen)
             #After drawing everything, flip the display.
