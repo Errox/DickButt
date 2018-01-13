@@ -7,6 +7,7 @@ def start_astrodoge():
     import os
     import menu
     import time
+    import cheat_sheet
     import highscore
     import cheat_sheet
     import game_over
