@@ -72,24 +72,31 @@ def start_sumo_smash():
 
         def update(self):
             self.timer += 1
-            self.image = pygame.transform.rotate(self.image, self.direction)
             if self.timer <= 3:
                 self.image = walk_1
+                self.image = pygame.transform.rotate(self.image, self.direction)
             elif self.timer <= 6:
                 self.image = walk_2
+                self.image = pygame.transform.rotate(self.image, self.direction)
             elif self.timer <= 9:
                 self.image = walk_3  
+                self.image = pygame.transform.rotate(self.image, self.direction)
             elif self.timer <= 12:
                 self.image = walk_4 
+                self.image = pygame.transform.rotate(self.image, self.direction)
             elif self.timer <= 15:
                 self.image = walk_5
+                self.image = pygame.transform.rotate(self.image, self.direction)
             elif self.timer <= 18:
                 self.image = walk_6
+                self.image = pygame.transform.rotate(self.image, self.direction)
             elif self.timer <= 21:
                 self.image = walk_7
+                self.image = pygame.transform.rotate(self.image, self.direction)
             elif self.timer <= 24:
                 self.image = walk_8
-            elif self.image == walk_8:
+                self.image = pygame.transform.rotate(self.image, self.direction)
+            else:
                 self.timer = 0
 
             keystate = pygame.key.get_pressed()
@@ -100,15 +107,15 @@ def start_sumo_smash():
                 self.speedx = -10
                 self.speedy = 0
             if keystate[pygame.K_RIGHT]:
-                self.direction == 90         
+                self.direction = 90         
                 self.speedx = 10
                 self.speedy = 0
             if keystate[pygame.K_UP]:
-                self.direction == 180
+                self.direction = 180
                 self.speedy = -10
                 self.speedx = 0
             if keystate[pygame.K_DOWN]:
-                self.direction == 360
+                self.direction = 360
                 self.speedy = 10
                 self.speedx = 0
             self.rect.x += self.speedx
