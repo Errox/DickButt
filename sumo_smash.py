@@ -1,3 +1,4 @@
+
 def start_sumo_smash():
     import pygame
     import random
@@ -20,14 +21,23 @@ def start_sumo_smash():
     time = 10_000
     count = 0 
 
-    font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 30)
+    font = pygame.font.SysFont('resource/fonts/Arcadepix.ttf', 30)
     level = 1
+
+    walk_1 = pygame.image.load('smash/walk_1.png')
+    walk_2 = pygame.image.load('smash/walk_2.png')
+    walk_3 = pygame.image.load('smash/walk_3.png')
+    walk_4 = pygame.image.load('smash/walk_4.png')
+    walk_5 = pygame.image.load('smash/walk_5.png')
+    walk_6 = pygame.image.load('smash/walk_6.png')
+    walk_7 = pygame.image.load('smash/walk_7.png')
+    walk_8 = pygame.image.load('smash/walk_8.png')
 
     # initialize pygame and create window
     pygame.init()
     pygame.mixer.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("INVASION OF THE UNKNOWN")
+    pygame.display.set_caption("INVATION OF THE UNKNOWN")
     clock = pygame.time.Clock()
     soundboard.ast_main()
     start_init = True
@@ -36,19 +46,11 @@ def start_sumo_smash():
     #Quit_Butt = pygame.image.load('resource/images/select_planet/button_quit_small.png')
     #screen.blit(Quit_Butt, [5, 5])
 
-    def load_image(name):
-        image = pygame.image.load(name)
-        return image
-    
 
     class Player(pygame.sprite.Sprite):
         def __init__(self):
-            super(player, self).__init__()
-            self.images = []
-            self.images.append(load_image('resource/images/sumo_smash/moving/walk_4.png'))
-            self.images.append(load_image('resource/images/sumo_smash/moving/walk_6.png'))
-            self.index = 0
-            self.image = self.images[self.index]
+            pygame.sprite.Sprite.__init__(self)
+            self.image = walk_1
             self.image.set_colorkey(WHITE)                             
             self.image = pygame.transform.scale(self.image, (40, 40))  
             self.rect = self.image.get_rect()
@@ -56,6 +58,8 @@ def start_sumo_smash():
             self.rect.centery = HEIGHT / 2
             self.speedx = 0
             self.speedy = 0
+            self.current_frame = 0
+            self.last_update = 0
             self.alive = True
             self.right = 850
             self.left = 50
@@ -63,37 +67,50 @@ def start_sumo_smash():
             self.bottom = 850 
             self.heart_amount = 3
             self.is_hit = False
-        
+            self.direction = 0
+            self.timer = 0
+
         def update(self):
+            self.timer += 1
+            self.image = pygame.transform.rotate(self.image, self.direction)
+            if self.timer <= 3:
+                self.image = walk_1
+            elif self.timer <= 6:
+                self.image = walk_2
+            elif self.timer <= 9:
+                self.image = walk_3  
+            elif self.timer <= 12:
+                self.image = walk_4 
+            elif self.timer <= 15:
+                self.image = walk_5
+            elif self.timer <= 18:
+                self.image = walk_6
+            elif self.timer <= 21:
+                self.image = walk_7
+            elif self.timer <= 24:
+                self.image = walk_8
+            elif self.image == walk_8:
+                self.timer = 0
+
             keystate = pygame.key.get_pressed()
             #self.speedy = 0
             #self.speedx = 0
             if keystate[pygame.K_LEFT]:
+                self.direction = 270
                 self.speedx = -10
                 self.speedy = 0
-                
-                self.index += 1
-                if self.index >= len(self.images):
-                    self.index = 0
-                    count = 0
-            self.image = self.images[self.index]
-                #self.image  = pygame.image.load('resource/images/sumo_smash/moving/walk_5.png')
-                #self.image = pygame.transform.rotate(self.image, 270)
             if keystate[pygame.K_RIGHT]:
-                #self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
-                #self.image = pygame.transform.rotate(self.image, 90)                
+                self.direction == 90         
                 self.speedx = 10
                 self.speedy = 0
             if keystate[pygame.K_UP]:
+                self.direction == 180
                 self.speedy = -10
                 self.speedx = 0
-                #self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
-                #self.image = pygame.transform.rotate(self.image, 180)
             if keystate[pygame.K_DOWN]:
+                self.direction == 360
                 self.speedy = 10
-                self.speedx = 0  
-                #self.image  = pygame.image.load('resource/images/sumo_smash/walk_5.png')
-                #self.image = pygame.transform.rotate(self.image, 360)   
+                self.speedx = 0
             self.rect.x += self.speedx
             self.rect.y += self.speedy
             if  self.rect.right > self.right:
@@ -339,8 +356,7 @@ def start_sumo_smash():
                 player.right = 800
                 player.left = 100
                 player.top = 100
-                player.bottom = 800      
-               
+                player.bottom = 800         
 
                 
             print (time)
@@ -351,7 +367,6 @@ def start_sumo_smash():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         pause = True
-
                         soundboard.pause()
                 # check for closing window
                 if event.type == pygame.QUIT:

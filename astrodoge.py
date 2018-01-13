@@ -180,7 +180,6 @@ def start_astrodoge():
             screen.blit(restart_button, (325,390))
 
             for event in pygame.event.get():
-                print (event)
                 #Check of de exit knop is ingedrukt
                 if event.type == pygame.QUIT:
                     running = False
@@ -288,6 +287,7 @@ def start_astrodoge():
                 hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_1.png'), (130,45))
                 screen.blit(hearts, [365, 0])
             if heart_amount == 0:
+                print('game over')
                 game_over.start(score, 1)
                 
 
@@ -301,3 +301,4 @@ def start_astrodoge():
             #After drawing everything, flip the display.
             pygame.display.flip()
     
+    pygame.quit()
