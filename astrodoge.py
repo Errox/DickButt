@@ -10,6 +10,7 @@ def start_astrodoge():
     import highscore
     import cheat_sheet
     import game_over
+    import cheat_sheet
     import soundboard
  
     #define pygame core
@@ -283,19 +284,17 @@ def start_astrodoge():
                     if event.key == pygame.K_ESCAPE:
                         pause = True
                         soundboard.pause()
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_SPACE:
-                        time_now = 0
-                        
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_SPACE]:
-                # time_check = time.time() - time_now
-                # if time_check == delay_gun:
-                    # print('check')
-                player.shoot()
-                    # time_now = time.time()
-                    # time_check = time.time()
-                    # check_delay += delay
+        
+                keys = pygame.key.get_pressed()  #checking pressed keys
+                if keys[pygame.K_SPACE]:
+                    newtime=pygame.time.get_ticks()
+
+                    # when you fire, inside while loop
+                    # should be ideally inside update method
+                    oldtime=newtime
+                    newtime=pygame.time.get_ticks()
+                    if newtime-oldtime<500: #in milliseconds 
+                        player.shoot()
             #update 
         
             all_sprites.update()
