@@ -21,7 +21,7 @@ def start_sumo_smash():
     time = 10_000
     count = 0 
 
-    font = pygame.font.SysFont('resource/fonts/Arcadepix.ttf', 30)
+    font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 30)
     level = 1
 
     walk_1 = pygame.image.load('resource/images/sumo_smash/moving/walk_1.png')
@@ -415,8 +415,8 @@ def start_sumo_smash():
             quit_rect           = quit_button.get_rect()
             screen.blit(quit_button, (5,5))    
 
-            scoretext = font.render("Score {0}".format(score), 1, WHITE)
-            screen.blit(scoretext, (750, 10))
+            scoretext = font.render("Score :   {0}".format(score), 1, WHITE)
+            screen.blit(scoretext, (720, 10))
             if player.heart_amount == 3:
                 hearts = pygame.transform.scale(pygame.image.load ('resource/UI/spacestrike/heart_3.png'), (130,45))
                 screen.blit(hearts, [350, 0])
