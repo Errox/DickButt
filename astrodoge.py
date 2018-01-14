@@ -110,7 +110,7 @@ def start_astrodoge():
                     bullet_r = Bullet(self.rect.right, self.rect.top)
                     all_sprites.add(bullet_r)
                     bullets.add(bullet_r)
-                elif level_gun > 4:
+                elif level_gun > 6:
                     bullet_l = Bullet(self.rect.left, self.rect.top)
                     all_sprites.add(bullet_l)
                     bullets.add(bullet_l)
@@ -145,7 +145,7 @@ def start_astrodoge():
             
             self.image.set_colorkey(BLACK)
             self.rect = self.image.get_rect()
-            self.radius = int(self.rect.width * .8 / 2)
+            self.radius = int(self.rect.width * .4 / 2)
             self.rect.x = random.randrange(WIDTH - self.rect.width)
             self.rect.y = random.randrange(-100, -40)
             self.speedy = random.randrange(1, 8)
@@ -354,7 +354,7 @@ def start_astrodoge():
 
             
             spawn_random = random.randrange(1, 100) 
-    
+
             if spawn_random > spawn_rate: 
                 m = Mob() 
                 all_sprites.add(m) 
@@ -398,7 +398,7 @@ def start_astrodoge():
 
             hits = pygame.sprite.spritecollide(player, powerups, True, pygame.sprite.collide_circle)
             if hits:
-                delay_gun -= 100
+                delay_gun -= 75
                 level_gun += 1
                 soundboard.upgrade()
 

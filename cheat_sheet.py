@@ -124,7 +124,7 @@ def start(game_id):
                 pygame.quit()
                 quit()
             elif evento.type == pygame.KEYDOWN:
-                introduction_id(game_id)
+                introduction_id_bleeding_edge(game_id)
 
         pygame.display.flip()
  
