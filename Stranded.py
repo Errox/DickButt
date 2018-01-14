@@ -699,6 +699,80 @@ def start_Stranded():
 
     def main():
         # main program
+
+
+        def draw_statusline():
+            # Draw escape button and score on top row on screen
+            font = pygame.font.Font("resource/fonts/Arcadepix.ttf", 30)
+            scoretext = font.render("Score {0}".format(score), 1, WHITE)
+            screen.blit(scoretext, (705, 10))
+            if mg_player.rect.y < 0:
+                playermarker = font.render("^^^".format(score), 1, GREEN)
+                screen.blit(playermarker, (462, 10))
+            objectivetext = font.render("Collect and retrieve the object!".format(score), 1, WHITE)
+            screen.blit(objectivetext, (295, 855))
+            scoretext = font.render("Time passed {0}".format(round(time_alive)), 1, WHITE)
+            screen.blit(scoretext, (705, 30))
+
+            quit_button = pygame.transform.scale(
+                pygame.image.load('resource/images/select_planet/button_quit_small.png'), (42, 40))
+            quit_rect = quit_button.get_rect()
+            screen.blit(quit_button, (5, 5))
+
+        def pause_menu():
+            # Pause menu - only handing pressing buttons or pressing escape
+            state = 0
+            while not state:
+                clock.tick(FPS)
+
+                current_level.draw(screen)
+                active_sprite_list.draw(screen)
+
+                mm_button = pygame.image.load('resource/images/pause_screen/button_mm.png')
+                resume_button = pygame.image.load('resource/images/pause_screen/button_resume.png')
+                restart_button = pygame.image.load('resource/images/pause_screen/button_restart.png')
+                mm_rect = mm_button.get_rect()
+                resume_rect = resume_button.get_rect()
+                restart_rect = restart_button.get_rect()
+                screen.blit(mm_button, (325, 550))
+                screen.blit(resume_button, (325, 470))
+                screen.blit(restart_button, (325, 390))
+
+                for pause_event in pygame.event.get():
+                    print(pause_event)
+                    # Check of de exit knop is ingedrukt
+                    if pause_event.type == pygame.QUIT:
+                        state = 2
+                    # als esc ingedrukt wordt pauseert het spel
+                    elif pause_event.type == pygame.KEYDOWN:
+                        if pause_event.key == pygame.K_ESCAPE:
+                            state = 1
+                            soundboard.resume()
+                    elif pause_event.type == pygame.MOUSEBUTTONDOWN:
+                        if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 550:
+                            if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 615:
+                                state = 2
+                                menu.start_menu()
+                        if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 470:
+                            if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 535:
+                                state = 1
+                                soundboard.resume()
+                        if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
+                            if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
+                                state = 3
+                                font = pygame.font.Font("resource/fonts/Arcadepix.ttf", 30)
+                                scoretext = font.render("Restarting - Please wait", 1, WHITE)
+                                screen.blit(scoretext, (325, 290))
+                                pygame.display.flip()
+
+                                start_Stranded()
+
+
+                # flip the display.
+                draw_statusline()
+                pygame.display.flip()
+            return state
+
         pygame.init()
 
         # set height and width of screen
@@ -740,42 +814,6 @@ def start_Stranded():
         # main program loop
         while running:
             nonlocal pause
-            while pause == True:
-                clock.tick(FPS)
-                mm_button = pygame.image.load('resource/images/pause_screen/button_mm.png')
-                resume_button = pygame.image.load('resource/images/pause_screen/button_resume.png')
-                restart_button = pygame.image.load('resource/images/pause_screen/button_restart.png')
-                mm_rect = mm_button.get_rect()
-                resume_rect = resume_button.get_rect()
-                restart_rect = restart_button.get_rect()
-                screen.blit(mm_button, (325, 550))
-                screen.blit(resume_button, (325, 470))
-                screen.blit(restart_button, (325, 390))
-
-                for event in pygame.event.get():
-                    print(event)
-                    # Check of de exit knop is ingedrukt
-                    if event.type == pygame.QUIT:
-                        running = False
-                    # als esc ingedrukt wordt pauseert het spel
-                    elif event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_ESCAPE:
-                            pause = False
-                            soundboard.resume()
-                    elif event.type == pygame.MOUSEBUTTONDOWN:
-                        if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 550:
-                            if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 615:
-                                menu.start_menu()
-                        if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 470:
-                            if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 535:
-                                pause = False
-                                soundboard.resume()
-                        if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
-                            if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
-                                start_Stranded()
-                # flip the display.
-                pygame.display.flip()
-
             while pause == False:
                 time_alive = time.time() - startTime
                 nonlocal score
@@ -797,14 +835,30 @@ def start_Stranded():
                             mg_player.go_right()
                         if event.key == pygame.K_UP:
                             mg_player.jump()
-                            mg_player.jumping_r = True
+                            mg_player.jumping = True
                     if event.type == pygame.KEYUP:
                         if event.key == pygame.K_LEFT and mg_player.change_x < 0:
                             mg_player.stop()
                         if event.key == pygame.K_RIGHT and mg_player.change_x > 0:
                             mg_player.stop()
-                # update the player
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_ESCAPE:
+                            print("ESCAPE DETECTED!!!")
+                            selection = pause_menu()
+                            if selection == 1:
+                                print("Continue!!!!")
+                                pass
+                            elif selection == 2:
+                                print("Aborrt!!!!")
+                                menu.start_menu()
+                            elif selection == 3:
+                                print("Restart!!!!")
+                                start_Stranded()
+#                                soundboard.pause()
+
+                # update     the player
                 active_sprite_list.update()
+
 
                 # check collision
 
@@ -835,30 +889,12 @@ def start_Stranded():
                 current_level.draw(screen)
                 active_sprite_list.draw(screen)
 
-                quit_button = pygame.transform.scale(
-                    pygame.image.load('resource/images/select_planet/button_quit_small.png'), (42, 40))
-                quit_rect = quit_button.get_rect()
-                screen.blit(quit_button, (5, 5))
-
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        pause = True
-                        soundboard.pause()
+                draw_statusline()
 
                 if not running:
                     print('game over')
                     game_over.start(score, 5)
-                font = pygame.font.Font("resource/fonts/Arcadepix.ttf", 30)
-                scoretext = font.render("Score {0}".format(score), 1, WHITE)
-                screen.blit(scoretext, (705, 10))
-                if mg_player.rect.y < 0:
-                    playermarker = font.render("^^^".format(score), 1, GREEN)
-                    screen.blit(playermarker, (462, 10))
-                objectivetext = font.render("Collect and retrieve the object!".format(score), 1, WHITE)
-                screen.blit(objectivetext, (295, 855))
-                scoretext = font.render("Time passed {0}".format(round(time_alive)), 1, WHITE)
-                screen.blit(scoretext, (705, 30))
-                # timer
+
                 if score <= 0:
                     pygame.quit()
                 # limit to 30 frames per second
