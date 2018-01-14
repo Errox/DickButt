@@ -98,7 +98,6 @@ def start_astrodoge():
             if keystate[pygame.K_SPACE]:
                 self.shoot()
 
-        
         #setup a function to shoot
         def shoot(self):
             now = pygame.time.get_ticks()
@@ -106,14 +105,14 @@ def start_astrodoge():
                 soundboard.bullet_shoot_friendly()
                 self.shoot_delay = delay_gun
                 self.last_shot = now
-                if level_gun == 4:
+                if level_gun >= 4 and level_gun <= 5:
                     bullet_l = Bullet(self.rect.left, self.rect.top)
                     all_sprites.add(bullet_l)
                     bullets.add(bullet_l)
                     bullet_r = Bullet(self.rect.right, self.rect.top)
                     all_sprites.add(bullet_r)
                     bullets.add(bullet_r)
-                elif level_gun > 6:
+                elif level_gun >= 6:
                     bullet_l = Bullet(self.rect.left, self.rect.top)
                     all_sprites.add(bullet_l)
                     bullets.add(bullet_l)
@@ -390,7 +389,6 @@ def start_astrodoge():
             #collision for bullet against mobs
             hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
             if hits:
-
                 score += 100
                 soundboard.bullet_on_hit_enemy()
             for hit in hits:
@@ -404,6 +402,8 @@ def start_astrodoge():
             if hits:
                 delay_gun -= 75
                 level_gun += 1
+                if level_gun == 4 and level_gun == 5:
+                    delay_gun += 100
                 soundboard.upgrade()
 
             #collision if player hit mobs
@@ -412,6 +412,7 @@ def start_astrodoge():
                 soundboard.bullet_on_hit_friendly()
                 expl = Explosion(hit.rect.center)
                 all_sprites.add(expl)
+                level_gun -= 1
                 lose_heart()
 
             #draw / render
