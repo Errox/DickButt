@@ -39,7 +39,7 @@ def start_sumo_smash():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("INVATION OF THE UNKNOWN")
     clock = pygame.time.Clock()
-    soundboard.ast_main()
+    soundboard.invation_main()
     start_init = True
     pause = False
 
@@ -293,7 +293,7 @@ def start_sumo_smash():
                             soundboard.resume()
                     if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
                         if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
-                            start_Sumo_smash()
+                            start_sumo_smash()
                             print('goes to cheet sheet.')
             #flip the display.
             pygame.display.flip()

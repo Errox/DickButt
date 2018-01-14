@@ -57,6 +57,11 @@ def stranded_main():
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 
+def invation_main():
+    pygame.mixer.music.load('resource/soundboard/music/invation/song_1.ogg')
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play(-1)
+
 def st_collect():
     stcollect = pygame.mixer.Sound('resource/soundboard/jump/collect.wav')
     stcollect.set_volume(0.5)
