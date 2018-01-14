@@ -24,11 +24,12 @@ def start():
     text_list = '''This game is made by:
     Ryan Groenewold -> Astrododge, intergration of all games, 
     highscores, sounds, Health bar mechanics, 
-    "cheat sheets / explaination screen" mechanic
+    "cheat sheets / explaination screen" mechanic,
+    Fail-safe / Error screens
     _______________________________
-    Laura Young -> SpaceStrike, credits, All sprites in game,
+    Laura Young -> SpaceStrike, credits, General artwork,
     Intergration, Documentation, 
-    score in individiual games
+    Pause menu
     _______________________________
     Eva Wegman -> Spacebound
     _______________________________
