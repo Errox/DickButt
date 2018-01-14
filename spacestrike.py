@@ -204,9 +204,14 @@ def start_spacestrike():
             pygame.sprite.Sprite.__init__(self)
             self.images = []
             self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_1.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_1.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_2.png'))
             self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_2.png'))
             self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_3.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_3.png'))
             self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_4.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_4.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_5.png'))
             self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_5.png'))
             self.index = 0
             self.image = self.images[self.index]
