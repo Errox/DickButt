@@ -167,12 +167,12 @@ def start_spacestrike():
             
             self.lastx = self.rect.x
             #kill if off the screen
-            bloep = random.randrange(775,875)
+            expld_range = random.randrange(775,875)
             if self.rect.y > 750:
                 self.kill()
                 global planet_hp
                 planet_hp -= random.randrange(125,250)
-                expl = base_explosion(self.lastx, bloep)
+                expl = base_explosion(self.lastx, expld_range)
                 all_sprites.add(expl)
 
                 m = enemy()
