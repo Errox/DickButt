@@ -1,6 +1,7 @@
 #This script is for playing and moving around a sprite
 #import all lib's
 heart_amount = 3
+#start astrodoge
 def start_astrodoge():
     import pygame
     import random
@@ -47,11 +48,11 @@ def start_astrodoge():
     game_folder = os.path.dirname(__file__)
     img_folder  = os.path.join(game_folder, "img")
 
-
+    #load all explosion animations
     explosion_anim = []
     for i in range(17):
         filename = 'resource/images/astrodoge/explosions/ship_expl_{}.png'.format(i)
-        img = pygame.image.load(filename).convert()
+        img = pygame.image.load(filename)
         img.set_colorkey(BLACK)
         img = pygame.transform.scale(img, (75, 75))
         explosion_anim.append(img)
@@ -97,6 +98,8 @@ def start_astrodoge():
             if keystate[pygame.K_SPACE]:
                 self.shoot()
 
+        
+        #setup a function to shoot
         def shoot(self):
             now = pygame.time.get_ticks()
             if now - self.last_shot > self.shoot_delay:
@@ -283,13 +286,14 @@ def start_astrodoge():
     #loading in font
     font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 30)
  
+    #define all sprites
     all_sprites = pygame.sprite.Group()
     mobs = pygame.sprite.Group()
     powerups = pygame.sprite.Group()
     bullets = pygame.sprite.Group()
     player = player()
     all_sprites.add(player)
-
+    #time ticks
     newtime=pygame.time.get_ticks()
     oldtime=newtime
  
@@ -302,7 +306,7 @@ def start_astrodoge():
     #game loop
     running = True
     while running:
-        
+        #get a menu ready when pause is active
         while pause == True:
             clock.tick(FPS)
             mm_button        = pygame.image.load('resource/images/pause_screen/button_mm.png')
@@ -339,7 +343,7 @@ def start_astrodoge():
                             cheat_sheet.start(1)
             #flip the display.
             pygame.display.flip()
-        
+        #Play the game if pause isn't true
         while pause == False:
             time_alive = time.time() - startTime 
             if time_alive == seconds:

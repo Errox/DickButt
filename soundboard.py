@@ -46,7 +46,7 @@ def pause():
     play = pygame.mixer.Sound('resource/soundboard/menu/in.wav')
     play.play()
     pygame.mixer.music.pause()
-
+#define resume on pause
 def resume():
     play = pygame.mixer.Sound('resource/soundboard/menu/out.wav')
     play.play()
@@ -79,7 +79,7 @@ def ast_main():
     pygame.mixer.music.queue('resource/soundboard/music/astrododge/song_3.ogg')
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
-
+#the hall of fame music during the highscores
 def hall_of_fame():
     pygame.mixer.music.load('resource/soundboard/music/hall_of_fame/song_1.ogg')
     pygame.mixer.music.set_volume(0.5)
@@ -92,12 +92,13 @@ def spst_main():
     pygame.mixer.music.queue('resource/soundboard/music/astrododge/song_3.ogg')
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
-    
+
+#sound when shooting a bullet
 def bullet_shoot_friendly():
     bullet = pygame.mixer.Sound('resource/soundboard/shoot/friendly/sfx_1.ogg')
     bullet.set_volume(0.3)
     bullet.play()
-    
+#sounds when hitting a enemy
 def bullet_on_hit_enemy():
     random_1 = random.randint(0, 100)
     if random_1 >= 81:
@@ -112,7 +113,7 @@ def bullet_on_hit_enemy():
         bullet = pygame.mixer.Sound('resource/soundboard/onhit/enemy/hit_5.wav')
     bullet.set_volume(0.5)
     bullet.play()
-
+#sound when hitting the player
 def bullet_on_hit_friendly():
     random_1 = random.randint(0, 60)
     if random_1 >= 41:
@@ -127,40 +128,50 @@ def bullet_on_hit_friendly():
 def Fight():
     shot = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_wpn_laser6.wav')
     shot.play()
+
 def Powershot():
     Pshot = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_wpn_laser5.wav')
     Pshot.play()
+
 def Healthshot(): 
     Hshot = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_wpn_laser9.wav')
     Hshot.play()
+
 def Hit(): 
     hit = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_deathscream_robot1.wav')
     hit.play()
+
 def Heals():
     heal = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_sound_mechanicalnoise3.wav')
     heal.set_volume(0.5)
     heal.play()
+
 def Death():
     die = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_deathscream_robot2.wav')
     die.play()
+
 def Button():
     Butt = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_menu_move4.wav')
     Butt.play()
+
 def Objective(): 
     obj = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_sound_shutdown1.wav')
     obj.play()
+
 def Walking():
     walk = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_movement_footstepsloop4_slow.wav')
     walk.play()
+
 def Running():
     run = pygame.mixer.Sound('resource/soundboard/SpaceBound/sfx_movement_footstepsloop4_fast.wav')
     run.play()
+
 def Backgroundmusic():
     pygame.mixer.music.load('resource/soundboard/music/SpaceBound/Background_music.mp3')
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 
-
+#credits theme
 def credits_theme():
     pygame.mixer.music.load('resource/music/credits/song_1.ogg')
     pygame.mixer.music.set_volume(0.5)

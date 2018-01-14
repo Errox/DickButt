@@ -41,7 +41,7 @@ def start():
     We don't own any of the coprights of any of these objects
     '''.split('\n')
 
-
+    #credits class so it can float
     class Credits:
         def __init__(self, screen_rect, lst):
             self.srect = screen_rect
@@ -78,6 +78,7 @@ def start():
             for text, rect in self.text:
                 surf.blit(text, rect)
 
+    #get buttons ready  
     quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
     quit_rect           = quit_button.get_rect()
     background = pygame.image.load('resource/images/game_over/game_overbg.png').convert()

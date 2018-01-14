@@ -70,7 +70,7 @@ def start(score, game_id):
         background_rect = background.get_rect()
         screen.blit(background, background_rect)
         buttons_game_over()
-
+    #game over buttons ready
     def buttons_game_over():
         quit_button         = pygame.image.load('resource/images/game_over/button_quit.png').convert()
         retry_button         = pygame.image.load('resource/images/game_over/button_restart.png').convert()
@@ -78,7 +78,7 @@ def start(score, game_id):
         retry_rect           = quit_button.get_rect()
         screen.blit(quit_button, (325,550))
         screen.blit(retry_button, (325,470))
-    
+    #score text to screen
     def text_score(score, highscore):       
         scoretext = font.render("Your Score ", 1, WHITE)
         score = font.render(" {0}".format(score), 1, WHITE)
