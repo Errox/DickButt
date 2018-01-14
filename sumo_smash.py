@@ -72,28 +72,28 @@ def start_sumo_smash():
 
         def update(self):
             self.timer += 1
-            if self.timer <= 4:
+            if self.timer <= 3:
                 self.image = walk_1
                 self.image = pygame.transform.rotate(self.image, self.direction)
-            elif self.timer <= 8:
+            elif self.timer <= 6:
                 self.image = walk_2
                 self.image = pygame.transform.rotate(self.image, self.direction)
-            elif self.timer <= 12:
+            elif self.timer <= 9:
                 self.image = walk_3  
                 self.image = pygame.transform.rotate(self.image, self.direction)
-            elif self.timer <= 16:
+            elif self.timer <=12:
                 self.image = walk_4 
                 self.image = pygame.transform.rotate(self.image, self.direction)
-            elif self.timer <= 20:
+            elif self.timer <= 15:
                 self.image = walk_5
                 self.image = pygame.transform.rotate(self.image, self.direction)
-            elif self.timer <= 24:
+            elif self.timer <= 18:
                 self.image = walk_6
                 self.image = pygame.transform.rotate(self.image, self.direction)
-            elif self.timer <= 28:
+            elif self.timer <= 21:
                 self.image = walk_7
                 self.image = pygame.transform.rotate(self.image, self.direction)
-            elif self.timer <= 32:
+            elif self.timer <= 25:
                 self.image = walk_8
                 self.image = pygame.transform.rotate(self.image, self.direction)
             else:
