@@ -31,6 +31,7 @@ def start(game_id):
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (X,Y)
     define_location = "main_menu"
 
+    #get the error screens ready when on release
     def introduction_id_bleeding_edge(game_id):
         if game_id == 1:
             try:
@@ -69,7 +70,7 @@ def start(game_id):
                 error_screen.start(e, game_id)                
                 pass
         
-
+    #without the error screens
     def introduction_id(game_id):
         if game_id == 1:
             astrodoge.start_astrodoge()          
@@ -82,17 +83,12 @@ def start(game_id):
         elif game_id == 5:
             Stranded.start_Stranded()
         
-
-    #initializing pygame's mixer
-    # pygame.mixer.init()
-    # pygame.mixer.music.load("resource/music/main_menu/main_menu.ogg")
-    # pygame.mixer.music.play(-1)
  
     #initiate a image loader
     #beginning of the main loop
     main_loop = True
     
-
+    #define the game_id where it's been loaded
     if game_id == 1:
         background = pygame.image.load('resource/images/cheat_sheets/Astrododge_cs.png').convert()
         background_rect = background.get_rect()
@@ -109,6 +105,7 @@ def start(game_id):
         background = pygame.image.load('resource/images/cheat_sheets/Stranded_cs.png').convert()
         background_rect = background.get_rect()
 
+    #main loop of the cheat_sheet
     while main_loop:
     
         #reset the screen and set screen image's

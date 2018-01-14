@@ -24,11 +24,12 @@ def start():
     text_list = '''This game is made by:
     Ryan Groenewold -> Astrododge, intergration of all games, 
     highscores, sounds, Health bar mechanics, 
-    "cheat sheets / explaination screen" mechanic
+    "cheat sheets / explaination screen" mechanic,
+    Fail-safe / Error screens
     _______________________________
-    Laura Young -> SpaceStrike, credits, All sprites in game,
+    Laura Young -> SpaceStrike, credits, General artwork,
     Intergration, Documentation, 
-    score in individiual games
+    Pause menu
     _______________________________
     Eva Wegman -> Spacebound
     _______________________________
@@ -42,7 +43,7 @@ def start():
 
     '''.split('\n')
 
-
+    #credits class so it can float
     class Credits:
         def __init__(self, screen_rect, lst):
             self.srect = screen_rect
@@ -79,6 +80,7 @@ def start():
             for text, rect in self.text:
                 surf.blit(text, rect)
 
+    #get buttons ready  
     quit_button         = pygame.transform.scale(pygame.image.load ('resource/images/select_planet/button_quit_small.png'), (42,40))
     quit_rect           = quit_button.get_rect()
     background = pygame.image.load('resource/images/game_over/game_overbg.png').convert()

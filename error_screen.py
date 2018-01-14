@@ -29,12 +29,12 @@ def start(error, game_id):
         background_rect = background.get_rect()
         screen.blit(background, background_rect)
         buttons_game_over()
-
+    #get buttons
     def buttons_game_over():
         quit_button         = pygame.image.load('resource/images/game_over/button_quit.png').convert()
         quit_rect           = quit_button.get_rect()
         screen.blit(quit_button, (325,550))
-
+    #set error message ready
     def error(error, game_id):
         scorehigh = font.render("error:  {0}".format(error), 1, WHITE)
         screen.blit(scorehigh, (0, 0))

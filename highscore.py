@@ -1,16 +1,16 @@
-   
+#reading the existing highscore database from specific game
 def read(game_id):
     import json
     data = json.load(open('highscores.json'))
     idtje = str(game_id)
     return data[idtje]
-
+#Reading the existing highscore of all games
 def read_all():
     import json    
     data = json.load(open('highscores.json'))
     return data
  
-    
+#save a new highscore if it's higher than the last one
 def save(score, game_id):
     import json
     import os
@@ -27,7 +27,7 @@ def save(score, game_id):
         os.remove(filename)
         with open(filename, 'w') as f:
             json.dump(data, f, indent=4)
-
+#get the highscore screen ready to show all highscores
 def start():
         #defining every library needed
     import sys
@@ -54,6 +54,7 @@ def start():
         
     soundboard.hall_of_fame()
     
+    #text to screen.
     def text_score():
         data = highscore.read_all()
         astrodogetext = font.render("Astrodoge_score : {0}".format(data['1']), 1, WHITE)

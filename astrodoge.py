@@ -1,6 +1,7 @@
 #This script is for playing and moving around a sprite
 #import all lib's
 heart_amount = 3
+#start astrodoge
 def start_astrodoge():
     import pygame
     import random
@@ -47,11 +48,11 @@ def start_astrodoge():
     game_folder = os.path.dirname(__file__)
     img_folder  = os.path.join(game_folder, "img")
 
-
+    #load all explosion animations
     explosion_anim = []
     for i in range(17):
         filename = 'resource/images/astrodoge/explosions/ship_expl_{}.png'.format(i)
-        img = pygame.image.load(filename).convert()
+        img = pygame.image.load(filename)
         img.set_colorkey(BLACK)
         img = pygame.transform.scale(img, (75, 75))
         explosion_anim.append(img)
@@ -97,20 +98,21 @@ def start_astrodoge():
             if keystate[pygame.K_SPACE]:
                 self.shoot()
 
+        #setup a function to shoot
         def shoot(self):
             now = pygame.time.get_ticks()
             if now - self.last_shot > self.shoot_delay:
                 soundboard.bullet_shoot_friendly()
                 self.shoot_delay = delay_gun
                 self.last_shot = now
-                if level_gun == 4:
+                if level_gun >= 4 and level_gun <= 5:
                     bullet_l = Bullet(self.rect.left, self.rect.top)
                     all_sprites.add(bullet_l)
                     bullets.add(bullet_l)
                     bullet_r = Bullet(self.rect.right, self.rect.top)
                     all_sprites.add(bullet_r)
                     bullets.add(bullet_r)
-                elif level_gun > 6:
+                elif level_gun >= 6:
                     bullet_l = Bullet(self.rect.left, self.rect.top)
                     all_sprites.add(bullet_l)
                     bullets.add(bullet_l)
@@ -283,13 +285,14 @@ def start_astrodoge():
     #loading in font
     font = pygame.font.Font('resource/fonts/Arcadepix.ttf', 30)
  
+    #define all sprites
     all_sprites = pygame.sprite.Group()
     mobs = pygame.sprite.Group()
     powerups = pygame.sprite.Group()
     bullets = pygame.sprite.Group()
     player = player()
     all_sprites.add(player)
-
+    #time ticks
     newtime=pygame.time.get_ticks()
     oldtime=newtime
  
@@ -302,7 +305,7 @@ def start_astrodoge():
     #game loop
     running = True
     while running:
-        
+        #get a menu ready when pause is active
         while pause == True:
             clock.tick(FPS)
             mm_button        = pygame.image.load('resource/images/pause_screen/button_mm.png')
@@ -339,7 +342,7 @@ def start_astrodoge():
                             cheat_sheet.start(1)
             #flip the display.
             pygame.display.flip()
-        
+        #Play the game if pause isn't true
         while pause == False:
             time_alive = time.time() - startTime 
             if time_alive == seconds:
@@ -386,7 +389,6 @@ def start_astrodoge():
             #collision for bullet against mobs
             hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
             if hits:
-
                 score += 100
                 soundboard.bullet_on_hit_enemy()
             for hit in hits:
@@ -400,6 +402,8 @@ def start_astrodoge():
             if hits:
                 delay_gun -= 75
                 level_gun += 1
+                if level_gun == 4 and level_gun == 5:
+                    delay_gun += 100
                 soundboard.upgrade()
 
             #collision if player hit mobs
@@ -408,6 +412,7 @@ def start_astrodoge():
                 soundboard.bullet_on_hit_friendly()
                 expl = Explosion(hit.rect.center)
                 all_sprites.add(expl)
+                level_gun -= 1
                 lose_heart()
 
             #draw / render

@@ -14,11 +14,7 @@ def start_Stranded():
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
     GREEN = (0, 255, 0)
-    RED = (255, 0, 0)
-    BLUE = (0, 0, 255)
-    BEIGE = (255,211,155)
-    BROWN = (139,121,94)
-    GREY = (128, 128, 128)
+
 
     # score = 100000
     score = 10000
@@ -67,10 +63,12 @@ def start_Stranded():
             # Inventory
             self.inventory = None
         def load_images(self):
+            # stance frames
             self.standing_frames = [pygame.image.load('resource/images/Stranded/player purple/s1.png').convert(),
                                     pygame.image.load('resource/images/Stranded/player purple/s2.png').convert()]
             for frame in self.standing_frames:
                 frame.set_colorkey(BLACK)
+            #walk right frames
             self.walk_frames_r = [pygame.image.load('resource/images/Stranded/player purple/1.png').convert(),
                                    pygame.image.load('resource/images/Stranded/player purple/2.png').convert(),
                                    pygame.image.load('resource/images/Stranded/player purple/3.png').convert(),
@@ -80,10 +78,12 @@ def start_Stranded():
                                    pygame.image.load('resource/images/Stranded/player purple/7.png').convert(),
                                    pygame.image.load('resource/images/Stranded/player purple/8.png').convert(),
                                    pygame.image.load('resource/images/Stranded/player purple/9.png').convert()]
+            # walk left frames
             self.walk_frames_l = []
             for frame in self.walk_frames_r:
                 frame.set_colorkey(BLACK)
                 self.walk_frames_l.append(pygame.transform.flip(frame, True, False))
+        # jump frames when going right
             self.jump_frames_r = [pygame.image.load('resource/images/Stranded/player purple/jump/1.png').convert(),
                                    pygame.image.load('resource/images/Stranded/player purple/jump/2.png').convert(),
                                    pygame.image.load('resource/images/Stranded/player purple/jump/3.png').convert(),
@@ -95,7 +95,7 @@ def start_Stranded():
                                    pygame.image.load('resource/images/Stranded/player purple/jump/9.png').convert()]
             for frame in self.jump_frames_r:
                 frame.set_colorkey(BLACK)
-
+        # jump frames when going left
             self.jump_frames_l = []
             for frame in self.jump_frames_r:
                 frame.set_colorkey(BLACK)
@@ -190,6 +190,7 @@ def start_Stranded():
                 block.hide()
         def animate(self):
             now = pygame.time.get_ticks()
+            # activate walking frames
             if self.change_x != 0 and self.change_y == 0:
                 self.walking = True
             else:
@@ -204,7 +205,7 @@ def start_Stranded():
                     else:
                         self.image = self.walk_frames_l[self.current_frame]
 
-
+        # activate stance Frames
             if not self.walking and self.change_y == 0:
                 if now - self.last_update > 400:
                     self.last_update = now
@@ -212,7 +213,7 @@ def start_Stranded():
                     bottom = self.rect.bottom
                     self.image = self.standing_frames[self.current_frame]
                     self.rect.bottom = bottom
-
+        # activate jumping frames
             if  self.change_y != 0:
                 self.jumping = True
             else:
@@ -352,6 +353,7 @@ def start_Stranded():
         def update(self):
             # Move the platform
             self.moving = False
+            # show a diffrent image of the enemy depending on it's direction.
             if self.change_x <= 0:
                 self.image = pygame.image.load('resource/images/Stranded/Strandedenemy3.png').convert()
                 self.image = pygame.transform.scale(self.image, (50, 75))
@@ -383,7 +385,7 @@ def start_Stranded():
             # Move up/down
             self.rect.y += self.change_y
 
-            # check if the mg_player stands on the platform
+            # check if the mg_player stands on the enemy
             hit = pygame.sprite.collide_rect(self, self.player)
             if hit:
                 score = 0
@@ -700,9 +702,9 @@ def start_Stranded():
     def main():
         # main program
 
-
+        #
         def draw_statusline():
-            # Draw escape button and score on top row on screen
+            # Draw score and timer on the top row of the screen and objective at the bottom.
             font = pygame.font.Font("resource/fonts/Arcadepix.ttf", 30)
             scoretext = font.render("Score {0}".format(score), 1, WHITE)
             screen.blit(scoretext, (705, 10))
@@ -713,7 +715,7 @@ def start_Stranded():
             screen.blit(objectivetext, (295, 855))
             scoretext = font.render("Time passed {0}".format(round(time_alive)), 1, WHITE)
             screen.blit(scoretext, (705, 30))
-
+#           Draw quit button
             quit_button = pygame.transform.scale(
                 pygame.image.load('resource/images/select_planet/button_quit_small.png'), (42, 40))
             quit_rect = quit_button.get_rect()
@@ -727,7 +729,7 @@ def start_Stranded():
 
                 current_level.draw(screen)
                 active_sprite_list.draw(screen)
-
+                # the pause menu buttons
                 mm_button = pygame.image.load('resource/images/pause_screen/button_mm.png')
                 resume_button = pygame.image.load('resource/images/pause_screen/button_resume.png')
                 restart_button = pygame.image.load('resource/images/pause_screen/button_restart.png')
@@ -738,16 +740,19 @@ def start_Stranded():
                 screen.blit(resume_button, (325, 470))
                 screen.blit(restart_button, (325, 390))
 
+                # for loop of the pause event
                 for pause_event in pygame.event.get():
                     print(pause_event)
-                    # Check of de exit knop is ingedrukt
+                    # check if esc is pressed
                     if pause_event.type == pygame.QUIT:
                         state = 2
-                    # als esc ingedrukt wordt pauseert het spel
+                    # if the esc button is pressed on the keyboard
                     elif pause_event.type == pygame.KEYDOWN:
                         if pause_event.key == pygame.K_ESCAPE:
                             state = 1
                             soundboard.resume()
+
+                            # the clickable buttons onscreen of pause = True
                     elif pause_event.type == pygame.MOUSEBUTTONDOWN:
                         if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 550:
                             if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 615:
@@ -818,6 +823,7 @@ def start_Stranded():
                 time_alive = time.time() - startTime
                 nonlocal score
                 score = score - 1
+                # escape button
                 for event in pygame.event.get():
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if pygame.mouse.get_pos()[0] >= 5 and pygame.mouse.get_pos()[1] >= 5:
@@ -827,7 +833,7 @@ def start_Stranded():
                     if event.type == pygame.QUIT:
                         score = 0
                         running = False
-
+                    # Player movement
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_LEFT:
                             mg_player.go_left()
@@ -890,7 +896,7 @@ def start_Stranded():
                 active_sprite_list.draw(screen)
 
                 draw_statusline()
-
+                # if game is not running show game over screen
                 if not running:
                     print('game over')
                     game_over.start(score, 5)
