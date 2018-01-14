@@ -9,6 +9,7 @@ def start_spacestrike():
     import highscore
     import game_over
     import soundboard
+    import cheat_sheet
 
     #define core
     WIDTH   = 900
@@ -121,8 +122,31 @@ def start_spacestrike():
         #sprite and properties for enemy
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
-            self.image  = pygame.image.load('resource/images/spacestrike/enemy/enemy.png').convert()
-            self.image = pygame.transform.scale(self.image, (70, 50))
+            randomizer = random.randrange(1,11)
+            if randomizer == 1:
+                self.image = pygame.image.load('resource/images/spacestrike/enemy/ship_1.png')
+            elif randomizer == 2:
+                self.image = pygame.image.load('resource/images/spacestrike/enemy/ship_2.png')
+            elif randomizer == 3:
+                self.image = pygame.image.load('resource/images/spacestrike/enemy/ship_3.png')
+            elif randomizer == 4:
+                self.image = pygame.image.load('resource/images/spacestrike/enemy/ship_4.png')
+            elif randomizer == 5: 
+                self.image = pygame.image.load('resource/images/spacestrike/enemy/ship_5.png')
+            elif randomizer == 6: 
+                self.image = pygame.image.load('resource/images/spacestrike/enemy/ship_6.png')
+            elif randomizer == 7: 
+                self.image = pygame.image.load('resource/images/spacestrike/enemy/ship_7.png')
+            elif randomizer == 8: 
+                self.image = pygame.image.load('resource/images/spacestrike/enemy/ship_8.png')
+            elif randomizer == 9: 
+                self.image = pygame.image.load('resource/images/spacestrike/enemy/ship_9.png')
+            elif randomizer == 10: 
+                self.image = pygame.image.load('resource/images/spacestrike/enemy/ship_10.png')
+            elif randomizer == 11: 
+                self.image = pygame.image.load('resource/images/spacestrike/enemy/ship_11.png')
+               
+            #self.image = pygame.transform.scale(self.image, (70, 50))
             self.image.set_colorkey(BLACK)
             self.rect   = self.image.get_rect()
             self.radius = 23
@@ -143,12 +167,12 @@ def start_spacestrike():
             
             self.lastx = self.rect.x
             #kill if off the screen
-            bloep = random.randrange(775,875)
+            expld_range = random.randrange(775,875)
             if self.rect.y > 750:
                 self.kill()
                 global planet_hp
                 planet_hp -= random.randrange(125,250)
-                expl = base_explosion(self.lastx, bloep)
+                expl = base_explosion(self.lastx, expld_range)
                 all_sprites.add(expl)
 
                 m = enemy()
@@ -180,9 +204,14 @@ def start_spacestrike():
             pygame.sprite.Sprite.__init__(self)
             self.images = []
             self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_1.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_1.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_2.png'))
             self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_2.png'))
             self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_3.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_3.png'))
             self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_4.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_4.png'))
+            self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_5.png'))
             self.images.append(load_image('resource/images/spacestrike/projectiles/projectile_5.png'))
             self.index = 0
             self.image = self.images[self.index]
@@ -350,7 +379,7 @@ def start_spacestrike():
                             soundboard.resume()
                     if pygame.mouse.get_pos()[0] >= 325 and pygame.mouse.get_pos()[1] >= 390:
                         if pygame.mouse.get_pos()[0] <= 593 and pygame.mouse.get_pos()[1] <= 455:
-                            print('goes to cheet sheet.')
+                            cheat_sheet.start(2)
             #flip display.
             pygame.display.flip()
 
