@@ -37,8 +37,9 @@ def start():
     Davin Essenius -> Stranded
     _______________________________
 
-    All sounds, images and mechanics are used for personal use.
+    text_list = All sounds, images and mechanics are used for personal use.
     We don't own any of the coprights of any of these objects
+
     '''.split('\n')
 
 
